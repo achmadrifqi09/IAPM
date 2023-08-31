@@ -11,4 +11,8 @@ class ClientPageController extends Controller
     {
         return Inertia::render('Client/Home');
     }
+
+    public function about() {
+        return Inertia::render('Client/About');
+    }
 }

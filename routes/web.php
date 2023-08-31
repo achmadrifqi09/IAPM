@@ -16,3 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [ClientPageController::class, 'home']);
+Route::get('/about-us', [ClientPageController::class, 'about']);
+
+
+
