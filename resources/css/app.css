@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.swiper [class^="swiper-button-"] {
+    color: #e12838;
+    top: 35%;
+    font-size: 14px;
+}
+
+.swiper [class^="swiper-button-"]::after {
+    font-size: 32px;
+}
