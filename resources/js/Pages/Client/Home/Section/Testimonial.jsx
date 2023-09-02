@@ -1,11 +1,11 @@
 import React from "react";
 import { SwiperSlide } from "swiper/react";
-import Carousel from "../Carousel";
-import { H2, Paragraph, H5 } from "../Text";
+import Carousel from "../../../../Components/Carousel";
+import { H2, Paragraph, H5 } from "../../../../Components/Text";
 
 const Testimonial = (props) => {
     return (
-        <section className="w-full my-28 bg-grid bg-no-repeat">
+        <section className="w-full my-36 bg-grid bg-no-repeat">
             <div className="max-w-screen-xl mx-auto px-6 md:px-8 text-center space-y-12 bg-gradient-linear-white">
                 <H2>What do they say about us?</H2>
                 <Carousel>

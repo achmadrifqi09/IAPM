@@ -1,16 +1,15 @@
 import React from "react";
 import { Head } from "@inertiajs/react";
-import ClientLayout from "../../Layouts/client-layout";
-import H1 from "../../Components/Text/H1";
-import Hero from "../../Components/Hero/Hero";
-import largeImage from "../../../../public/assets/images/dummy/first-image.svg";
-import smallImage from "../../../../public/assets/images/dummy/second-image.svg";
+import ClientLayout from "../../../Layouts/client-layout";
+import largeImage from "../../../../../public/assets/images/dummy/first-image.svg";
+import smallImage from "../../../../../public/assets/images/dummy/second-image.svg";
 
-import ClientGalery from "../../Components/ClientGalery";
-import VideoSection from "../../Components/VideoSection";
-import ProductOverview from "../../Components/ProductOverview";
-import Testimonial from "../../Components/Testimonial";
-import CTA from "../../Components/CTA";
+import Hero from "./Section/Hero";
+import ClientGalery from "./Section/ClientGalery";
+import VideoSection from "./Section/Capability";
+import ProductOverview from "./section/ProductOverview";
+import Testimonial from "./Section/Testimonial";
+import CTA from "../../../Components/CTA";
 
 const HomePage = () => {
     const dummy = {

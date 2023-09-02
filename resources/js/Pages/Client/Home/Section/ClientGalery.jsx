@@ -1,6 +1,6 @@
 import React from "react";
-import Client1 from "../../../../public/assets/images/dummy/client/client-1.svg";
-import { Subtitle } from "../Text";
+import Client1 from "../../../../../../public/assets/images/dummy/client/client-1.svg";
+import { Subtitle } from "../../../../Components/Text";
 
 const ClientGalery = (props) => {
     return (

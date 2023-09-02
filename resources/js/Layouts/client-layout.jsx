@@ -6,7 +6,7 @@ const ClientLayout = ({ children }) => {
     return (
         <>
             <Navbar />
-            <main className="bg-grid bg-white min-h-screen bg-no-repeat bg-right-top font-poppins pt-8">
+            <main className="bg-grid bg-white min-h-screen bg-no-repeat bg-right-top font-poppins">
                 {children}
             </main>
             <Footer />

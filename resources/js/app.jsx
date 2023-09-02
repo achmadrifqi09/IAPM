@@ -2,6 +2,7 @@ import React from "react";
 import { createInertiaApp } from "@inertiajs/react";
 import { createRoot } from "react-dom/client";
 
+
 createInertiaApp({
     title: (title) => `${title} - IAPM Elinksolution`,
     resolve: (name) => {

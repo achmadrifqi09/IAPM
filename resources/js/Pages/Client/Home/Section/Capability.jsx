@@ -1,11 +1,11 @@
 import React from "react";
-import { H2, Paragraph } from "../Text";
-import VideoSource from "../../../../public/assets/video.mp4";
+import { H2, Paragraph } from "../../../../Components/Text";
+import VideoSource from "../../../../../../public/assets/video.mp4";
 
 const VideoSection = (props) => {
     return (
         <section
-            className="w-full mt-28 mb-40 bg-iapm-light-gray relative py-16 after:content-[''] after:bock after:w-48 after:h-56 after:bg-dot-ornament 
+            className="w-full my-36 bg-iapm-light-gray relative py-16 after:content-[''] after:bock after:w-48 after:h-56 after:bg-dot-ornament 
         after:bg-no-repeat after:absolute after:right-0 after:-bottom-24 after:md:-bottom-32 after:max-md:w-24 after:max-md:h-36 after:z-0"
         >
             <div className=" max-w-screen-xl mx-auto px-6 md:px-8 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-12 items-center">

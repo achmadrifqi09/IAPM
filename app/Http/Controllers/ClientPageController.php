@@ -9,10 +9,21 @@ class ClientPageController extends Controller
 {
     public function home()
     {
-        return Inertia::render('Client/Home');
+        return Inertia::render('Client/Home/index');
     }
 
-    public function about() {
-        return Inertia::render('Client/About');
+    public function about()
+    {
+        return Inertia::render('Client/About/index');
+    }
+
+    public function service()
+    {
+        return Inertia::render('Client/Service/index');
+    }
+
+    public function serviceDetail($id)
+    {
+        return Inertia::render('Client/Service/ServiceDetail');
     }
 }

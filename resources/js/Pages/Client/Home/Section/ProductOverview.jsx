@@ -1,15 +1,15 @@
 import React, { useRef } from "react";
-import { H2, Paragraph, Subtitle } from "../Text";
-import IButton from "../Button/Button";
+import { H2, Paragraph, Subtitle } from "../../../../Components/Text";
+import IButton from "../../../../Components/Button/Button";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
-import Image from "../../../../public/assets/images/dummy/product.png";
-import SwiperContainer from "../Swiper";
+import Image from "../../../../../../public/assets/images/dummy/product.png";
+import SwiperContainer from "../../../../Components/Swiper";
 
 import { SwiperSlide } from "swiper/react";
 
 const ProductOverview = (props) => {
     return (
-        <section className="w-full my-28">
+        <section className="w-full my-36">
             <div className=" max-w-screen-xl mx-auto px-6 md:px-8">
                 <div className="flex justify-between items-center gap-6 max-sm:flex-col max-sm:items-start">
                     <div>

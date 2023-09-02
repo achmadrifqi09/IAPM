@@ -17,6 +17,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [ClientPageController::class, 'home']);
 Route::get('/about-us', [ClientPageController::class, 'about']);
-
-
-
+Route::get('/services', [ClientPageController::class, 'service']);
+Route::get('/services/{id}', [ClientPageController::class, 'serviceDetail']);

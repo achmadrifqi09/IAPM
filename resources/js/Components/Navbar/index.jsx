@@ -25,7 +25,7 @@ const Navbar = () => {
     }, []);
 
     return (
-        <nav className="w-full font-poppins bg-white px-6 md:px-8 top-0 z-50 bg-opacity-60 backdrop-blur">
+        <nav className="w-full font-poppins bg-white px-6 md:px-8 z-50 bg-opacity-60 backdrop-blur ">
             <div className="py-4 flex max-w-screen-xl justify-between mx-auto items-center">
                 <Link href="/">
                     <img src={Logo} alt="IAPM Logo" />
@@ -47,7 +47,7 @@ const Navbar = () => {
                     </li>
                     <li
                         className={
-                            currentUrl === "/services"
+                            currentUrl.includes("/services")
                                 ? menusStyle.active
                                 : menusStyle.normal
                         }
@@ -56,7 +56,7 @@ const Navbar = () => {
                     </li>
                     <li
                         className={
-                            currentUrl === "/about-us"
+                            currentUrl.includes("/about-us")
                                 ? menusStyle.active
                                 : menusStyle.normal
                         }
@@ -65,7 +65,7 @@ const Navbar = () => {
                     </li>
                     <li
                         className={
-                            currentUrl === "/blogs"
+                            currentUrl.includes("/blogs")
                                 ? menusStyle.active
                                 : menusStyle.normal
                         }
