@@ -39,9 +39,7 @@ export default {
             time: "url(/public/assets/images/time.svg)",
             "rounded-shape": "url(/public/assets/images/rounded-shape.svg)",
         },
-        screen: {
-            'xs': '380px'
-        }
+      
     },
     plugins: [],
 };

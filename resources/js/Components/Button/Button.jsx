@@ -31,7 +31,7 @@ const IButton = (props) => {
                 <button
                     className={buttonStyle[variant]}
                     type={type}
-                    onClick={handleAction}
+                    onClick={action && handleAction}
                 >
                     {children}
                 </button>

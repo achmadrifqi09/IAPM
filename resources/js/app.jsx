@@ -1,7 +1,7 @@
 import React from "react";
 import { createInertiaApp } from "@inertiajs/react";
 import { createRoot } from "react-dom/client";
-
+import { InertiaProgress } from "@inertiajs/progress";
 
 createInertiaApp({
     title: (title) => `${title} - IAPM Elinksolution`,
@@ -13,3 +13,5 @@ createInertiaApp({
         createRoot(el).render(<App {...props} />);
     },
 });
+
+InertiaProgress.init({ color: "#FDC204" });

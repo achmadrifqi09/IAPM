@@ -3,9 +3,11 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build && vite build --ssr"
+        "build": "vite build && vite build --ssr",
+        "preview": "vite preview"
     },
     "devDependencies": {
+        "@rollup/plugin-babel": "^6.0.3",
         "autoprefixer": "^10.4.15",
         "axios": "^1.1.2",
         "laravel-vite-plugin": "^0.8.0",
@@ -15,9 +17,22 @@
     },
     "dependencies": {
         "@heroicons/react": "^2.0.18",
+        "@inertiajs/inertia": "^0.11.1",
+        "@inertiajs/progress": "^0.2.7",
         "@inertiajs/react": "^1.0.11",
+        "@mui/icons-material": "^5.14.1",
+        "@mui/material": "^5.14.2",
+        "@originjs/vite-plugin-commonjs": "^1.0.3",
+        "@tinymce/tinymce-react": "^4.3.0",
+        "@vitejs/plugin-react": "^4.0.3",
+        "formik": "^2.4.3",
+        "install": "^0.13.0",
+        "material-react-table": "^1.14.0",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
-        "swiper": "^10.2.0"
+        "react-select": "^5.7.4",
+        "sweetalert2": "^11.7.27",
+        "swiper": "^10.2.0",
+        "yup": "^1.2.0"
     }
 }

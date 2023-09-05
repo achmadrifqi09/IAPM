@@ -26,4 +26,14 @@ class ClientPageController extends Controller
     {
         return Inertia::render('Client/Service/ServiceDetail');
     }
+
+    public function blog()
+    {
+        return Inertia::render('Client/Blog/index');
+    }
+
+    public function blogDetail($id)
+    {
+        return Inertia::render('Client/Blog/BlogDetail');
+    }
 }

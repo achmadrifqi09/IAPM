@@ -3,6 +3,7 @@ import { createInertiaApp } from "@inertiajs/react";
 import.meta.glob(["../assets/**"]);
 import ReactDOMServer from "react-dom/server";
 import createServer from "@inertiajs/react/server";
+import { InertiaProgress } from "@inertiajs/progress";
 
 createServer((page) =>
     createInertiaApp({
@@ -15,3 +16,5 @@ createServer((page) =>
         setup: ({ App, props }) => <App {...props} />,
     })
 );
+
+InertiaProgress.init({ color: "#FDC204" });

@@ -2,7 +2,8 @@ import React from "react";
 
 import { H2, Paragraph } from "../../../../Components/Text";
 import { CubeIcon } from "@heroicons/react/24/outline";
-const Header = (props) => {
+
+const ServiceHeader = (props) => {
     return (
         <section className="bg-no-repeat bg-left bg-grid ">
             <div className=" h-full py-16 bg-opacity-60">
@@ -26,4 +27,4 @@ const Header = (props) => {
     );
 };
 
-export default Header;
+export default ServiceHeader;

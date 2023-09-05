@@ -2,7 +2,7 @@ import React from "react";
 import { Head } from "@inertiajs/react";
 import ClientLayout from "../../../Layouts/client-layout";
 import CTA from "../../../Components/CTA";
-import Header from "./Section/Header";
+import ServiceHeader from "./Section/ServiceHeader";
 import ServiceListing from "./Section/ServiceListing";
 
 const Service = (props) => {
@@ -12,7 +12,7 @@ const Service = (props) => {
                 <title>Services</title>
             </Head>
             <ClientLayout>
-                <Header />
+                <ServiceHeader />
                 <ServiceListing />
                 <CTA />
             </ClientLayout>

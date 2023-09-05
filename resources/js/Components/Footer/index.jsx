@@ -30,13 +30,13 @@ const Footer = (props) => {
                                     Service
                                 </Link>
                                 <Link
-                                    href="/"
+                                    href="/about-us"
                                     className="block text-iapm-gray text-base"
                                 >
                                     About Us
                                 </Link>
                                 <Link
-                                    href="/"
+                                    href="/blogs"
                                     className="block text-iapm-gray text-base"
                                 >
                                     Blog
