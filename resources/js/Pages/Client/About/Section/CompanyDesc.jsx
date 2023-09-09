@@ -1,6 +1,6 @@
 import React from "react";
 import { H3, Paragraph } from "../../../../Components/Text";
-import LogoImage from "../../../../../../public/assets/images/dummy/3dLogo.svg";
+import DefaultImage from "../../../../../../public/assets/images/default-images/3dLogo.svg";
 import {
     EyeIcon,
     RocketLaunchIcon,
@@ -8,7 +8,8 @@ import {
 } from "@heroicons/react/24/outline";
 
 const CompanyDesc = (props) => {
-    const {} = props;
+    const { aboutTitle, visionTitle, missionTitle, image, datas } = props;
+
     return (
         <section className="w-full bg-iapm-light-gray shadow-[-1px_-149px_65px_-159px_rgba(0,0,0,0.03)_inset] border-b border-b-iapm-light-gray">
             <div className="bg-grid py-20 bg-no-repeat bg-left-top">
@@ -19,7 +20,7 @@ const CompanyDesc = (props) => {
                                 <span className="p-2 bg-iapm-yellow block w-max rounded-full h-max">
                                     <BuildingOffice2Icon className="w-6 h-6" />
                                 </span>
-                                <H3>About IAPM Elinksolution</H3>
+                                <H3>{aboutTitle}</H3>
                             </div>
                             <Paragraph>
                                 IAPM e-Link Solution Indonesia is the company's
@@ -43,7 +44,7 @@ const CompanyDesc = (props) => {
                                 <span className="p-2 bg-iapm-yellow block w-max rounded-full h-max">
                                     <EyeIcon className="w-6 h-6" />
                                 </span>
-                                <H3>Vision</H3>
+                                <H3>{visionTitle}</H3>
                             </div>
                             <Paragraph>
                                 The vision of IAPM e-Link Solution Indonesia is
@@ -59,7 +60,7 @@ const CompanyDesc = (props) => {
                                 <span className="p-2 bg-iapm-yellow block w-max rounded-full h-max">
                                     <RocketLaunchIcon className="w-6 h-6" />
                                 </span>
-                                <H3>Mission</H3>
+                                <H3>{missionTitle}</H3>
                             </div>
                             <Paragraph>
                                 IAPM e-Link Solution Indonesia's mission is
@@ -81,8 +82,8 @@ const CompanyDesc = (props) => {
                     <div className="max-md:hidden sticky top-36">
                         <div className="after:content-logo after:bg-white after:px-4 after:py-2 after:rounded-full after:shadow-md after:-bottom-8 after:absolute after:left-6">
                             <img
-                                src={LogoImage}
-                                alt=""
+                                src={image ? image : DefaultImage}
+                                alt="Image of About IAPM Elinksolution"
                                 className="aspect-square object-cover w-full mx-auto rounded-t-[64px] rounded-br-[64px]"
                             />
                         </div>

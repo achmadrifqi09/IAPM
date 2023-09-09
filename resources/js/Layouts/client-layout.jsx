@@ -2,14 +2,16 @@ import React from "react";
 import Navbar from "../Components/Navbar";
 import Footer from "../Components/Footer";
 
-const ClientLayout = ({ children }) => {
+const ClientLayout = (props) => {
+    const { children, footerContents } = props;
+
     return (
         <>
             <Navbar />
             <main className="bg-grid bg-white min-h-screen bg-no-repeat bg-right-top font-poppins">
                 {children}
             </main>
-            <Footer />
+            <Footer footerContents={footerContents} />
         </>
     );
 };

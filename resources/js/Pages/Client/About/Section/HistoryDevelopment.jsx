@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import Image from "../../../../../../public/assets/images/dummy/product.png";
 import { Paragraph, H3 } from "../../../../Components/Text";
-import TabBar from "../../../../Components/TabBar";
+import VerticalTabBar from "../../../../Components/TabBar/VerticalTabBar";
+import DefaultImage from "../../../../../../public/assets/images/default-images/3dLogo.svg";
 
-const HistoryDevelopment = () => {
+const HistoryDevelopment = (props) => {
+    const { title, description } = props;
+
     const [displayedData, setDisplayedData] = useState({});
     const dummyData = [
         {
@@ -41,20 +43,20 @@ const HistoryDevelopment = () => {
             <div className="max-w-screen-xl mx-auto bg-gradient-linear-white space-y-16 ">
                 <div className="flex items-center gap-6">
                     <div>
-                        <H3>History Of Development</H3>
-                        <Paragraph>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing
-                            elit.
-                        </Paragraph>
+                        <H3>{title}</H3>
+                        <Paragraph>{description}</Paragraph>
                     </div>
                 </div>
                 <div className="relative items-center max-lg:grid-cols-1">
-                    <div className="">
-                        <TabBar datas={dummyData} onClickMenu={onClickMenu}>
+                    <div>
+                        <VerticalTabBar
+                            datas={dummyData}
+                            onClickMenu={onClickMenu}
+                        >
                             <div className="grid gap-6 grid-cols-2 items-center max-md:grid-cols-1">
                                 <div className="border border-iapm-red rounded-[32px]  mt-8 ml-8">
                                     <img
-                                        src={Image}
+                                        src={DefaultImage}
                                         alt=""
                                         className="aspect-[4/3] object-cover w-full mx-auto relative -left-8 -top-8 rounded-t-[32px] rounded-br-[32px] rounded-bl-lg"
                                     />
@@ -69,7 +71,7 @@ const HistoryDevelopment = () => {
                                     </Paragraph>
                                 </div>
                             </div>
-                        </TabBar>
+                        </VerticalTabBar>
                     </div>
                 </div>
             </div>

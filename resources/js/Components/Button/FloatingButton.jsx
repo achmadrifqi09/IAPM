@@ -9,7 +9,7 @@ const FloatingButton = (props) => {
 
     return (
         <button
-            className="p-3 bg-iapm-yellow rounded-full fixed bottom-6 right-12 z-50"
+            className="p-3 bg-iapm-yellow rounded-full fixed bottom-6 right-12 z-50 shadow-xl"
             onClick={hanldeClick}
         >
             {children}

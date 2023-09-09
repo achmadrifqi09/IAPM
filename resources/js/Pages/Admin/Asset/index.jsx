@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Modal from "../../../Components/Modal";
 import AdminLayout from "../../../Layouts/admin-layout";
-import { Head } from "@inertiajs/react";
+import { Head } from "@inertiajs/inertia-react";
 import IButton from "../../../Components/Button/Button";
 import ITable from "../../../Components/Table";
 import { H3 } from "../../../Components/Text";
@@ -15,15 +15,13 @@ import { MenuItem } from "@mui/material";
 import { Inertia } from "@inertiajs/inertia";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import IInput from "../../../Components/Input/Input";
-import ITextarea from "../../../Components/Input/Textarea";
 import InputMedia from "../../../Components/Input/InputMedia";
 import { useFormik } from "formik";
-import { fileValidationSchema } from "../../../Helpers/validation-schema";
+import { assetValidationSchema } from "../../../Helpers/validation-schema";
 import ISelect from "../../../Components/Input/Select";
 
 const Asset = (props) => {
-    const baseUrlAsset = import.meta.env.VITE_BASE_URL_ASSET;
-    const { files, errors, flash } = props;
+    const { assets, errors, flash } = props;
     const [isModalOpen, setModalOpen] = useState(false);
 
     const [updateProps, setUpdateProps] = useState({
@@ -33,12 +31,12 @@ const Asset = (props) => {
 
     const assetColumn = [
         {
-            header: "File Name",
-            accessorKey: "file_name",
+            header: "Asset Name",
+            accessorKey: "asset_name",
         },
         {
-            header: "File Type",
-            accessorKey: "file_type",
+            header: "Asset Type",
+            accessorKey: "asset_type",
         },
         {
             header: "File",
@@ -46,7 +44,7 @@ const Asset = (props) => {
             Cell: ({ cell }) => {
                 return (
                     <a
-                        href={`${baseUrlAsset}/${cell.getValue()}`}
+                        href={`/media-preview?url=${cell.getValue()}`}
                         target="_blank"
                         className="text-amber-700"
                     >
@@ -71,11 +69,11 @@ const Asset = (props) => {
 
     const formik = useFormik({
         initialValues: {
-            file_name: "",
-            file_type: "",
+            asset_name: "",
+            asset_type: "",
             file: "",
         },
-        validationSchema: fileValidationSchema,
+        validationSchema: assetValidationSchema,
         onSubmit: handleSubmit,
     });
 
@@ -94,7 +92,7 @@ const Asset = (props) => {
         setModalOpen((currentCondition) => !currentCondition);
     };
 
-    const handleDeleteAsset = (id) => {
+    const hanldeDeleteAction = (id) => {
         Swal.fire({
             ...confirmSetttings,
             text: `Delete this web asset`,
@@ -106,7 +104,7 @@ const Asset = (props) => {
     };
 
     const handleUpdateAction = async (assetData) => {
-        const { id, file_name, file_type, file } = assetData;
+        const { id, asset_name, asset_type, file } = assetData;
 
         setUpdateProps({
             isUpdates: true,
@@ -114,14 +112,14 @@ const Asset = (props) => {
         });
         handleOpenModal();
 
-        await formik.setFieldValue("file_type", file_type);
-        await formik.setFieldValue("file_name", file_name);
+        await formik.setFieldValue("asset_type", asset_type);
+        await formik.setFieldValue("asset_name", asset_name);
         await formik.setFieldValue("file", file);
     };
 
     useEffect(() => {
         formik.setFieldValue("file", "");
-    }, [formik.values.file_type]);
+    }, [formik.values.asset_type]);
 
     useEffect(() => {
         if (flash?.success) {
@@ -162,23 +160,23 @@ const Asset = (props) => {
                         <form onSubmit={formik.handleSubmit}>
                             <IInput
                                 inputLabel="Asset Filename"
-                                inputName="file_name"
-                                inputId="file_name"
+                                inputName="asset_name"
+                                inputId="asset_name"
                                 inputType="text"
                                 onChange={handleForm}
-                                defaultValue={formik.values.file_name || ""}
-                                errorMessage={formik.errors.file_name}
+                                defaultValue={formik.values.asset_name || ""}
+                                errorMessage={formik.errors.asset_name}
                             />
                             <ISelect
-                                defaultValue={formik.values.file_type || ""}
+                                defaultValue={formik.values.asset_type || ""}
                                 selectLabel="Asset File Type"
-                                selectName="file_type"
-                                selectId="file_type"
+                                selectName="asset_type"
+                                selectId="asset_type"
                                 options={assetOptions}
                                 onChange={handleForm}
-                                errorMessage={formik.errors.file_type}
+                                errorMessage={formik.errors.asset_type}
                             />
-                            {formik.values.file_type && (
+                            {formik.values.asset_type && (
                                 <InputMedia
                                     mediaLabel="File"
                                     mediaButtonLabel="Choose File"
@@ -187,7 +185,7 @@ const Asset = (props) => {
                                     onChange={handleForm}
                                     errorMessage={formik.errors.file}
                                     defaultValue={formik.values.file || ""}
-                                    mediaType={formik.values.file_type.toLowerCase()}
+                                    mediaType={formik.values.asset_type.toLowerCase()}
                                 />
                             )}
                             <div className="flex justify-end my-6">
@@ -212,7 +210,7 @@ const Asset = (props) => {
                     </div>
                     <ITable
                         columns={assetColumn}
-                        datas={files}
+                        datas={assets}
                         action={({ row, closeMenu }) => [
                             <MenuItem
                                 key="detail"
@@ -228,7 +226,7 @@ const Asset = (props) => {
                                 key="edit"
                                 sx={{ fontSize: "10pt" }}
                                 onClick={() => {
-                                    handleDeleteAsset(row.original.id);
+                                    hanldeDeleteAction(row.original.id);
                                     closeMenu();
                                 }}
                             >

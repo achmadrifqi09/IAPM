@@ -17,10 +17,6 @@ export default defineConfig({
         esbuildCommonjs(),
     ],
     ssr: {
-        noExternal: [
-            "laravel-vite-plugin",
-            "@inertiajs/react/server",
-            "@inertiajs/react",
-        ],
+        noExternal: ["laravel-vite-plugin", "@inertiajs/react/server"],
     },
 });

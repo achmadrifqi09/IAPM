@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "@inertiajs/react";
+import { Link } from "@inertiajs/inertia-react";
 import Logo from "../../../../public/assets/images/logo.svg";
 import { Bars3BottomRightIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
@@ -25,7 +25,7 @@ const Navbar = () => {
     }, []);
 
     return (
-        <nav className="w-full font-poppins bg-white px-6 md:px-8 z-50 bg-opacity-60 backdrop-blur ">
+        <nav className="w-full font-poppins bg-white px-6 md:px-8 z-50 ">
             <div className="py-4 flex max-w-screen-xl justify-between mx-auto items-center">
                 <Link href="/">
                     <img src={Logo} alt="IAPM Logo" />

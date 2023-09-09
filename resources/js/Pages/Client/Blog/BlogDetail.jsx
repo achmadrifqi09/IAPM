@@ -1,5 +1,5 @@
 import React from "react";
-import { Head } from "@inertiajs/react";
+import { Head } from "@inertiajs/inertia-react";
 import ClientLayout from "../../../Layouts/client-layout";
 import ReadingView from "./Section/ReadingView";
 

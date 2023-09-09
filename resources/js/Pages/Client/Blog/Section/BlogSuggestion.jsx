@@ -1,7 +1,7 @@
 import React from "react";
 import DummyImage from "../../../../../../public/assets/images/dummy/bg-service.jpg";
 import { Caption, H4, Paragraph } from "../../../../Components/Text";
-import { Link } from "@inertiajs/react";
+import { Link } from "@inertiajs/inertia-react";
 import { CalendarIcon } from "@heroicons/react/24/outline";
 const BlogSuggestion = (props) => {
     return (

@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -36,10 +37,12 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+
         return array_merge(parent::share($request), [
+            'footerContents' => 'attributes',
             'flash' => [
                 'error' => fn () => $request->session()->get('errors'),
-                'success' => fn () => $request->session()->get('success')
+                'success' => fn () => $request->session()->get('success'),
             ],
         ]);
     }

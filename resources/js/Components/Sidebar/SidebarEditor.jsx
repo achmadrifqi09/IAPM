@@ -17,7 +17,7 @@ const SidebarEditor = (props) => {
             }
         >
             <div className="pt-3">
-                <div className="h-screen overflow-y-scroll custom-scrollbar px-4">
+                <div className="h-screen overflow-y-scroll custom-scrollbar px-4 pb-40">
                     {children}
                 </div>
             </div>

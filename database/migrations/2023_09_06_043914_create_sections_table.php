@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('files', function (Blueprint $table) {
+        Schema::create('sections', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('file_name');
-            $table->enum('file_type', ['Image', 'Video']);
-            $table->text('file');
+            $table->string('section_name');
+            $table->integer('ordinal_number');
+            $table->uuid('id_page');
+            $table->string('tag')->unique();
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('files');
+        Schema::dropIfExists('sections');
     }
 };

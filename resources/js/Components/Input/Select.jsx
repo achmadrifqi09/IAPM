@@ -10,6 +10,7 @@ const ISelect = (props) => {
         selectName,
         errorMessage,
         onChange,
+        isMulti,
     } = props;
     const styles = {
         control: (baseStyles, state) => ({
@@ -58,6 +59,7 @@ const ISelect = (props) => {
                 {selectLabel}
             </label>
             <Select
+                isMulti={isMulti}
                 onChange={handleChange}
                 options={options}
                 id={selectId}

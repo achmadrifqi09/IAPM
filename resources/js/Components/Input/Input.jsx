@@ -9,6 +9,7 @@ const IInput = (props) => {
         onChange,
         inputType,
         errorMessage,
+        disable,
     } = props;
 
     const handleChange = (e) => {
@@ -29,7 +30,8 @@ const IInput = (props) => {
                 id={inputId}
                 value={defaultValue}
                 onChange={handleChange}
-                className=" bg-gray-100 rounded-lg w-full px-4 py-3 font-poppins focus:border focus:border-iapm-yellow"
+                disabled={disable}
+                className=" bg-gray-100 rounded-lg w-full px-4 py-3 font-poppins focus:border focus:border-iapm-yellow disabled:text-gray-400"
             />
             {!!errorMessage && (
                 <span className="text-sm text-iapm-red block">

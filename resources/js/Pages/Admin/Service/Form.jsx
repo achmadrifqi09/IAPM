@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AdminLayout from "../../../Layouts/admin-layout";
-import { Head } from "@inertiajs/react";
+import { Head } from "@inertiajs/inertia-react";
 import IButton from "../../../Components/Button/Button";
 import { H3 } from "../../../Components/Text";
 import IInput from "../../../Components/Input/Input";

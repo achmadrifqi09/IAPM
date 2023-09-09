@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import { H2, Paragraph, Subtitle } from "../../../../Components/Text";
 import IButton from "../../../../Components/Button/Button";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
@@ -7,24 +7,24 @@ import SwiperContainer from "../../../../Components/Swiper";
 
 import { SwiperSlide } from "swiper/react";
 
-const ProductOverview = (props) => {
+const ServiceOverview = (props) => {
+    const { title, description, buttonLabel, buttonUrl } = props;
     return (
         <section className="w-full my-36">
             <div className=" max-w-screen-xl mx-auto px-6 md:px-8">
                 <div className="flex justify-between items-center gap-6 max-sm:flex-col max-sm:items-start">
                     <div>
-                        <H2>Services We Offer</H2>
+                        <H2>{title}</H2>
                         <Paragraph>
-                            We provide a variety of services that are integrated
-                            with the global framework
+                            {description}
                         </Paragraph>
                     </div>
                     <IButton
                         isLink={true}
-                        url="/services"
+                        url={buttonUrl}
                         variant="normal-link"
                     >
-                        Explore All{" "}
+                        {buttonLabel}
                         <ArrowRightIcon className="w-6 h-6 text-iapm-black" />
                     </IButton>
                 </div>
@@ -65,4 +65,4 @@ const ProductOverview = (props) => {
     );
 };
 
-export default ProductOverview;
+export default ServiceOverview;

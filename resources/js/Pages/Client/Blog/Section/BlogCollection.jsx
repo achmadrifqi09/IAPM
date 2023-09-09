@@ -1,7 +1,7 @@
 import React from "react";
 import DummyImage from "../../../../../../public/assets/images/dummy/bg-service.jpg";
 import { H3, H4, Paragraph, Caption } from "../../../../Components/Text";
-import { Link } from "@inertiajs/react";
+import { Link } from "@inertiajs/inertia-react";
 import Badge from "../../../../Components/Badge";
 
 const BlogCollection = (props) => {

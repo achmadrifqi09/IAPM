@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Asset;
 use App\Models\File;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -11,9 +12,9 @@ class WebAssetController extends Controller
 {
     public function index()
     {
-        $files = File::all();
+        $assets = Asset::all();
         return Inertia::render('Admin/Asset/index', [
-            'files' => $files
+            'assets' => $assets
         ]);
     }
 
@@ -26,17 +27,17 @@ class WebAssetController extends Controller
             return back()->withErrors(['error' => 'File must be filled in']);
         }
 
-        $assetFile = $this->storeFile($request->file('file'), $request->file_type);
+        $assetFile = $this->storeFile($request->file('file'), $request->asset_type);
 
         $validatedAsset['file'] = $assetFile;
-        File::create($validatedAsset);
+        Asset::create($validatedAsset);
 
         return redirect('/web-assets')->with('success', 'Asset file has been added');
     }
 
     public function update(Request $request, $id)
     {
-        $updatedAsset = File::find($id);
+        $updatedAsset = Asset::find($id);
 
         if (!$updatedAsset) {
             return back()->withErrors(['error' => 'Update web asset failed, failed to find data to update']);
@@ -46,7 +47,7 @@ class WebAssetController extends Controller
         if ($request->hasFile('file')) {
             $deleteAssetStatus = $this->deleteFile($updatedAsset->file);
             if ($deleteAssetStatus) {
-                $assetFile = $this->storeFile($request->file('file'), $request->file_type);
+                $assetFile = $this->storeFile($request->file('file'), $request->asset_type);
                 $validatedAsset['file'] = $assetFile;
             } else {
                 return back()->withErrors(['error' => "Can't find the old asset that will be updated"]);
@@ -86,7 +87,7 @@ class WebAssetController extends Controller
 
     public function destroy($id)
     {
-        $deletedAsset = File::find($id);
+        $deletedAsset = Asset::find($id);
 
         if (!$deletedAsset) {
             return back()->withErrors(['error' => 'Web asset was not successfully found to run the delete action']);
@@ -100,14 +101,14 @@ class WebAssetController extends Controller
     public function validationAsset($request)
     {
         $rules = [
-            'file_name' => 'required|min:3',
-            'file_type' => ['required', 'in:Video,Image']
+            'asset_name' => 'required|min:3',
+            'asset_type' => ['required', 'in:Video,Image']
         ];
 
         $errorMessage = [
-            'file_name.required' => 'Asset filename is requried',
-            'file_name.min' => 'Asset filename must be at least 3 characters',
-            'file_type.required' => 'File type is requried',
+            'asset_name.required' => 'Asset filename is requried',
+            'asset_name.min' => 'Asset filename must be at least 3 characters',
+            'asset_type.required' => 'File type is requried',
         ];
         return $request->validate($rules, $errorMessage);
     }

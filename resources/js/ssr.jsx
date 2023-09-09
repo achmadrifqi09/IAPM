@@ -1,5 +1,5 @@
 import React from "react";
-import { createInertiaApp } from "@inertiajs/react";
+import { createInertiaApp } from "@inertiajs/inertia-react";
 import.meta.glob(["../assets/**"]);
 import ReactDOMServer from "react-dom/server";
 import createServer from "@inertiajs/react/server";

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Logo from "../../../../public/assets/images/logo.svg";
-import { Link } from "@inertiajs/react";
+import { Link } from "@inertiajs/inertia-react";
 import {
     RectangleGroupIcon,
     DocumentTextIcon,
@@ -13,6 +13,7 @@ import {
     PhotoIcon,
     ChatBubbleBottomCenterTextIcon,
     BuildingStorefrontIcon,
+    WindowIcon,
 } from "@heroicons/react/24/outline";
 
 const SidebarMenu = () => {
@@ -23,13 +24,13 @@ const SidebarMenu = () => {
     const menusRef = useRef(null);
 
     const menusStyle = {
-        active: "py-2 px-2 hover:bg-iapm-yellow rounded-lg flex gap-4 bg-iapm-yellow w-full flex gap-4 justify-between",
-        normal: "py-2 px-2 hover:bg-iapm-yellow rounded-lg flex gap-4 w-full flex gap-4 justify-between",
+        active: "py-2 px-2 rounded-lg bg-iapm-yellow w-full flex gap-4 justify-between",
+        normal: "py-2 px-2 hover:bg-gray-100 rounded-lg  w-full flex gap-4 justify-between",
     };
 
     const asideStyle = {
-        normal: "px-6 py-8 bg-white shadow-lg h-screen font-poppins w-72 fixed top-[77px] transition duration-200 translate-x-0 z-50",
-        hidden: "px-6 py-8 bg-white shadow-lg h-screen font-poppins w-72 fixed top-[77px] transition duration-200 -translate-x-72 z-50 ",
+        normal: "px-6 py-8 bg-white shadow-lg h-screen font-poppins w-72 fixed top-[77px] transition duration-200 translate-x-0 z-30",
+        hidden: "px-6 py-8 bg-white shadow-lg h-screen font-poppins w-72 fixed top-[77px] transition duration-200 -translate-x-72 z-30 ",
     };
 
     const submenuStyle = {
@@ -76,7 +77,7 @@ const SidebarMenu = () => {
                             : asideStyle.hidden
                     }
                 >
-                    <ul className="space-y-4">
+                    <ul className="space-y-4 overflow-y-scroll custom-scrollbar max-h-screen pr-2">
                         <li>
                             <Link
                                 className={
@@ -85,7 +86,7 @@ const SidebarMenu = () => {
                                         : menusStyle.normal
                                 }
                             >
-                                <div className="flex gap-4">
+                                <div className="flex gap-4 ">
                                     <RectangleGroupIcon className="w-6 h-6" />
                                     Dashboad
                                 </div>
@@ -109,7 +110,7 @@ const SidebarMenu = () => {
                         <li className="space-y-4">
                             <button
                                 className={
-                                    currentUrl.includes("/page-editor")
+                                    currentUrl.includes("/pages")
                                         ? menusStyle.active
                                         : menusStyle.normal
                                 }
@@ -137,19 +138,25 @@ const SidebarMenu = () => {
                             >
                                 <li>
                                     <Link
-                                        className="py-2 pr-2 pl-10 hover:bg-iapm-yellow rounded-lg flex gap-4 justify-between"
-                                        href="/page-editor/home-page"
+                                        className="py-2 pr-2 pl-10 hover:bg-gray-100 rounded-lg flex gap-4 justify-between"
+                                        href="/pages/home-page"
                                     >
                                         Home Page
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link className="py-2 pr-2 pl-10 hover:bg-iapm-yellow rounded-lg flex gap-4 justify-between">
+                                    <Link
+                                        href="/pages/about-page"
+                                        className="py-2 pr-2 pl-10 hover:bg-gray-100 rounded-lg flex gap-4 justify-between"
+                                    >
                                         About Page
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link className="py-2 pr-2 pl-10 hover:bg-iapm-yellow rounded-lg flex gap-4 justify-between">
+                                    <Link
+                                        href="/pages/service-page"
+                                        className="py-2 pr-2 pl-10 hover:bg-gray-100 rounded-lg flex gap-4 justify-between"
+                                    >
                                         Service Page
                                     </Link>
                                 </li>
@@ -171,6 +178,7 @@ const SidebarMenu = () => {
                         </li>
                         <li>
                             <Link
+                                href="/testimonials"
                                 className={
                                     currentUrl.includes("/testimonials")
                                         ? menusStyle.active
@@ -185,8 +193,9 @@ const SidebarMenu = () => {
                         </li>
                         <li>
                             <Link
+                                href="/manage-blogs"
                                 className={
-                                    currentUrl.includes("/blogs")
+                                    currentUrl.includes("/manage-blogs")
                                         ? menusStyle.active
                                         : menusStyle.normal
                                 }
@@ -209,6 +218,21 @@ const SidebarMenu = () => {
                                 <div className="flex gap-4">
                                     <PhotoIcon className="w-6 h-6" />
                                     Web Asset
+                                </div>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                href="/web-attributes"
+                                className={
+                                    currentUrl.includes("/web-attributes")
+                                        ? menusStyle.active
+                                        : menusStyle.normal
+                                }
+                            >
+                                <div className="flex gap-4">
+                                    <WindowIcon className="w-6 h-6" />
+                                    Web Attribute
                                 </div>
                             </Link>
                         </li>

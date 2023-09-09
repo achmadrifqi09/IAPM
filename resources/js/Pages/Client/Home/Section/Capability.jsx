@@ -3,6 +3,7 @@ import { H2, Paragraph } from "../../../../Components/Text";
 import VideoSource from "../../../../../../public/assets/video.mp4";
 
 const VideoSection = (props) => {
+    const {title, description, video} = props;
     return (
         <section
             className="w-full my-36 bg-iapm-light-gray relative py-16 after:content-[''] after:bock after:w-48 after:h-56 after:bg-dot-ornament 
@@ -17,11 +18,10 @@ const VideoSection = (props) => {
                 </div>
                 <div className="space-y-6">
                     <H2>
-                        Technology is important for your business development
+                        {title}
                     </H2>
                     <Paragraph>
-                        Including Global Framework certified, those are key
-                        point to drive your business Growth exponentially
+                        {description}
                     </Paragraph>
                 </div>
             </div>

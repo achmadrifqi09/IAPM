@@ -7,7 +7,6 @@ const ITextarea = (props) => {
         textareaId,
         defaultValue,
         onChange,
-        textareaType,
         errorMessage,
     } = props;
 
@@ -24,12 +23,11 @@ const ITextarea = (props) => {
                 {textareaLabel}
             </label>
             <textarea
-                type={textareaType}
                 name={textareaName}
                 id={textareaId}
                 value={defaultValue}
                 onChange={handleChange}
-                className=" bg-gray-100 rounded-lg w-full px-4 py-3 font-poppins focus:border focus:border-iapm-yellow"
+                className=" bg-gray-100 rounded-lg w-full px-4 py-3 font-poppins focus:border focus:border-iapm-yellow h-64"
             />
             {!!errorMessage && (
                 <span className="text-sm text-iapm-red block">

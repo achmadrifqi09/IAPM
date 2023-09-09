@@ -4,10 +4,11 @@ import Carousel from "../../../../Components/Carousel";
 import { H2, Paragraph, H5 } from "../../../../Components/Text";
 
 const Testimonial = (props) => {
+    const { testimonials, title } = props;
     return (
         <section className="w-full my-36 bg-grid bg-no-repeat">
             <div className="max-w-screen-xl mx-auto px-6 md:px-8 text-center space-y-12 bg-gradient-linear-white">
-                <H2>What do they say about us?</H2>
+                <H2>{title}</H2>
                 <Carousel>
                     {[...new Array(3)].map((_, i) => {
                         return (

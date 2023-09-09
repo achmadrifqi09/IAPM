@@ -18,7 +18,7 @@ class AssetRoutesController extends Controller
             return response()->file(
                 Storage::path($path)
             );
-        } else if (FacadesFile::exists(storage_path('app/images/' . $asset))) {
+        } else if (FacadesFile::exists(storage_path('app/videos/' . $asset))) {
             $path = "videos/$asset";
             return response()->file(
                 Storage::path($path)

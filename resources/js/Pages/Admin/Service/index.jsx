@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import AdminLayout from "../../../Layouts/admin-layout";
-import { Head } from "@inertiajs/react";
+import { Head } from "@inertiajs/inertia-react";
 import IButton from "../../../Components/Button/Button";
 import { H3 } from "../../../Components/Text";
 import { PlusIcon } from "@heroicons/react/24/outline";

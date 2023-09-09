@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class File extends Model
+class Resource extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
@@ -21,5 +21,9 @@ class File extends Model
                 $model->setAttribute($model->getKeyName(), Str::uuid()->toString());
             }
         });
+    }
+    public function asset()
+    {
+        return $this->hasMany(Section::class, 'id_resource');
     }
 }
