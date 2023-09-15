@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AdminLayout from "../../../Layouts/admin-layout";
-import { Head } from "@inertiajs/inertia-react";
+import { Head } from "@inertiajs/react";
 import { H3, H5, Paragraph } from "../../../Components/Text";
 import IButtonDropdown from "../../../Components/Button/ButtonDropdown";
 import ListContainer from "../../../Components/List/ListContainer";
@@ -22,7 +22,7 @@ import {
 } from "../../../Helpers/sweetalert-config";
 import AddressForm from "./AddressForm";
 import SocialForm from "./SocialForm";
-import { Inertia } from "@inertiajs/inertia";
+import { router } from "@inertiajs/react";
 
 const WebAttribute = (props) => {
     const { flash, errors, contacts, addresses, socials } = props;
@@ -100,13 +100,13 @@ const WebAttribute = (props) => {
             if (result.isConfirmed) {
                 switch (field) {
                     case "contact":
-                        Inertia.delete(`/contacts/${id}`);
+                        router.delete(`/contacts/${id}`);
                         break;
                     case "address":
-                        Inertia.delete(`/addresses/${id}`);
+                        router.delete(`/addresses/${id}`);
                         break;
                     case "social-media":
-                        Inertia.delete(`/socials/${id}`);
+                        router.delete(`/socials/${id}`);
                         break;
                 }
             }

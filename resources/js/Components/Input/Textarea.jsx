@@ -18,7 +18,7 @@ const ITextarea = (props) => {
         <div className="my-4 w-full space-y-1">
             <label
                 htmlFor={textareaId}
-                className="text-iapm-dark-gray block text-base font-poppins"
+                className="text-iapm-dark-gray block text-base font-poppins capitalize"
             >
                 {textareaLabel}
             </label>

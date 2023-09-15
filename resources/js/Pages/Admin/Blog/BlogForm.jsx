@@ -1,19 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import AdminLayout from "../../../Layouts/admin-layout";
-import { Head } from "@inertiajs/inertia-react";
+import { Head, router } from "@inertiajs/react";
 import IInput from "../../../Components/Input/Input";
 import RichEditor from "../../../Components/Input/RichEditor";
 import ISelect from "../../../Components/Input/Select";
 import InputMedia from "../../../Components/Input/InputMedia";
 import ITextarea from "../../../Components/Input/Textarea";
-import { H3 } from "../../../Components/Text";
+import { H3, H4 } from "../../../Components/Text";
 import { useFormik } from "formik";
 import { postValidationSchema } from "../../../Helpers/validation-schema";
 import IButton from "../../../Components/Button/Button";
-import { Inertia } from "@inertiajs/inertia";
+import getErrorMessage from "../../../Helpers/error-message";
+import Swal from "sweetalert2";
+import { toastSettings } from "../../../Helpers/sweetalert-config";
 
 const BlogForm = (props) => {
-    const { post, isUpdate, errors } = props;
+    const { post, isUpdate, categories, errors, flash } = props;
+    const [categoriesOption, setCategoriesOption] = useState([]);
 
     const blogStatusOptions = [
         {
@@ -28,18 +31,41 @@ const BlogForm = (props) => {
 
     const handleSubmit = () => {
         isUpdate === true
-            ? Inertia.post(`/manage-blogs/${post.id}`, formik.values)
-            : Inertia.post(`/manage-blogs`, formik.values);
+            ? router.post(`/manage-blogs/${post.id}/form`, formik.values)
+            : router.post(`/manage-blogs`, formik.values);
+    };
+
+    const getDefaultValueCategories = () => {
+        let result = [];
+
+        if (post?.post_categories) {
+            categories.map((category) => {
+                post?.post_categories.forEach((val) => {
+                    if (val.id_category === category.id) {
+                        result = [
+                            ...result,
+                            {
+                                value: val?.id_category,
+                                label: category.category_name,
+                            },
+                        ];
+                    }
+                });
+            });
+        }
+        return result;
     };
 
     const formik = useFormik({
         initialValues: {
-            title: "",
-            content: "",
-            slug: "",
-            thumbnail: "",
-            status: "",
-            categories: [],
+            title: post?.title || "",
+            content: post?.content || "",
+            slug: post?.slug || "",
+            thumbnail: post?.thumbnail || "",
+            status: post?.status || "",
+            categories: getDefaultValueCategories(),
+            meta_title: post?.meta_title || "",
+            meta_description: post?.meta_description || "",
         },
         validationSchema: postValidationSchema,
         onSubmit: handleSubmit,
@@ -47,14 +73,16 @@ const BlogForm = (props) => {
 
     const handleForm = (target) => {
         const { name, value, type } = target;
+
         if (name === "categories") {
-            formik.setFieldValue(name, [...formik.values.categories, value]);
+            formik.setFieldValue(name, value);
         } else {
             formik.setFieldValue(
                 name,
                 type === "file" ? target.files[0] : value
             );
         }
+
         name === "title" &&
             formik.setFieldValue(
                 "slug",
@@ -65,6 +93,34 @@ const BlogForm = (props) => {
             );
     };
 
+    useEffect(() => {
+        const result = categories.map((category) => {
+            return {
+                value: category.id,
+                label: category.category_name,
+            };
+        });
+
+        setCategoriesOption(result);
+    }, [categories]);
+
+    useEffect(() => {
+        if (flash?.success) {
+            Swal.fire({
+                ...toastSettings,
+                icon: "success",
+                title: flash.success,
+            });
+            router.visit("/manage-blogs");
+        } else if (Object.keys(errors).length > 0) {
+            Swal.fire({
+                ...toastSettings,
+                icon: "error",
+                title: getErrorMessage(errors),
+            });
+        }
+    }, [errors, flash]);
+
     return (
         <>
             <Head>
@@ -74,72 +130,93 @@ const BlogForm = (props) => {
                 <section className="my-6">
                     <div className="bg-white p-6 rounded-3xl shadow space-y-8">
                         <H3>Blog From</H3>
-                        <form onSubmit={formik.handleSubmit}>
-                            <IInput
-                                inputLabel="Title"
-                                inputName="title"
-                                inputType="text"
-                                inputId="title"
-                                onChange={handleForm}
-                                defaultValue={formik.values.title || ""}
-                                errorMessage={formik.errors.title}
-                            />
-                            <ISelect
-                                selectLabel="Status"
-                                selectName="status"
-                                selectId="status"
-                                options={blogStatusOptions}
-                                onChange={handleForm}
-                                defaultValue={formik.values.status || ""}
-                                errorMessage={formik.errors.status}
-                            />
-                            <ISelect
-                                isMulti={true}
-                                selectLabel="Category"
-                                selectName="categories"
-                                selectId="categories"
-                                options={blogStatusOptions}
-                                onChange={handleForm}
-                                defaultValue={formik.values.categories || ""}
-                                errorMessage={formik.errors.categories}
-                            />
-                            <IInput
-                                inputLabel="Slug"
-                                inputName="slug"
-                                inputType="text"
-                                inputId="slug"
-                                disable={true}
-                                onChange={handleForm}
-                                defaultValue={formik.values.slug}
-                                errorMessage={formik.errors.slug}
-                            />
-                            <ITextarea
-                                textareaLabel="Meta Description (Optional)"
-                                textareaName="meta_description"
-                                textareaId="meta_description"
-                                onChange={handleForm}
-                                defaultValue={
-                                    formik.values.meta_description || ""
-                                }
-                            />
-                            <InputMedia
-                                mediaLabel="Thumbnail"
-                                mediaButtonLabel="Choose thumbnail"
-                                mediaName="thumbnail"
-                                mediaId="thumbnail"
-                                mediaType="image"
-                                onChange={handleForm}
-                                errorMessage={formik.errors.thumbnail}
-                                defaultValue={formik.values.thumbnail || ""}
-                            />
-                            <RichEditor
-                                editorLabel="Content"
-                                editorName="content"
-                                onChange={handleForm}
-                                defaultValue={formik.values.content || ""}
-                                errorMessage={formik.errors.content}
-                            />
-                            <div className="flex justify-end mt-8">
+                        <form
+                            onSubmit={formik.handleSubmit}
+                            className="grid grid-cols-3 gap-6 max-md:grid-cols-1"
+                        >
+                            <div className="md:col-span-2">
+                                <H4>Main Form</H4>
+                                <IInput
+                                    inputLabel="Title*"
+                                    inputName="title"
+                                    inputType="text"
+                                    inputId="title"
+                                    onChange={handleForm}
+                                    defaultValue={formik.values.title || ""}
+                                    errorMessage={formik.errors.title}
+                                />
+                                <ISelect
+                                    selectLabel="Status*"
+                                    selectName="status"
+                                    selectId="status"
+                                    options={blogStatusOptions}
+                                    onChange={handleForm}
+                                    defaultValue={formik.values.status || ""}
+                                    errorMessage={formik.errors.status}
+                                />
+                                <ISelect
+                                    isMulti={true}
+                                    selectLabel="Category"
+                                    selectName="categories"
+                                    selectId="categories"
+                                    options={categoriesOption}
+                                    onChange={handleForm}
+                                    defaultValue={
+                                        formik.values.categories || ""
+                                    }
+                                    errorMessage={formik.errors.categories}
+                                />
+                                <IInput
+                                    inputLabel="Slug"
+                                    inputName="slug"
+                                    inputType="text"
+                                    inputId="slug"
+                                    disable={true}
+                                    onChange={handleForm}
+                                    defaultValue={formik.values.slug}
+                                    errorMessage={formik.errors.slug}
+                                />
+
+                                <InputMedia
+                                    mediaLabel="Thumbnail"
+                                    mediaButtonLabel="Choose thumbnail"
+                                    mediaName="thumbnail"
+                                    mediaId="thumbnail"
+                                    mediaType="image"
+                                    onChange={handleForm}
+                                    errorMessage={formik.errors.thumbnail}
+                                    defaultValue={formik.values.thumbnail || ""}
+                                />
+                                <RichEditor
+                                    editorLabel="Content"
+                                    editorName="content"
+                                    onChange={handleForm}
+                                    defaultValue={formik.values.content || ""}
+                                    errorMessage={formik.errors.content}
+                                />
+                            </div>
+                            <div>
+                                <H4>Additional Form</H4>
+                                <IInput
+                                    inputLabel="Meta Title"
+                                    inputName="meta_title"
+                                    inputType="text"
+                                    inputId="meta_title"
+                                    onChange={handleForm}
+                                    defaultValue={formik.values.meta_title}
+                                    errorMessage={formik.errors.meta_title}
+                                />
+                                <ITextarea
+                                    textareaLabel="Meta Description (Optional)"
+                                    textareaName="meta_description"
+                                    textareaId="meta_description"
+                                    onChange={handleForm}
+                                    defaultValue={
+                                        formik.values.meta_description || ""
+                                    }
+                                />
+                            </div>
+                            <div className="flex justify-end mt-8 md:col-span-3">
                                 <IButton variant="primary" type="submit">
                                     Save
                                 </IButton>

@@ -1,7 +1,7 @@
 import React from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 const SearchInput = (props) => {
-    const { onChange, defaultValue, inputType, inputName, inputId } = props;
+    const { onChange, inputType, inputName, inputId } = props;
 
     const handleChangeSearch = (e) => {
         onChange(e.target);
@@ -21,9 +21,6 @@ const SearchInput = (props) => {
                     className="w-full bg-gray-100 py-3 pl-16  rounded-xl border-gray-100 dark:focus:border-iapm-yellow focus:border-iapm-yellow"
                     onChange={handleChangeSearch}
                 />
-                <button className="py-3 px-4 bg-iapm-yellow rounded-xl">
-                    Search
-                </button>
             </div>
         </div>
     );

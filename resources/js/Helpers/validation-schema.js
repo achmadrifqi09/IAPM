@@ -160,6 +160,38 @@ const categoryValidationSchema = yup.object().shape({
         .min(3, "Category name must contain at least 3 characters"),
 });
 
+const companyDescriptionSchema = yup.object().shape({
+    description: yup
+        .string()
+        .required("Description must be filledin")
+        .min(10, "Description must contain at least 10 characters"),
+});
+
+const companyVisionSchema = yup.object().shape({
+    vision: yup
+        .string()
+        .required("Vision must be filledin")
+        .min(10, "Vision must contain at least 10 characters"),
+});
+
+const companyMissionSchema = yup.object().shape({
+    mission: yup
+        .string()
+        .required("Mission must be filledin")
+        .min(10, "Mission must contain at least 10 characters"),
+});
+
+const historyDevelopmentValidationSchema = yup.object().shape({
+    year: yup
+        .number()
+        .required("Year must be filled in")
+        .min(4, "Year must contain at least 4 character"),
+    history_description: yup
+        .string()
+        .required("History description must be filled in")
+        .min(10, "History description must contain at least 10 character"),
+});
+
 export {
     serviceValidationSchema,
     assetValidationSchema,
@@ -169,4 +201,8 @@ export {
     socialValidationSchema,
     postValidationSchema,
     categoryValidationSchema,
+    companyDescriptionSchema,
+    companyMissionSchema,
+    companyVisionSchema,
+    historyDevelopmentValidationSchema,
 };

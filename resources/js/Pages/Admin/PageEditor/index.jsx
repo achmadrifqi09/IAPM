@@ -1,6 +1,6 @@
 import React from "react";
 import AdminLayout from "../../../Layouts/admin-layout";
-import { Head } from "@inertiajs/inertia-react";
+import { Head } from "@inertiajs/react";
 
 const PageEditor = () => {
     return (

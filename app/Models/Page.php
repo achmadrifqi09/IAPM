@@ -32,4 +32,8 @@ class Page extends Model
     {
         return $this->hasMany(Resource::class, 'id_page');
     }
+
+    public function metas(){
+        return $this->hasOne(Meta::class, 'id_page');
+    }
 }

@@ -2,9 +2,9 @@ import React from "react";
 import IInput from "../../../Components/Input/Input";
 import ISelect from "../../../Components/Input/Select";
 import { useFormik } from "formik";
-import { Inertia } from "@inertiajs/inertia";
 import { contactValidationSchema } from "../../../Helpers/validation-schema";
 import IButton from "../../../Components/Button/Button";
+import { router } from "@inertiajs/react";
 
 const ContactForm = (props) => {
     const { value, closeModal, isUpdate } = props;
@@ -17,8 +17,8 @@ const ContactForm = (props) => {
 
     const handleSubmit = () => {
         isUpdate
-            ? Inertia.put(`/contacts/${value.id}`, formik.values)
-            : Inertia.post("/contacts", formik.values);
+            ? router.put(`/contacts/${value.id}`, formik.values)
+            : router.post("/contacts", formik.values);
 
         closeModal();
     };

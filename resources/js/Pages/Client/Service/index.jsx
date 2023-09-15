@@ -1,5 +1,5 @@
 import React from "react";
-import { Head } from "@inertiajs/inertia-react";
+import { Head } from "@inertiajs/react";
 import ClientLayout from "../../../Layouts/client-layout";
 import CTA from "../../../Components/CTA";
 import ServiceHeader from "./Section/ServiceHeader";

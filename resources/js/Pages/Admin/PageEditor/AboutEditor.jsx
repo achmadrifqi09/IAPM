@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AdminLayout from "../../../Layouts/admin-layout";
-import { Head } from "@inertiajs/inertia-react";
+import { Head, router } from "@inertiajs/react";
 import About from "../../Client/About";
 import { EyeIcon, PencilIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { H6, H4 } from "../../../Components/Text";
@@ -11,7 +11,6 @@ import ITextarea from "../../../Components/Input/Textarea";
 import ISelect from "../../../Components/Input/Select";
 import { useFormik } from "formik";
 import IButton from "../../../Components/Button/Button";
-import { Inertia } from "@inertiajs/inertia";
 import AssetMapping from "../../../Helpers/asset-mapping";
 import Swal from "sweetalert2";
 import getErrorMessage from "../../../Helpers/error-message";
@@ -27,7 +26,7 @@ const AboutEditor = (props) => {
     };
 
     const handleSubmit = () => {
-        Inertia.put("/pages", formik.values);
+        router.put("/pages", formik.values);
     };
 
     const formik = useFormik({
@@ -88,6 +87,30 @@ const AboutEditor = (props) => {
                 <SidebarEditor isOpenEditor={isOpenEditor}>
                     <form onSubmit={formik.handleSubmit}>
                         <div className="my-6">
+                            <div className="py-4 border-b border-b-gray-200 ">
+                                <H6>Meta Data</H6>
+                            </div>
+                            <IInput
+                                inputLabel="Meta Title"
+                                inputName="meta.meta_title"
+                                inputId="meta.meta_title"
+                                inputType="text"
+                                onChange={handleForm}
+                                defaultValue={
+                                    formik.values?.meta?.meta_title || ""
+                                }
+                            />
+                            <ITextarea
+                                textareaLabel="Meta Description"
+                                textareaName="meta.meta_description"
+                                textareaId="meta.meta_description"
+                                onChange={handleForm}
+                                defaultValue={
+                                    formik.values?.meta?.meta_description || ""
+                                }
+                            />
+                        </div>
+                        <div className="my-6">
                             <div className="py-4 border-b border-b-gray-200">
                                 <H6>Section 1</H6>
                             </div>
@@ -112,7 +135,7 @@ const AboutEditor = (props) => {
                                 }
                             />
                         </div>
-                        <div className="my-2">
+                        <div className="my-6">
                             <div className="py-4 border-b border-b-gray-200">
                                 <H6>Section 2</H6>
                             </div>

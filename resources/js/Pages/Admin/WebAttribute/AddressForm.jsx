@@ -1,17 +1,17 @@
 import React from "react";
 import ITextarea from "../../../Components/Input/Textarea";
 import { useFormik } from "formik";
-import { Inertia } from "@inertiajs/inertia";
 import { addressValidationSchema } from "../../../Helpers/validation-schema";
 import IButton from "../../../Components/Button/Button";
+import { router } from "@inertiajs/react";
 
 const AddressForm = (props) => {
     const { value, closeModal, isUpdate } = props;
 
     const handleSubmit = () => {
         isUpdate
-            ? Inertia.put(`/addresses/${value.id}`, formik.values)
-            : Inertia.post("/addresses", formik.values);
+            ? router.put(`/addresses/${value.id}`, formik.values)
+            : router.post("/addresses", formik.values);
 
         closeModal();
     };

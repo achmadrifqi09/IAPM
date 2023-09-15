@@ -42,13 +42,15 @@ const ISelect = (props) => {
     const handleChange = (event) => {
         let target = {
             name: selectName,
-            value: event.value,
+            value: isMulti ? event : event.value,
         };
 
         onChange(target);
     };
 
-    const isDefaultValue = (e) => e.value === defaultValue;
+    const getIndex = (option) => {
+        return option.value === defaultValue;
+    };
 
     return (
         <div className="my-4 w-full space-y-1 font-poppins">
@@ -64,8 +66,10 @@ const ISelect = (props) => {
                 options={options}
                 id={selectId}
                 name={selectName}
-                value={
-                    defaultValue && options[options.findIndex(isDefaultValue)]
+                defaultValue={
+                    isMulti === true
+                        ? defaultValue
+                        : options[options.findIndex(getIndex)]
                 }
                 theme={(theme) => ({
                     ...theme,
