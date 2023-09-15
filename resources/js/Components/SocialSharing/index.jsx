@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "@inertiajs/inertia-react";
+import { Link } from "@inertiajs/react";
 import ICWhatsapp from "../../../../public/assets/images/ic-whatsapp.svg";
 import ICTwitter from "../../../../public/assets/images/ic-twitter.svg";
 import ICFacebook from "../../../../public/assets/images/ic-facebook.svg";

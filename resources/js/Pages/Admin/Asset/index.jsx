@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Modal from "../../../Components/Modal";
 import AdminLayout from "../../../Layouts/admin-layout";
-import { Head } from "@inertiajs/inertia-react";
+import { Head, router } from "@inertiajs/react";
 import IButton from "../../../Components/Button/Button";
 import ITable from "../../../Components/Table";
 import { H3 } from "../../../Components/Text";
@@ -12,7 +12,6 @@ import {
     confirmSetttings,
 } from "../../../Helpers/sweetalert-config";
 import { MenuItem } from "@mui/material";
-import { Inertia } from "@inertiajs/inertia";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import IInput from "../../../Components/Input/Input";
 import InputMedia from "../../../Components/Input/InputMedia";
@@ -63,8 +62,8 @@ const Asset = (props) => {
     const handleSubmit = () => {
         handleOpenModal();
         updateProps.isUpdates
-            ? Inertia.post(`/web-assets/${updateProps.idUpdate}`, formik.values)
-            : Inertia.post(`/web-assets`, formik.values);
+            ? router.post(`/web-assets/${updateProps.idUpdate}`, formik.values)
+            : router.post(`/web-assets`, formik.values);
     };
 
     const formik = useFormik({
@@ -98,7 +97,7 @@ const Asset = (props) => {
             text: `Delete this web asset`,
         }).then((result) => {
             if (result.isConfirmed) {
-                Inertia.delete(`/web-assets/${id}`);
+                router.delete(`/web-assets/${id}`);
             }
         });
     };
@@ -145,7 +144,7 @@ const Asset = (props) => {
     return (
         <>
             <Head>
-                <title>Service</title>
+                <title>Web Asset</title>
             </Head>
             <AdminLayout>
                 {!!isModalOpen && (

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AdminLayout from "../../../Layouts/admin-layout";
-import { Head } from "@inertiajs/inertia-react";
+import { Head, router } from "@inertiajs/react";
 import IButton from "../../../Components/Button/Button";
 import { H3 } from "../../../Components/Text";
 import IInput from "../../../Components/Input/Input";
@@ -9,16 +9,15 @@ import InputMedia from "../../../Components/Input/InputMedia";
 import RichEditor from "../../../Components/Input/RichEditor";
 import { useFormik } from "formik";
 import { serviceValidationSchema } from "../../../Helpers/validation-schema";
-import { Inertia } from "@inertiajs/inertia";
 
 const ServiceForm = (props) => {
     const { mode, service } = props;
 
     const handleSubmit = () => {
         if (mode === "update") {
-            Inertia.post(`/service-products/${service.id}/form`, formik.values);
+            router.post(`/service-products/${service.id}/form`, formik.values);
         } else if (mode === "create") {
-            Inertia.post("/service-products", formik.values);
+            router.post("/service-products", formik.values);
         }
     };
 

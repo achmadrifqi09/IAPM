@@ -21,8 +21,7 @@ return new class extends Migration
             $table->text('meta_title')->nullable();
             $table->text('meta_description')->nullable();
             $table->enum('status', ['Published', 'Draft'])->default('Draft');
-            $table->date('published_at')->nullable();
-            $table->bigInteger('visitor')->default(0);
+            $table->timestamp('published_at')->nullable();
             $table->timestamps();
         });
     }

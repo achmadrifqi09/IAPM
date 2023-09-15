@@ -2,9 +2,9 @@ import React from "react";
 import IInput from "../../../Components/Input/Input";
 import ISelect from "../../../Components/Input/Select";
 import { useFormik } from "formik";
-import { Inertia } from "@inertiajs/inertia";
 import { socialValidationSchema } from "../../../Helpers/validation-schema";
 import IButton from "../../../Components/Button/Button";
+import { router } from "@inertiajs/react";
 
 const SocialForm = (props) => {
     const { value, closeModal, isUpdate } = props;
@@ -18,8 +18,8 @@ const SocialForm = (props) => {
 
     const handleSubmit = () => {
         isUpdate
-            ? Inertia.put(`/socials/${value.id}`, formik.values)
-            : Inertia.post("/socials", formik.values);
+            ? router.put(`/socials/${value.id}`, formik.values)
+            : router.post("/socials", formik.values);
 
         closeModal();
     };

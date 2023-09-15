@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import AdminLayout from "../../../Layouts/admin-layout";
-import { Head } from "@inertiajs/inertia-react";
+import { Head } from "@inertiajs/react";
 import IButton from "../../../Components/Button/Button";
 import { H3 } from "../../../Components/Text";
 import { PlusIcon } from "@heroicons/react/24/outline";
@@ -12,7 +12,6 @@ import {
 } from "../../../Helpers/sweetalert-config";
 import ITable from "../../../Components/Table";
 import { MenuItem } from "@mui/material";
-import { Inertia } from "@inertiajs/inertia";
 
 const Service = (props) => {
     const { services, errors, flash } = props;
@@ -53,7 +52,7 @@ const Service = (props) => {
             text: `Delete this service`,
         }).then((result) => {
             if (result.isConfirmed) {
-                Inertia.delete(`/service-products/${id}`);
+                router.delete(`/service-products/${id}`);
             }
         });
     };
@@ -99,7 +98,7 @@ const Service = (props) => {
                                 key="detail"
                                 sx={{ fontSize: "10pt" }}
                                 onClick={() => {
-                                    Inertia.visit(
+                                    router.visit(
                                         `/service-products/${row.original.id}/form`
                                     );
                                     closeMenu();

@@ -22,8 +22,18 @@ class Post extends Model
             }
         });
     }
-    public function postCategory()
+
+    public function post_categories()
     {
-        return $this->hasMany(PostCategory::class, 'id_resource');
+        return $this->hasMany(PostCategory::class, 'id_post');
+    }
+    public function visitsCounter()
+    {
+        return visits($this);
+    }
+
+    public function visits()
+    {
+        return visits($this)->relation();
     }
 }

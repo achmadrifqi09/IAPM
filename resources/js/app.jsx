@@ -1,9 +1,11 @@
 import React, { StrictMode } from "react";
-import { createInertiaApp } from "@inertiajs/inertia-react";
+import { createInertiaApp } from "@inertiajs/react";
 import { createRoot } from "react-dom/client";
-import { InertiaProgress } from "@inertiajs/progress";
 
 createInertiaApp({
+    progress: {
+        color: "#FDC40C",
+    },
     title: (title) => `${title} - IAPM Elinksolution`,
     resolve: (name) => {
         const pages = import.meta.glob("./Pages/**/*.jsx", { eager: true });
@@ -17,5 +19,3 @@ createInertiaApp({
         );
     },
 });
-
-InertiaProgress.init({ color: "#FDC204" });

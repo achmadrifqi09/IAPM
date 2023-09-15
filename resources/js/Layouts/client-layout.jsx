@@ -3,15 +3,15 @@ import Navbar from "../Components/Navbar";
 import Footer from "../Components/Footer";
 
 const ClientLayout = (props) => {
-    const { children, footerContents } = props;
-
+    const { children, attributes } = props;
+   
     return (
         <>
             <Navbar />
             <main className="bg-grid bg-white min-h-screen bg-no-repeat bg-right-top font-poppins">
                 {children}
             </main>
-            <Footer footerContents={footerContents} />
+            <Footer attributes={attributes} />
         </>
     );
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import { Head } from "@inertiajs/inertia-react";
+import { Head } from "@inertiajs/react";
 
 const MediaPreview = (props) => {
     const { media, type } = props;

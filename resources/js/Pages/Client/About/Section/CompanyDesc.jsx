@@ -79,7 +79,7 @@ const CompanyDesc = (props) => {
                             </Paragraph>
                         </div>
                     </div>
-                    <div className="max-md:hidden sticky top-36">
+                    <div className="max-md:hidden sticky top-20">
                         <div className="after:content-logo after:bg-white after:px-4 after:py-2 after:rounded-full after:shadow-md after:-bottom-8 after:absolute after:left-6">
                             <img
                                 src={image ? image : DefaultImage}

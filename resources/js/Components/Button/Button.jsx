@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "@inertiajs/inertia-react";
+import { Link } from "@inertiajs/react";
 
 const IButton = (props) => {
     const { action, children, type, variant, isLink, url } = props;

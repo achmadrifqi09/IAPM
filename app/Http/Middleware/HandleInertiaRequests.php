@@ -2,6 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Address;
+use App\Models\Contact;
+use App\Models\Social;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Middleware;
@@ -37,11 +40,16 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-
+        $contacts = Contact::select(['contact_type', 'contact'])->get();
+        $addresses = Address::select(['address'])->get();
+        $socials = Social::select(['link'])->get();
         return array_merge(parent::share($request), [
-            'footerContents' => 'attributes',
+            'attributes' => [
+                'contacts' => $contacts,
+                'addresses' => $addresses,
+                'socials' => $socials
+            ],
             'flash' => [
-                'error' => fn () => $request->session()->get('errors'),
                 'success' => fn () => $request->session()->get('success'),
             ],
         ]);

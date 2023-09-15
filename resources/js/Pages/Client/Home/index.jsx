@@ -1,5 +1,5 @@
-import React from "react";
-import { Head, usePage } from "@inertiajs/inertia-react";
+import React, { useEffect, useState } from "react";
+import { Head } from "@inertiajs/react";
 import ClientLayout from "../../../Layouts/client-layout";
 import GetterAsset from "../../../Helpers/getter-asset";
 import Hero from "./Section/Hero";
@@ -8,16 +8,43 @@ import VideoSection from "./Section/Capability";
 import ServiceOverview from "./Section/ServiceOverview";
 import Testimonial from "./Section/Testimonial";
 import CTA from "../../../Components/CTA";
+import defaultImage from "../../../../../public/assets/images/default-images/3dLogo.svg";
 
 const HomePage = (props) => {
-    const { datas, assets, footerContents } = props;
+    const { datas, assets, attributes } = props;
+    const [currentUrl, setCurrentUrl] = useState("");
+
+    useEffect(() => {
+        setCurrentUrl(window.location.href);
+    }, []);
 
     return (
         <>
             <Head>
-                <title>Home</title>
+                <title>{datas?.meta?.meta_title}</title>
+                <meta name="robots" content="index, follow" />
+                <meta
+                    name="description"
+                    content={datas?.meta?.meta_description}
+                />
+                <meta property="og:locale" content="en_US" />
+                <meta property="og:type" content="article" />
+                <meta property="og:title" content={datas?.meta?.meta_title} />
+                <meta
+                    property="og:description"
+                    content={datas?.meta?.meta_description}
+                />
+                <meta property="og:url" content={currentUrl} />
+                <meta property="og:site_name" content="PT IAPM Elinksolution" />
+
+                <meta property="og:image" content={defaultImage} />
+                <meta property="og:image:width" content="1280" />
+                <meta property="og:image:height" content="853" />
+                <meta property="og:image:type" content="image/jpeg" />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:site" content="@iapmelinksolution" />
             </Head>
-            <ClientLayout footerContents={footerContents}>
+            <ClientLayout attributes={attributes}>
                 <Hero
                     title={datas["home-hero"]?.title}
                     description={datas["home-hero"]?.description}

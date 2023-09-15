@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Asset;
+use App\Models\Meta;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Page;
@@ -13,7 +14,7 @@ class PageController extends Controller
 {
     public function homeEditor()
     {
-        $pageDatas = $this->resourceMapping($this->getPageDataFromDB('home-page'));
+        $pageDatas = $this->getPageDataFromDB('home-page');
         $assets = $this->getAssetData();
         return Inertia::render('Admin/PageEditor/HomeEditor', [
             'datas' => $pageDatas,
@@ -23,7 +24,7 @@ class PageController extends Controller
 
     public function aboutEditor()
     {
-        $pageDatas = $this->resourceMapping($this->getPageDataFromDB('about-page'));
+        $pageDatas = $this->getPageDataFromDB('about-page');
         $assets = $this->getAssetData();
         return Inertia::render('Admin/PageEditor/AboutEditor', [
             'datas' => $pageDatas,
@@ -33,7 +34,7 @@ class PageController extends Controller
 
     public function serviceEditor()
     {
-        $pageDatas = $this->resourceMapping($this->getPageDataFromDB('service-page'));
+        $pageDatas = $this->getPageDataFromDB('service-page');
 
         return Inertia::render('Admin/PageEditor/ServiceEditor', [
             'datas' => $pageDatas,
@@ -45,14 +46,49 @@ class PageController extends Controller
         $pageDatas = Page::where('pages.tag', '=', $pageTag)
             ->select(
                 [
-                    'pages.id AS id_page', 'pages.page_name', 'sections.id AS id_section', 'sections.ordinal_number', 'sections.section_name', 'sections.tag AS section_tag', 'resources.id AS id_resource',
-                    'resources.title', 'resources.description', 'resources.button_label', 'resources.button_url', 'resources.id_asset'
+                    'pages.id AS id_page',
+                    'pages.page_name',
+                    'sections.id AS id_section',
+                    'sections.ordinal_number',
+                    'sections.section_name',
+                    'sections.tag AS section_tag',
+                    'resources.id AS id_resource',
+                    'resources.title',
+                    'resources.description',
+                    'resources.button_label',
+                    'resources.button_url',
+                    'resources.id_asset',
+
                 ]
             )
             ->join('sections', 'sections.id_page', '=', 'pages.id')
             ->join('resources', 'resources.id_section', '=', 'sections.id')
             ->get();
-        return $pageDatas;
+
+        $meta = $this->getMetaData($pageDatas[0]['id_page'] ?? "");
+        $datas = $this->resourceMapping($pageDatas);
+        $datas['meta'] = $meta;
+        return $datas;
+    }
+
+    public function getMetaData($idPage)
+    {
+        $meta = Meta::where('id_page', '=', $idPage)
+            ->select([
+                'id AS id_meta',
+                'meta_title',
+                'meta_description'
+            ])->first();
+        return $meta;
+    }
+
+    public function updateMetaData($newMetaData)
+    {
+        $meta = Meta::find($newMetaData['id_meta']);
+        if (!$meta) return false;
+
+        $meta->update($newMetaData);
+        return true;
     }
 
     public function getAssetData()
@@ -72,6 +108,8 @@ class PageController extends Controller
 
     public function update(Request $request)
     {
+        $meta = $request['meta'];
+        unset($request['meta']);
         $request->validate([
             '*.title' => 'required',
             '*.id_page' => 'required',
@@ -89,13 +127,15 @@ class PageController extends Controller
         $datas = $request->input();
         try {
             $hashFails = false;
+            $hashFails = $this->updateMetaData($meta) ? false : true;
             foreach ($datas as $newDataValue) {
                 $updateResourceStatus = $this->updateResource($newDataValue, $newDataValue['id_resource']);
                 if (!$updateResourceStatus) {
                     $hashFails = true;
                 }
             }
-            $message = !$hashFails ?  'Page data has been updated' :
+            $message = !$hashFails ?
+                'Page data has been updated' :
                 'The data was successfully updated, but there was data that could not be updated';
             $pageId = $datas[array_key_first($request->input())]['id_page'];
 

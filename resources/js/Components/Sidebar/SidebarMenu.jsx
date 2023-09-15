@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import Logo from "../../../../public/assets/images/logo.svg";
-import { Link } from "@inertiajs/inertia-react";
+import { Link } from "@inertiajs/react";
 import {
     RectangleGroupIcon,
     DocumentTextIcon,
     ChevronDownIcon,
-    MagnifyingGlassIcon,
     NewspaperIcon,
     Bars3BottomLeftIcon,
     XMarkIcon,
@@ -14,6 +13,7 @@ import {
     ChatBubbleBottomCenterTextIcon,
     BuildingStorefrontIcon,
     WindowIcon,
+    BuildingOfficeIcon
 } from "@heroicons/react/24/outline";
 
 const SidebarMenu = () => {
@@ -107,6 +107,21 @@ const SidebarMenu = () => {
                                 </div>
                             </Link>
                         </li>
+                        <li>
+                            <Link
+                                className={
+                                    currentUrl.includes("/company")
+                                        ? menusStyle.active
+                                        : menusStyle.normal
+                                }
+                                href="/company"
+                            >
+                                <div className="flex gap-4">
+                                    <BuildingOfficeIcon className="w-6 h-6" />
+                                    Company
+                                </div>
+                            </Link>
+                        </li>
                         <li className="space-y-4">
                             <button
                                 className={
@@ -162,20 +177,7 @@ const SidebarMenu = () => {
                                 </li>
                             </ul>
                         </li>
-                        <li>
-                            <Link
-                                className={
-                                    currentUrl.includes("/seo")
-                                        ? menusStyle.active
-                                        : menusStyle.normal
-                                }
-                            >
-                                <div className="flex gap-4">
-                                    <MagnifyingGlassIcon className="w-6 h-6" />
-                                    SEO
-                                </div>
-                            </Link>
-                        </li>
+
                         <li>
                             <Link
                                 href="/testimonials"

@@ -1,28 +1,36 @@
-import React, { useState } from "react";
-import ListItem from "../../../Components/List/ListItem";
+import React, { useState, useEffect } from "react";
 import { PencilIcon, TrashIcon, PlusIcon } from "@heroicons/react/24/outline";
 import IButton from "../../../Components/Button/Button";
 import { H6 } from "../../../Components/Text";
-import { Link } from "@inertiajs/inertia-react";
 import IInput from "../../../Components/Input/Input";
 import Modal from "../../../Components/Modal";
 import { categoryValidationSchema } from "../../../Helpers/validation-schema";
 import { useFormik } from "formik";
+import Swal from "sweetalert2";
+import { confirmSetttings } from "../../../Helpers/sweetalert-config";
+import { router } from "@inertiajs/react";
 
 const BlogCategory = (props) => {
+    const { categories, errors } = props;
     const [isOpenModal, setOpenModal] = useState(false);
     const [updateProps, setUpdateProps] = useState({
         isUpdate: false,
         idUpdate: "",
     });
 
-    const handleSubmit = () => {};
+    const handleSubmit = () => {
+        handelOpenModal();
+        updateProps.isUpdate
+            ? router.put(`/categories/${updateProps.idUpdate}`, formik.values)
+            : router.post(`/categories`, formik.values);
+    };
 
     const formik = useFormik({
         initialValues: {
             category_name: "",
         },
         validationSchema: categoryValidationSchema,
+        onSubmit: handleSubmit,
     });
 
     const handelForm = (target) => {
@@ -31,7 +39,34 @@ const BlogCategory = (props) => {
     };
 
     const handelOpenModal = () => {
+        !!isOpenModal === true && formik.resetForm();
+        !!isOpenModal &&
+            setUpdateProps({
+                isUpdate: false,
+                idUpdate: "",
+            });
         setOpenModal((currentCondition) => !currentCondition);
+    };
+
+    const handleUpdateAction = async (category) => {
+        const { id, category_name } = category;
+        setUpdateProps({
+            isUpdate: true,
+            idUpdate: id,
+        });
+        handelOpenModal();
+        await formik.setFieldValue("category_name", category_name);
+    };
+
+    const handleDeleteAction = (id) => {
+        Swal.fire({
+            ...confirmSetttings,
+            text: `Delete this category`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                router.delete(`/categories/${id}`);
+            }
+        });
     };
 
     return (
@@ -66,20 +101,40 @@ const BlogCategory = (props) => {
                 Add Category
             </IButton>
             <ul className="grid grid-cols-2 gap-6 max-sm:grid-cols-1">
-                <li className="p-6 bg-gray-100 rounded-xl flex justify-between items-center flex-wrap">
-                    <H6>Project Manager</H6>
-                    <div className="flex gap-4 max-sm:mt-4">
-                        <Link
-                            href=""
-                            className="p-2 rounded-xl border border-iapm-black"
-                        >
-                            <PencilIcon className="w-6 h-6 text-center" />
-                        </Link>
-                        <button className="p-2 rounded-xl border border-iapm-black">
-                            <TrashIcon className="w-6 h-6 text-center" />
-                        </button>
-                    </div>
-                </li>
+                {Object.keys(categories).length > 0 ? (
+                    categories.map((category, i) => {
+                        return (
+                            <li
+                                className="p-6 bg-gray-100 rounded-xl flex justify-between items-center gap-4 max-md:flex-col"
+                                key={i}
+                            >
+                                <H6>{category.category_name}</H6>
+                                <div className="flex gap-4 max-sm:mt-4">
+                                    <button
+                                        className="p-2 rounded-xl"
+                                        onClick={() =>
+                                            handleUpdateAction(category)
+                                        }
+                                    >
+                                        <PencilIcon className="w-6 h-6 text-center" />
+                                    </button>
+                                    <button
+                                        className="p-2 rounded-xl"
+                                        onClick={() =>
+                                            handleDeleteAction(category.id)
+                                        }
+                                    >
+                                        <TrashIcon className="w-6 h-6 text-center" />
+                                    </button>
+                                </div>
+                            </li>
+                        );
+                    })
+                ) : (
+                    <li className="p-6 bg-gray-100 rounded-xl flex justify-center items-center flex-wrap sm:col-span-2 text-center">
+                        No Data to display
+                    </li>
+                )}
             </ul>
         </>
     );

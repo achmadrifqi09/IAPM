@@ -5,10 +5,12 @@ use App\Http\Controllers\AssetRoutesController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientPageController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\MediaPreviewController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\SocialController;
 use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\WebAssetController;
@@ -26,12 +28,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/generate-sitemap', [SitemapController::class, 'index']);
+
 Route::get('/', [ClientPageController::class, 'home']);
 Route::get('/about-us', [ClientPageController::class, 'about']);
 Route::get('/services', [ClientPageController::class, 'service']);
 Route::get('/services/{id}', [ClientPageController::class, 'serviceDetail']);
 Route::get('/blogs', [ClientPageController::class, 'blog']);
-Route::get('/blogs/{id}', [ClientPageController::class, 'blogDetail']);
+Route::get('/blogs/{slug}', [ClientPageController::class, 'blogDetail']);
 
 Route::get('/asset/{asset}', AssetRoutesController::class);
 
@@ -77,8 +81,20 @@ Route::delete('/testimonials/{id}', [TestimonialController::class, 'destroy']);
 
 Route::get('/media-preview', [MediaPreviewController::class, 'index']);
 
-Route::get('/manage-blogs', [BlogController::class, 'index']);
-Route::get('/manage-blogs/from', [BlogController::class, 'create']);
-Route::post('/manage-blogs', [BlogController::class, 'store']);
 
-Route::post('/categories', [CategoryController::class, 'crate']);
+Route::group(['middleware' => ['prevent-back-button']], function () {
+  Route::get('/manage-blogs', [BlogController::class, 'index']);
+  Route::get('/manage-blogs/form', [BlogController::class, 'create']);
+  Route::post('/manage-blogs', [BlogController::class, 'store']);
+  Route::get('/manage-blogs/{id}/form', [BlogController::class, 'edit']);
+  Route::post('/manage-blogs/{id}/form', [BlogController::class, 'update']);
+  Route::delete('/manage-blogs/{id}', [BlogController::class, 'destroy']);
+  Route::get('/company', [CompanyController::class, 'index']);
+  Route::put('/company', [CompanyController::class, 'update']);
+  Route::post('/history-development/{id}', [CompanyController::class, 'historyUpdate']);
+  Route::post('/history-development', [CompanyController::class, 'historyAdd']);
+  Route::delete('/history-development/{id}', [CompanyController::class, 'historyDestroy']);
+});
+Route::post('/categories', [CategoryController::class, 'store']);
+Route::put('/categories/{id}', [CategoryController::class, 'update']);
+Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);

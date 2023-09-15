@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import ICPhoto from "../../../../public/assets/images/ic-photo.svg";
+import ICPhoto from "../../../../public/assets/icons/ic-photo.svg";
 
 const InputMedia = (props) => {
     const previewRef = useRef(null);

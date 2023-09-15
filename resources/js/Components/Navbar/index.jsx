@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "@inertiajs/inertia-react";
+import { Link } from "@inertiajs/react";
 import Logo from "../../../../public/assets/images/logo.svg";
 import { Bars3BottomRightIcon, XMarkIcon } from "@heroicons/react/24/outline";
 

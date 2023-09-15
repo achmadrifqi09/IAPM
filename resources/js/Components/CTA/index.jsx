@@ -1,6 +1,6 @@
 import React from "react";
 import { H3, Paragraph } from "../Text";
-import ICCollaborate from "../../../../public/assets/images/ic-collaborate.svg";
+import ICCollaborate from "../../../../public/assets/icons/ic-collaborate.svg";
 import IButton from "../Button/Button";
 
 const CTA = () => {

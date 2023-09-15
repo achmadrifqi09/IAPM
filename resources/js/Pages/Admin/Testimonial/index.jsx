@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Head } from "@inertiajs/inertia-react";
+import { Head } from "@inertiajs/react";
 import { H3 } from "../../../Components/Text";
 import AdminLayout from "../../../Layouts/admin-layout";
 import { PlusIcon } from "@heroicons/react/24/outline";
@@ -10,7 +10,6 @@ import {
     toastSettings,
     confirmSetttings,
 } from "../../../Helpers/sweetalert-config";
-import { Inertia } from "@inertiajs/inertia";
 import IInput from "../../../Components/Input/Input";
 import ITextarea from "../../../Components/Input/Textarea";
 import { useFormik } from "formik";
@@ -56,11 +55,11 @@ const Testimonial = (props) => {
         handleOpenModal();
 
         updateProps.isUpdate
-            ? Inertia.put(
+            ? router.put(
                   `/testimonials/${updateProps.idUpdate}`,
                   formik.values
               )
-            : Inertia.post("/testimonials", formik.values);
+            : router.post("/testimonials", formik.values);
     };
 
     const formik = useFormik({
@@ -99,7 +98,7 @@ const Testimonial = (props) => {
             text: `Delete this testimonial`,
         }).then((result) => {
             if (result.isConfirmed) {
-                Inertia.delete(`/testimonials/${id}`);
+                router.delete(`/testimonials/${id}`);
             }
         });
     };

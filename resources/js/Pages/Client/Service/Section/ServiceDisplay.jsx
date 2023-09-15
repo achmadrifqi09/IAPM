@@ -23,7 +23,7 @@ This book is a treatise on the theory of ethics, very popular during the Renaiss
                 <img
                     src={DummyImage}
                     alt=""
-                    className="aspect-square object-cover w-full mx-auto rounded-t-[64px] rounded-bl-[64px] sticky top-36 max-md:static"
+                    className="aspect-square object-cover w-full mx-auto rounded-t-[64px] rounded-bl-[64px] sticky top-20 max-md:static"
                 />
                 <div className="space-y-8">
                     <H2>Business Analyst & Portfolio Management</H2>

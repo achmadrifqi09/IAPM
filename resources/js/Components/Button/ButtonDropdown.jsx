@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 
 const IButtonDropdown = (props) => {
-    const { action, buttonLabel, menus } = props;
+    const { action, buttonLabel, menus, variant } = props;
     const [isOpenMenu, setOpenMenu] = useState(false);
 
     const handleOpenMenu = () => {
@@ -18,12 +18,20 @@ const IButtonDropdown = (props) => {
         open: "p-4 bg-white border border-gray-200 rounded-2xl absolute top-14 tex-left w-full left-0",
         close: "p-4 bg-white border border-gray-200 rounded-2xl absolute top-14 tex-left w-full left-0 hidden",
     };
-
+    const buttonStyle = {
+        normal: "relative w-max bg-iapm-yellow px-4 py-3 rounded-full font-popins text-iapm-black font-medium flex gap-4 whitespace-nowrap",
+        secondary:
+            "relative w-max bg-white border border-iapm-gray px-4 py-3 rounded-full font-popins text-iapm-black font-medium flex gap-4 whitespace-nowrap",
+    };
     return (
         <div className="relative w-max">
             <button
                 onClick={handleOpenMenu}
-                className="relative w-max bg-iapm-yellow px-4 py-3 rounded-full font-popins text-iapm-black font-medium flex gap-4 whitespace-nowrap"
+                className={
+                    variant === "secondary"
+                        ? buttonStyle.secondary
+                        : buttonStyle.secondary
+                }
             >
                 <span className="text-iapm-black block">{buttonLabel}</span>
                 <ChevronDownIcon className="w-6 h-6 text-iapm-black" />

@@ -1,12 +1,14 @@
 import React from "react";
-import { createInertiaApp } from "@inertiajs/inertia-react";
-import.meta.glob(["../assets/**"]);
+import { createInertiaApp } from "@inertiajs/react";
 import ReactDOMServer from "react-dom/server";
 import createServer from "@inertiajs/react/server";
-import { InertiaProgress } from "@inertiajs/progress";
+import.meta.glob(["../assets/**"]);
 
 createServer((page) =>
     createInertiaApp({
+        progress: {
+            color: "#FDC40C",
+        },
         page,
         render: ReactDOMServer.renderToString,
         resolve: (name) => {
@@ -16,5 +18,3 @@ createServer((page) =>
         setup: ({ App, props }) => <App {...props} />,
     })
 );
-
-InertiaProgress.init({ color: "#FDC204" });
