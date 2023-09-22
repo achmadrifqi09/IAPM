@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Logo from "../../../../public/assets/images/logo.svg";
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 import {
     RectangleGroupIcon,
     DocumentTextIcon,
@@ -13,7 +13,7 @@ import {
     ChatBubbleBottomCenterTextIcon,
     BuildingStorefrontIcon,
     WindowIcon,
-    BuildingOfficeIcon
+    BuildingOfficeIcon,
 } from "@heroicons/react/24/outline";
 
 const SidebarMenu = () => {
@@ -34,7 +34,7 @@ const SidebarMenu = () => {
     };
 
     const submenuStyle = {
-        normal: "py-2 space-y-6",
+        normal: "py-2 space-y-2",
         hidden: "hidden",
     };
 
@@ -67,6 +67,10 @@ const SidebarMenu = () => {
         }
     }, []);
 
+    const handelSignOut = () => {
+        router.post("/logout");
+    };
+
     return (
         <>
             <aside className="relative">
@@ -80,8 +84,9 @@ const SidebarMenu = () => {
                     <ul className="space-y-4 overflow-y-scroll custom-scrollbar max-h-screen pr-2">
                         <li>
                             <Link
+                                href="/dashboard"
                                 className={
-                                    currentUrl.includes("/dasboard")
+                                    currentUrl.includes("/dashboard")
                                         ? menusStyle.active
                                         : menusStyle.normal
                                 }
@@ -274,11 +279,12 @@ const SidebarMenu = () => {
                                         <Link href="">Account</Link>
                                     </li>
                                     <li>
-                                        <form>
-                                            <button className="flex gap-2 whitespace-nowrap">
-                                                Sign Out
-                                            </button>
-                                        </form>
+                                        <button
+                                            className="flex gap-2 whitespace-nowrap"
+                                            onClick={handelSignOut}
+                                        >
+                                            Logout
+                                        </button>
                                     </li>
                                 </ul>
                             </div>

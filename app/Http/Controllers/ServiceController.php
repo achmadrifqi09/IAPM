@@ -13,7 +13,7 @@ class ServiceController extends Controller
 {
     public function index()
     {
-        $services = Service::all();
+        $services = Service::select(['service_name', 'image', 'short_description', 'id'])->get();
         return Inertia::render('Admin/Service/index', [
             'services' => $services
         ]);
@@ -46,6 +46,7 @@ class ServiceController extends Controller
 
     public function edit($id)
     {
+        
         $updatedService = Service::find($id);
 
         if (!$updatedService) {

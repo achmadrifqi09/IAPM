@@ -9,7 +9,7 @@ import { router } from "@inertiajs/react";
 const ContactForm = (props) => {
     const { value, closeModal, isUpdate } = props;
     const contactOptions = [
-        { value: "Mail", label: "Mail" },
+        { value: "Email", label: "Email" },
         { value: "Telephone", label: "Telephone" },
         { value: "WhatsApp", label: "WhatsApp" },
         { value: "Telegram", label: "Telegram" },
@@ -52,7 +52,11 @@ const ContactForm = (props) => {
                 />
                 {formik.values.contact_type && (
                     <IInput
-                        inputLabel="Contact"
+                        inputLabel={
+                            formik.values.contact_type == "Telegram"
+                                ? "Username"
+                                : "Contact"
+                        }
                         inputName="contact"
                         inputId="contact"
                         inputType="text"

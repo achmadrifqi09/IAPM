@@ -1,24 +1,25 @@
 import React, { useState, useRef, useEffect } from "react";
-import { XMarkIcon, RectangleGroupIcon, BuildingStorefrontIcon, DocumentTextIcon, ChevronDownIcon, ChatBubbleBottomCenterTextIcon, NewspaperIcon, PhotoIcon, WindowIcon, Bars3BottomLeftIcon, UserIcon, PlusIcon, PencilIcon, TrashIcon, MagnifyingGlassIcon, EyeIcon, ArrowUpRightIcon, Bars3BottomRightIcon, MapPinIcon, EnvelopeIcon, PhoneIcon, BuildingOffice2Icon, RocketLaunchIcon, ArrowRightIcon, CubeIcon, GlobeAmericasIcon, CalendarIcon } from "@heroicons/react/24/outline";
-import { Link, Head, createInertiaApp } from "@inertiajs/react";
+import { XMarkIcon, RectangleGroupIcon, BuildingStorefrontIcon, BuildingOfficeIcon, DocumentTextIcon, ChevronDownIcon, ChatBubbleBottomCenterTextIcon, NewspaperIcon, PhotoIcon, WindowIcon, Bars3BottomLeftIcon, UserIcon, ArrowPathIcon, PlusIcon, ShieldCheckIcon, EyeSlashIcon, EyeIcon, ChevronRightIcon, PencilIcon, TrashIcon, MagnifyingGlassIcon, ArrowUpRightIcon, RocketLaunchIcon, Bars3BottomRightIcon, MapPinIcon, EnvelopeIcon, PhoneIcon, BuildingOffice2Icon, ArrowRightIcon, CubeIcon, GlobeAmericasIcon, CalendarIcon, BellAlertIcon } from "@heroicons/react/24/outline";
+import { Link, router as router$1, Head, createInertiaApp } from "@inertiajs/react";
 import MaterialReactTable from "material-react-table";
 import Swal from "sweetalert2";
 import { MenuItem } from "@mui/material";
-import { Inertia } from "@inertiajs/inertia";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import Select from "react-select";
 import { Editor } from "@tinymce/tinymce-react";
+import ReactGA from "react-ga";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Navigation, Autoplay } from "swiper/modules";
+import ReCAPTCHA from "react-google-recaptcha";
 import ReactDOMServer from "react-dom/server";
 import createServer from "@inertiajs/react/server";
 const Modal = (props) => {
-  const { title, handleModal, children: children2 } = props;
+  const { title, handleModal, children } = props;
   const handleOpenModal = () => {
     handleModal();
   };
-  return /* @__PURE__ */ React.createElement("section", { className: "fixed w-screen h-screen bg-iapm-black bg-opacity-60 top-0 left-0 right-0 z-50" }, /* @__PURE__ */ React.createElement("div", { className: " max-w-screen-xxl px-4 md:px-8 mx-auto mt-20 " }, /* @__PURE__ */ React.createElement("div", { className: "p-6 rounded-3xl bg-white md:w-1/2 w-full mx-auto" }, /* @__PURE__ */ React.createElement("div", { className: "flex justify-between items-center mb-6 border-b pb-2 border-gray-100" }, /* @__PURE__ */ React.createElement("h5", { className: "text-lg text-iapm-black" }, title), /* @__PURE__ */ React.createElement("button", { onClick: handleOpenModal, className: "py-2 px-4" }, /* @__PURE__ */ React.createElement(XMarkIcon, { className: "w-6 h-6 text-iapm-dark-gray" }))), /* @__PURE__ */ React.createElement("div", null, children2))));
+  return /* @__PURE__ */ React.createElement("section", { className: "fixed w-screen h-screen bg-iapm-black bg-opacity-60 top-0 left-0 right-0 z-50 overflow-y-scroll pb-16" }, /* @__PURE__ */ React.createElement("div", { className: " max-w-screen-xxl px-4 md:px-8 mx-auto mt-20 " }, /* @__PURE__ */ React.createElement("div", { className: "p-6 rounded-3xl bg-white md:w-1/2 w-full mx-auto" }, /* @__PURE__ */ React.createElement("div", { className: "flex justify-between items-center mb-6 border-b pb-2 border-gray-100" }, /* @__PURE__ */ React.createElement("h5", { className: "text-lg text-iapm-black capitalize" }, title), /* @__PURE__ */ React.createElement("button", { onClick: handleOpenModal, className: "py-2 px-4" }, /* @__PURE__ */ React.createElement(XMarkIcon, { className: "w-6 h-6 text-iapm-dark-gray" }))), /* @__PURE__ */ React.createElement("div", null, children))));
 };
 const Logo$1 = "/build/assets/logo-07a76e50.svg";
 const SidebarMenu = () => {
@@ -62,6 +63,9 @@ const SidebarMenu = () => {
       setCurrentUrl(currentUrl2);
     }
   }, []);
+  const handelSignOut = () => {
+    router$1.post("/logout");
+  };
   return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("aside", { className: "relative" }, /* @__PURE__ */ React.createElement(
     "div",
     {
@@ -70,7 +74,8 @@ const SidebarMenu = () => {
     /* @__PURE__ */ React.createElement("ul", { className: "space-y-4 overflow-y-scroll custom-scrollbar max-h-screen pr-2" }, /* @__PURE__ */ React.createElement("li", null, /* @__PURE__ */ React.createElement(
       Link,
       {
-        className: currentUrl.includes("/dasboard") ? menusStyle.active : menusStyle.normal
+        href: "/dashboard",
+        className: currentUrl.includes("/dashboard") ? menusStyle.active : menusStyle.normal
       },
       /* @__PURE__ */ React.createElement("div", { className: "flex gap-4 " }, /* @__PURE__ */ React.createElement(RectangleGroupIcon, { className: "w-6 h-6" }), "Dashboad")
     )), /* @__PURE__ */ React.createElement("li", null, /* @__PURE__ */ React.createElement(
@@ -80,6 +85,13 @@ const SidebarMenu = () => {
         href: "/service-products"
       },
       /* @__PURE__ */ React.createElement("div", { className: "flex gap-4" }, /* @__PURE__ */ React.createElement(BuildingStorefrontIcon, { className: "w-6 h-6" }), "Services")
+    )), /* @__PURE__ */ React.createElement("li", null, /* @__PURE__ */ React.createElement(
+      Link,
+      {
+        className: currentUrl.includes("/company") ? menusStyle.active : menusStyle.normal,
+        href: "/company"
+      },
+      /* @__PURE__ */ React.createElement("div", { className: "flex gap-4" }, /* @__PURE__ */ React.createElement(BuildingOfficeIcon, { className: "w-6 h-6" }), "Company")
     )), /* @__PURE__ */ React.createElement("li", { className: "space-y-4" }, /* @__PURE__ */ React.createElement(
       "button",
       {
@@ -170,23 +182,39 @@ const SidebarMenu = () => {
     {
       className: dropdownMenu === true ? dropdownMenuStyle.open : dropdownMenuStyle.close
     },
-    /* @__PURE__ */ React.createElement("ul", { className: "space-y-4" }, /* @__PURE__ */ React.createElement("li", null, /* @__PURE__ */ React.createElement(Link, { href: "" }, "Account")), /* @__PURE__ */ React.createElement("li", null, /* @__PURE__ */ React.createElement("form", null, /* @__PURE__ */ React.createElement("button", { className: "flex gap-2 whitespace-nowrap" }, "Sign Out"))))
+    /* @__PURE__ */ React.createElement("ul", { className: "space-y-4" }, /* @__PURE__ */ React.createElement("li", null, /* @__PURE__ */ React.createElement(Link, { href: "" }, "Account")), /* @__PURE__ */ React.createElement("li", null, /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        className: "flex gap-2 whitespace-nowrap",
+        onClick: handelSignOut
+      },
+      "Logout"
+    )))
   ))))));
 };
 const AdminLayout = (props) => {
-  const { children: children2 } = props;
+  const { children } = props;
   return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("div", { className: "flex bg-iapm-light-gray" }, /* @__PURE__ */ React.createElement(SidebarMenu, null), /* @__PURE__ */ React.createElement(
     "main",
     {
-      className: "max-w-screen-xl px-6 md:px-8 mx-auto pt-20 min-h-screen bg-no-repeat bg-right-top \n                font-poppins w-full overflow-x-hidden box-border"
+      className: "max-w-screen-xl px-6 md:px-8 mx-auto pt-20 min-h-screen bg-no-repeat bg-right-top \r\n                font-poppins w-full overflow-x-hidden box-border"
     },
-    children2
+    children
   )));
 };
 const IButton = (props) => {
-  const { action, children: children2, type, variant, isLink, url } = props;
+  const {
+    action,
+    children,
+    type,
+    variant,
+    isLink,
+    url,
+    isLoading,
+    isDisable = false
+  } = props;
   const buttonStyle = {
-    primary: "w-max bg-iapm-yellow px-4 py-3 rounded-xl font-popins text-iapm-black font-medium flex gap-4 whitespace-nowrap",
+    primary: "w-max bg-iapm-yellow px-4 py-3 rounded-xl font-popins text-iapm-black font-medium flex gap-4 whitespace-nowrap disabled:opacity-60",
     "normal-link": "w-max font-popins text-iapm-black font-medium flex gap-4 whitespace-nowrap",
     "link-border": "w-max border border-iapm-dark-gray px-4 py-3 rounded-xl font-popins text-iapm-black font-medium flex gap-4 whitespace-nowrap",
     "cta-button": "w-max bg-iapm-yellow px-4 py-3 rounded-xl font-popins border border-iapm-black text-iapm-black font-medium flex gap-4 whitespace-nowrap "
@@ -196,14 +224,15 @@ const IButton = (props) => {
   const handleAction = () => {
     action();
   };
-  return /* @__PURE__ */ React.createElement(React.Fragment, null, isLink === true ? /* @__PURE__ */ React.createElement(Link, { href: url, className: buttonStyle[variant] }, children2) : /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ React.createElement(React.Fragment, null, isLink === true ? /* @__PURE__ */ React.createElement(Link, { href: url, className: buttonStyle[variant] }, children) : /* @__PURE__ */ React.createElement(
     "button",
     {
       className: buttonStyle[variant],
       type,
-      onClick: action && handleAction
+      onClick: action && handleAction,
+      disabled: isDisable
     },
-    children2
+    isLoading ? /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(ArrowPathIcon, { className: "w-6 h-6 text-iapm-black animate-spin" }), /* @__PURE__ */ React.createElement("span", { className: "text-iapm-black block" }, "Loading ...")) : children
   ));
 };
 const ITable = (props) => {
@@ -226,51 +255,51 @@ const ITable = (props) => {
     }
   ));
 };
-const H1 = ({ children: children2 }) => {
-  return /* @__PURE__ */ React.createElement("h1", { className: "text-4xl font-semibold text-iapm-black leading-relaxed" }, children2);
+const H1 = ({ children }) => {
+  return /* @__PURE__ */ React.createElement("h1", { className: "text-4xl font-semibold text-iapm-black leading-relaxed" }, children);
 };
 const H2 = (props) => {
-  const { children: children2, isDark } = props;
+  const { children, isDark } = props;
   const textStyle = {
     light: "text-3xl font-semibold text-iapm-black leading-relaxed",
     dark: "text-3xl font-semibold text-white leading-relaxed"
   };
-  return /* @__PURE__ */ React.createElement("h2", { className: isDark === true ? textStyle.dark : textStyle.light }, children2);
+  return /* @__PURE__ */ React.createElement("h2", { className: isDark === true ? textStyle.dark : textStyle.light }, children);
 };
-const H3 = ({ children: children2 }) => {
-  return /* @__PURE__ */ React.createElement("h3", { className: "text-2xl font-semibold text-iapm-black leading-relaxed" }, children2);
+const H3 = ({ children }) => {
+  return /* @__PURE__ */ React.createElement("h3", { className: "text-2xl font-semibold text-iapm-black leading-relaxed" }, children);
 };
-const H4 = ({ children: children2 }) => {
-  return /* @__PURE__ */ React.createElement("h4", { className: "text-xl font-semibold text-iapm-black leading-relaxed" }, children2);
+const H4 = ({ children }) => {
+  return /* @__PURE__ */ React.createElement("h4", { className: "text-xl font-semibold text-iapm-black leading-relaxed" }, children);
 };
 const H5 = (props) => {
-  const { children: children2, isBold } = props;
-  return /* @__PURE__ */ React.createElement("h5", { className: "text-lg font-semibold text-iapm-black leading-relaxed" }, children2);
+  const { children, isBold } = props;
+  return /* @__PURE__ */ React.createElement("h5", { className: "text-lg font-semibold text-iapm-black leading-relaxed" }, children);
 };
 const H6 = (props) => {
-  const { children: children2, isDark } = props;
+  const { children, isDark } = props;
   const textStyle = {
     light: "text-md font-semibold text-iapm-black leading-relaxed",
     dark: "text-md font-semibold text-white leading-relaxed"
   };
-  return /* @__PURE__ */ React.createElement("h6", { className: isDark ? textStyle.dark : textStyle.light }, children2);
+  return /* @__PURE__ */ React.createElement("h6", { className: isDark ? textStyle.dark : textStyle.light }, children);
 };
 const Paragraph = (props) => {
-  const { children: children2, isDark } = props;
+  const { children, isDark } = props;
   const textStyle = {
     light: "leading-relaxed text-iapm-dark-gray",
     dark: "leading-relaxed text-iapm-light-gray"
   };
-  return /* @__PURE__ */ React.createElement("p", { className: isDark === true ? textStyle.dark : textStyle.light }, children2);
+  return /* @__PURE__ */ React.createElement("p", { className: isDark === true ? textStyle.dark : textStyle.light }, children);
 };
-const Subtitle = ({ children: children2 }) => {
-  return /* @__PURE__ */ React.createElement("h6", { className: "text-lg text-iapm-black leading-relaxed" }, children2);
+const Subtitle = ({ children }) => {
+  return /* @__PURE__ */ React.createElement("h6", { className: "text-lg text-iapm-black leading-relaxed" }, children);
 };
 const Caption = (props) => {
-  const { children: children2 } = props;
-  return /* @__PURE__ */ React.createElement("span", { className: "text-sm font-poppins text-iapm-black block" }, children2);
+  const { children } = props;
+  return /* @__PURE__ */ React.createElement("span", { className: "text-sm font-poppins text-iapm-black block" }, children);
 };
-const getErrorMessage = (errors) => {
+const getErrorMessage$1 = (errors) => {
   let errorMessage = "";
   Object.keys(errors).forEach((value, i) => {
     return errorMessage += `${errors[value]} ${i === Object.keys(errors).length - 1 ? "" : ", "}`;
@@ -329,7 +358,7 @@ const ICPhoto = "/build/assets/ic-photo-ac1131ce.svg";
 const InputMedia = (props) => {
   const previewRef = useRef(null);
   const [previwContent, setPreviewContent] = useState();
-  const baseUrlAsset2 = "http://localhost:8000/asset";
+  const baseUrlAsset2 = "http://iapm.domaintesting.site/asset";
   const {
     mediaLabel,
     mediaId,
@@ -507,6 +536,45 @@ const postValidationSchema = yup.object().shape({
 const categoryValidationSchema = yup.object().shape({
   category_name: yup.string().required("Category name must be filled in").min(3, "Category name must contain at least 3 characters")
 });
+const companyDescriptionSchema = yup.object().shape({
+  description: yup.string().required("Description must be filledin").min(10, "Description must contain at least 10 characters")
+});
+const companyVisionSchema = yup.object().shape({
+  vision: yup.string().required("Vision must be filledin").min(10, "Vision must contain at least 10 characters")
+});
+const companyMissionSchema = yup.object().shape({
+  mission: yup.string().required("Mission must be filledin").min(10, "Mission must contain at least 10 characters")
+});
+const historyDevelopmentValidationSchema = yup.object().shape({
+  year: yup.number().required("Year must be filled in").min(4, "Year must contain at least 4 character"),
+  history_description: yup.string().required("History description must be filled in").min(10, "History description must contain at least 10 character")
+});
+const signInValidationSchema = yup.object().shape({
+  email: yup.string().email("Invalid email format").required("Email must be filled in").test("contact-test", "error message", (value, validationContext) => {
+    const { createError } = validationContext;
+    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value)) {
+      return createError({
+        message: "Invalid email format"
+      });
+    }
+    return true;
+  }),
+  password: yup.string().required("Password must be filled in").min(8, "Password must be contain at least 8 character")
+});
+const sendMailValidationSchema = yup.object().shape({
+  name: yup.string().required("Name must be filled in").matches(/^[A-Za-z ]*$/, "Please enter valid name"),
+  email: yup.string().email("Invalid email format").required("Email must be filled in").test("contact-test", "error message", (value, validationContext) => {
+    const { createError } = validationContext;
+    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value)) {
+      return createError({
+        message: "Invalid email format"
+      });
+    }
+    return true;
+  }),
+  message: yup.string().required("Message must be filled in").min(10, "Message must be contain at least 10 character"),
+  token: yup.mixed().required("ReCaptcha must be filled in")
+});
 const ISelect = (props) => {
   const {
     options,
@@ -618,7 +686,7 @@ const Asset = (props) => {
   ];
   const handleSubmit = () => {
     handleOpenModal();
-    updateProps.isUpdates ? Inertia.post(`/web-assets/${updateProps.idUpdate}`, formik.values) : Inertia.post(`/web-assets`, formik.values);
+    updateProps.isUpdates ? router$1.post(`/web-assets/${updateProps.idUpdate}`, formik.values) : router$1.post(`/web-assets`, formik.values);
   };
   const formik = useFormik({
     initialValues: {
@@ -647,7 +715,7 @@ const Asset = (props) => {
       text: `Delete this web asset`
     }).then((result) => {
       if (result.isConfirmed) {
-        Inertia.delete(`/web-assets/${id}`);
+        router$1.delete(`/web-assets/${id}`);
       }
     });
   };
@@ -677,7 +745,7 @@ const Asset = (props) => {
       Swal.fire({
         ...toastSettings,
         icon: "error",
-        title: getErrorMessage(errors)
+        title: getErrorMessage$1(errors)
       });
       !!isModalOpen && handleOpenModal();
     }
@@ -686,7 +754,7 @@ const Asset = (props) => {
       idUpdate: ""
     });
   }, [errors, flash]);
-  return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(Head, null, /* @__PURE__ */ React.createElement("title", null, "Service")), /* @__PURE__ */ React.createElement(AdminLayout, null, !!isModalOpen && /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(Head, null, /* @__PURE__ */ React.createElement("title", null, "Web Asset")), /* @__PURE__ */ React.createElement(AdminLayout, null, !!isModalOpen && /* @__PURE__ */ React.createElement(
     Modal,
     {
       title: updateProps.isUpdates ? "Update Web Asset" : "Add Web Asset",
@@ -774,6 +842,144 @@ const __vite_glob_1_0 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.def
   __proto__: null,
   default: Asset
 }, Symbol.toStringTag, { value: "Module" }));
+const Terrain = "/build/assets/terrain-896585e1.svg";
+const SignIn = (props) => {
+  const { errors } = props;
+  const [isShowPassword, setShowPassword] = useState(false);
+  const [invalid, setInvalid] = useState(false);
+  const [message, setMessage] = useState(null);
+  const [isLoading, setLoading] = useState(false);
+  const [submitLimiter, setSubmitLimiter] = useState({
+    time: 60,
+    isActive: false
+  });
+  const handleShowPassword = () => {
+    setShowPassword((currentCondition) => !currentCondition);
+  };
+  const handleSubmit = () => {
+    setLoading(true);
+    router$1.post("/login", formik.values);
+  };
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: ""
+    },
+    validationSchema: signInValidationSchema,
+    onSubmit: handleSubmit
+  });
+  const handleForm = (e) => {
+    if (invalid && !message.includes("exceeds limit")) {
+      setInvalid(false);
+      setMessage(null);
+    }
+    const { name, value } = e.target;
+    formik.setFieldValue(name, value);
+  };
+  useEffect(() => {
+    if (Object.keys(errors).length > 0) {
+      setLoading(false);
+      const errorMessage = getErrorMessage$1(errors);
+      setMessage(errorMessage);
+      setInvalid(true);
+      errorMessage.includes("exceeds limit") && setSubmitLimiter({ ...submitLimiter, isActive: true });
+    }
+  }, [errors]);
+  const activatedLimiter = (value) => setSubmitLimiter({ isActive: true, time: value });
+  useEffect(() => {
+    if (submitLimiter.isActive) {
+      if (submitLimiter.time === 0) {
+        localStorage.removeItem("time_limiter");
+        setMessage(null);
+        setInvalid(false);
+        setSubmitLimiter({ isActive: false, time: 60 });
+        return;
+      }
+      const interval = setInterval(() => {
+        setSubmitLimiter({
+          ...submitLimiter,
+          time: submitLimiter.time - 1
+        });
+        localStorage.setItem("time_limiter", submitLimiter.time);
+      }, 1e3);
+      return () => clearInterval(interval);
+    }
+  }, [submitLimiter]);
+  useEffect(() => {
+    const localLimiter = localStorage.getItem("time_limiter");
+    if (localLimiter !== null) {
+      activatedLimiter(localLimiter);
+      setMessage("Request exceeds limit, try again in");
+      setInvalid(true);
+    }
+  }, []);
+  return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(Head, null, /* @__PURE__ */ React.createElement("title", null, "Login")), /* @__PURE__ */ React.createElement("main", { className: "bg-white font-poppins" }, /* @__PURE__ */ React.createElement("div", { className: "object-cover bg-no-repeat " }, /* @__PURE__ */ React.createElement("section", { className: "max-w-screen-xl h-screen px-6 md:px-8 grid grid-cols-2 max-md:grid-cols-1 items-center mx-auto gap-6" }, /* @__PURE__ */ React.createElement("div", { className: " max-md:hidden p-6" }, /* @__PURE__ */ React.createElement(
+    "img",
+    {
+      src: Terrain,
+      alt: "login pettern image",
+      className: "h-1/2"
+    }
+  )), /* @__PURE__ */ React.createElement("div", { className: "w-full mx-auto p-6 max-md:p-0 " }, /* @__PURE__ */ React.createElement("span", { className: "bg-iapm-yellow block w-max h-max p-4 rounded-full mb-6" }, /* @__PURE__ */ React.createElement(ShieldCheckIcon, { className: "w-12 h-12" })), /* @__PURE__ */ React.createElement("div", { className: "my-4" }, /* @__PURE__ */ React.createElement(H2, null, " Login"), /* @__PURE__ */ React.createElement(Paragraph, null, "Enter your registered email and password")), /* @__PURE__ */ React.createElement("form", { onSubmit: formik.handleSubmit }, /* @__PURE__ */ React.createElement("div", { className: "py-4" }, /* @__PURE__ */ React.createElement(
+    "label",
+    {
+      htmlFor: "email",
+      className: "mb-2 text-iapm-dark-gray"
+    },
+    "Email"
+  ), /* @__PURE__ */ React.createElement(
+    "input",
+    {
+      autoComplete: "off",
+      onChange: handleForm,
+      name: "email",
+      id: "email",
+      type: "email",
+      value: formik.values.email || "",
+      className: "bg-gray-100 rounded-lg w-full px-4 py-3 font-poppins focus:border focus:border-iapm-yellow disabled:text-gray-400"
+    }
+  ), formik.errors.email && /* @__PURE__ */ React.createElement("span", { className: "text-sm text-iapm-red" }, formik.errors.email)), /* @__PURE__ */ React.createElement("div", { className: "py-4 " }, /* @__PURE__ */ React.createElement(
+    "label",
+    {
+      htmlFor: "password",
+      className: "mb-2 text-iapm-dark-gray"
+    },
+    "Password"
+  ), /* @__PURE__ */ React.createElement("div", { className: "bg-gray-100 flex rounded-lg w-full relative" }, /* @__PURE__ */ React.createElement(
+    "input",
+    {
+      autoComplete: "off",
+      onChange: handleForm,
+      id: "password",
+      name: "password",
+      value: formik.values.password || "",
+      type: isShowPassword ? "text" : "password",
+      className: "rounded-lg bg-transparent w-full px-4 py-3 font-poppins focus:border focus:border-iapm-yellow disabled:text-gray-400"
+    }
+  ), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      className: "px-4 py-3 absolute right-0",
+      type: "button",
+      onClick: handleShowPassword
+    },
+    !isShowPassword ? /* @__PURE__ */ React.createElement(EyeSlashIcon, { className: "w-6 h-6 text-iapm-dark-gray" }) : /* @__PURE__ */ React.createElement(EyeIcon, { className: "w-6 h-6 text-iapm-dark-gray" })
+  )), formik.errors.password && /* @__PURE__ */ React.createElement("span", { className: "text-sm text-iapm-red" }, formik.errors.password)), invalid && /* @__PURE__ */ React.createElement("span", { className: "text-sm text-iapm-red" }, message, " ", submitLimiter.isActive && submitLimiter.time), /* @__PURE__ */ React.createElement("div", { className: "flex justify-end mt-6" }, /* @__PURE__ */ React.createElement(
+    IButton,
+    {
+      variant: "primary",
+      type: "submit",
+      isLoading,
+      isDisable: submitLimiter.isActive
+    },
+    "Login",
+    /* @__PURE__ */ React.createElement(ChevronRightIcon, { className: "w-6 h-6" })
+  )))))), /* @__PURE__ */ React.createElement("span", { className: "absolute w-max bottom-2 m-auto left-0 right-0 font-poppins text-iapm-dark-gray" }, "IAPM Elinksolution Indonesia 2023")));
+};
+const __vite_glob_1_1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  default: SignIn
+}, Symbol.toStringTag, { value: "Module" }));
 const BlogCategory = (props) => {
   const { categories, errors } = props;
   const [isOpenModal, setOpenModal] = useState(false);
@@ -783,7 +989,7 @@ const BlogCategory = (props) => {
   });
   const handleSubmit = () => {
     handelOpenModal();
-    updateProps.isUpdate ? Inertia.put(`/categories/${updateProps.idUpdate}`, formik.values) : Inertia.post(`/categories`, formik.values);
+    updateProps.isUpdate ? router$1.put(`/categories/${updateProps.idUpdate}`, formik.values) : router$1.post(`/categories`, formik.values);
   };
   const formik = useFormik({
     initialValues: {
@@ -819,7 +1025,7 @@ const BlogCategory = (props) => {
       text: `Delete this category`
     }).then((result) => {
       if (result.isConfirmed) {
-        Inertia.delete(`/categories/${id}`);
+        router$1.delete(`/categories/${id}`);
       }
     });
   };
@@ -865,7 +1071,7 @@ const BlogCategory = (props) => {
     );
   }) : /* @__PURE__ */ React.createElement("li", { className: "p-6 bg-gray-100 rounded-xl flex justify-center items-center flex-wrap sm:col-span-2 text-center" }, "No Data to display")));
 };
-const __vite_glob_1_1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_1_2 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: BlogCategory
 }, Symbol.toStringTag, { value: "Module" }));
@@ -909,7 +1115,7 @@ const ITextarea = (props) => {
     "label",
     {
       htmlFor: textareaId,
-      className: "text-iapm-dark-gray block text-base font-poppins"
+      className: "text-iapm-dark-gray block text-base font-poppins capitalize"
     },
     textareaLabel
   ), /* @__PURE__ */ React.createElement(
@@ -937,7 +1143,7 @@ const BlogForm = (props) => {
     }
   ];
   const handleSubmit = () => {
-    isUpdate === true ? Inertia.post(`/manage-blogs/${post.id}/form`, formik.values) : Inertia.post(`/manage-blogs`, formik.values);
+    isUpdate === true ? router$1.post(`/manage-blogs/${post.id}/form`, formik.values) : router$1.post(`/manage-blogs`, formik.values);
   };
   const getDefaultValueCategories = () => {
     let result = [];
@@ -1003,12 +1209,12 @@ const BlogForm = (props) => {
         icon: "success",
         title: flash.success
       });
-      Inertia.visit("/manage-blogs");
+      router$1.visit("/manage-blogs");
     } else if (Object.keys(errors).length > 0) {
       Swal.fire({
         ...toastSettings,
         icon: "error",
-        title: getErrorMessage(errors)
+        title: getErrorMessage$1(errors)
       });
     }
   }, [errors, flash]);
@@ -1110,21 +1316,21 @@ const BlogForm = (props) => {
     /* @__PURE__ */ React.createElement("div", { className: "flex justify-end mt-8 md:col-span-3" }, /* @__PURE__ */ React.createElement(IButton, { variant: "primary", type: "submit" }, "Save"))
   )))));
 };
-const __vite_glob_1_2 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_1_3 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: BlogForm
 }, Symbol.toStringTag, { value: "Module" }));
 const ListContainer = (props) => {
-  const { children: children2 } = props;
-  return /* @__PURE__ */ React.createElement("ul", { className: "space-y-3 w-full" }, children2);
+  const { children } = props;
+  return /* @__PURE__ */ React.createElement("ul", { className: "space-y-3 w-full" }, children);
 };
 const ListItem = (props) => {
-  const { children: children2, isEmpty } = props;
+  const { children, isEmpty } = props;
   const listStyle = {
     normal: "bg-gray-100 rounded-2xl flex justify-between items-center p-4 max-sm:flex-col max-sm:justify-left max-sm:items-start max-sm:gap-4 box-border",
     noData: "bg-gray-100 rounded-2xl flex justify-center items-center p-4"
   };
-  return /* @__PURE__ */ React.createElement("li", { className: isEmpty ? listStyle.noData : listStyle.normal }, children2);
+  return /* @__PURE__ */ React.createElement("li", { className: isEmpty ? listStyle.noData : listStyle.normal }, children);
 };
 const defaultImage = "/build/assets/3dLogo-9924950f.svg";
 const SearchInput = (props) => {
@@ -1132,9 +1338,10 @@ const SearchInput = (props) => {
   const handleChangeSearch = (e) => {
     onChange(e.target);
   };
-  return /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { className: "relative flex gap-6" }, /* @__PURE__ */ React.createElement("div", { className: "absolute inset-x-0 flex items-center h-full px-6 w-min" }, /* @__PURE__ */ React.createElement(MagnifyingGlassIcon, { className: "w-6 h-6 text-iapm-dark-gray" })), /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { className: "relative flex gap-6 z-0" }, /* @__PURE__ */ React.createElement("div", { className: "absolute inset-x-0 flex items-center h-full px-6 w-min" }, /* @__PURE__ */ React.createElement(MagnifyingGlassIcon, { className: "w-6 h-6 text-iapm-dark-gray" })), /* @__PURE__ */ React.createElement(
     "input",
     {
+      autoComplete: "off",
       type: inputType,
       id: inputId,
       name: inputName,
@@ -1146,8 +1353,8 @@ const SearchInput = (props) => {
 };
 const BlogList = (props) => {
   const { posts } = props;
-  const VITE_ASSET_URL = "http://localhost:8000/asset";
-  const VITE_BLOG_URL = "http://localhost:8000/blogs";
+  const VITE_ASSET_URL = "http://iapm.domaintesting.site/asset";
+  const VITE_BLOG_URL = "http://iapm.domaintesting.site/blogs";
   const [keyword, setKeyword] = useState("");
   const handleDeleteAction = (id) => {
     Swal.fire({
@@ -1155,14 +1362,14 @@ const BlogList = (props) => {
       text: `Delete this blog post`
     }).then((result) => {
       if (result.isConfirmed) {
-        Inertia.delete(`/manage-blogs/${id}`);
+        router$1.delete(`/manage-blogs/${id}`);
       }
     });
   };
   const hanldeChangeKeyword = (target2) => {
     setKeyword(target2.value);
   };
-  return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(IButton, { variant: "primary", isLink: true, url: "/manage-blogs/form" }, /* @__PURE__ */ React.createElement(PlusIcon, { className: "w-6 h-6" }), "Add Blog"), /* @__PURE__ */ React.createElement("div", { className: "flex" }, /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(IButton, { variant: "primary", isLink: true, url: "/manage-blogs/form" }, /* @__PURE__ */ React.createElement(PlusIcon, { className: "w-6 h-6" }), "Add Blog"), /* @__PURE__ */ React.createElement(
     SearchInput,
     {
       inputName: "keyword",
@@ -1170,7 +1377,7 @@ const BlogList = (props) => {
       inputId: "keyword",
       onChange: hanldeChangeKeyword
     }
-  )), /* @__PURE__ */ React.createElement(ListContainer, null, Object.keys(posts).length > 0 ? posts.filter((result) => {
+  ), /* @__PURE__ */ React.createElement(ListContainer, null, Object.keys(posts).length > 0 ? posts.filter((result) => {
     if (keyword === "")
       return result;
     if (result == null ? void 0 : result.title.toLowerCase().includes(keyword.toLowerCase()))
@@ -1210,7 +1417,7 @@ const BlogList = (props) => {
     )));
   }) : /* @__PURE__ */ React.createElement("li", { className: "p-6 bg-gray-100 rounded-xl flex justify-center items-center flex-wrap sm:col-span-2 text-center" }, "No Data to display")));
 };
-const __vite_glob_1_3 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_1_4 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: BlogList
 }, Symbol.toStringTag, { value: "Module" }));
@@ -1218,14 +1425,14 @@ const HorizontalTabBar = (props) => {
   const [menuIndex, setMenuIndex] = useState(0);
   const { menus, menuAction } = props;
   const tabBarStyle = {
-    normal: "w-full text-iapm-gray",
-    active: "w-full h-full py-2 bg-iapm-yellow rounded-lg"
+    normal: "w-full text-iapm-gray p-2",
+    active: "w-full p-2 bg-iapm-yellow rounded-lg"
   };
   const handelClickMenu = (e, index) => {
     setMenuIndex(index);
     menuAction(e.target.innerText);
   };
-  return /* @__PURE__ */ React.createElement("div", { className: "w-full flex pb-2 border-b border-b-iamp-gray " }, menus.map((menu, i) => {
+  return /* @__PURE__ */ React.createElement("div", { className: "w-full flex pb-2 border-b border-b-iamp-gray items-starch" }, menus.map((menu, i) => {
     return /* @__PURE__ */ React.createElement(
       "button",
       {
@@ -1263,38 +1470,351 @@ const BlogAuthor = (props) => {
       Swal.fire({
         ...toastSettings,
         icon: "error",
-        title: getErrorMessage(errors)
+        title: getErrorMessage$1(errors)
       });
     }
   }, [errors, flash]);
-  return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(Head, null, /* @__PURE__ */ React.createElement("title", null, "Blog")), /* @__PURE__ */ React.createElement(AdminLayout, null, /* @__PURE__ */ React.createElement("section", { className: "my-6" }, /* @__PURE__ */ React.createElement("div", { className: "bg-white p-6 rounded-3xl shadow flex flex-col gap-8" }, /* @__PURE__ */ React.createElement(H3, null, "Manage Blog"), /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(Head, null, /* @__PURE__ */ React.createElement("title", null, "Blog")), /* @__PURE__ */ React.createElement(AdminLayout, null, /* @__PURE__ */ React.createElement("section", { className: "my-6" }, /* @__PURE__ */ React.createElement("div", { className: "bg-white p-6 rounded-3xl shadow flex flex-col gap-8" }, /* @__PURE__ */ React.createElement(H3, null, "Manage Blog"))), /* @__PURE__ */ React.createElement("section", { className: "my-6 bg-white p-6 shadow space-y-6  rounded-3xl  overflow-x-scroll" }, /* @__PURE__ */ React.createElement("div", { className: "mb-16" }, /* @__PURE__ */ React.createElement(
     HorizontalTabBar,
     {
       menus: tabBarMenus,
       menuAction: hanldeActionMenu
     }
-  ), activeMenu === "Blog List" ? /* @__PURE__ */ React.createElement(BlogList, { posts }) : activeMenu === "Blog Category" && /* @__PURE__ */ React.createElement(
+  )), activeMenu === "Blog List" ? /* @__PURE__ */ React.createElement(BlogList, { posts }) : activeMenu === "Blog Category" && /* @__PURE__ */ React.createElement(
     BlogCategory,
     {
       errors,
       categories
     }
-  )))));
+  ))));
 };
-const __vite_glob_1_4 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_1_5 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: BlogAuthor
 }, Symbol.toStringTag, { value: "Module" }));
-const Dashboard = () => {
-  return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(SidebarMenu, null), /* @__PURE__ */ React.createElement("main", { className: "bg-grid bg-white min-h-screen bg-no-repeat bg-right-top font-poppins" }, children));
+const HistoryDevelopement = (props) => {
+  const { datas } = props;
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [updateProps, setUpdateProps] = useState({
+    isUpdates: false,
+    idUpdate: ""
+  });
+  const handleOpenModal = () => {
+    !!isModalOpen === true && formik.resetForm();
+    !!isModalOpen && setUpdateProps({
+      isUpdates: false,
+      idUpdate: ""
+    });
+    setModalOpen((currentCondition) => !currentCondition);
+  };
+  const historyColumns = [
+    {
+      header: "Year",
+      accessorKey: "year"
+    },
+    {
+      header: "Description",
+      accessorKey: "history_description"
+    }
+  ];
+  const handleSubmit = () => {
+    handleOpenModal();
+    updateProps.isUpdates ? router$1.post(
+      `/history-development/${updateProps.idUpdate}`,
+      formik.values
+    ) : router$1.post(`/history-development`, formik.values);
+  };
+  const formik = useFormik({
+    initialValues: {
+      year: "",
+      history_description: "",
+      image: ""
+    },
+    validationSchema: historyDevelopmentValidationSchema,
+    onSubmit: handleSubmit
+  });
+  const handleForm = (target2) => {
+    const { name, value, type } = target2;
+    formik.setFieldValue(name, type === "file" ? target2.files[0] : value);
+  };
+  const handleUpdateAction = async (data) => {
+    const { id, year, history_description, image } = data;
+    console.log(data);
+    setUpdateProps({
+      isUpdates: true,
+      idUpdate: id
+    });
+    handleOpenModal();
+    await formik.setFieldValue("year", year);
+    await formik.setFieldValue("history_description", history_description);
+    await formik.setFieldValue("image", image);
+  };
+  const hanldeDeleteAction = (id) => {
+    Swal.fire({
+      ...confirmSetttings,
+      text: `Delete this history development`
+    }).then((result) => {
+      if (result.isConfirmed) {
+        router$1.delete(`/history-development/${id}`);
+      }
+    });
+  };
+  return /* @__PURE__ */ React.createElement(React.Fragment, null, !!isModalOpen && /* @__PURE__ */ React.createElement(
+    Modal,
+    {
+      title: updateProps.isUpdates ? "Update History Development" : "Add History Development",
+      handleModal: handleOpenModal
+    },
+    /* @__PURE__ */ React.createElement("form", { onSubmit: formik.handleSubmit }, /* @__PURE__ */ React.createElement(
+      IInput,
+      {
+        inputLabel: "Year",
+        inputName: "year",
+        inputId: "year",
+        inputType: "number",
+        onChange: handleForm,
+        defaultValue: formik.values.year || "",
+        errorMessage: formik.errors.year
+      }
+    ), /* @__PURE__ */ React.createElement(
+      ITextarea,
+      {
+        textareaName: "history_description",
+        textareaLabel: "History Description",
+        defaultValue: formik.values.history_description || "",
+        onChange: handleForm,
+        errorMessage: formik.errors.history_description
+      }
+    ), /* @__PURE__ */ React.createElement(
+      InputMedia,
+      {
+        mediaLabel: "Image",
+        mediaButtonLabel: "Choose Image",
+        mediaName: "image",
+        mediaId: "image",
+        onChange: handleForm,
+        errorMessage: formik.errors.image,
+        defaultValue: formik.values.image || "",
+        mediaType: "image"
+      }
+    ), /* @__PURE__ */ React.createElement("div", { className: "flex justify-end my-6" }, /* @__PURE__ */ React.createElement(IButton, { type: "submit", variant: "primary" }, "Submit")))
+  ), /* @__PURE__ */ React.createElement("section", { className: "rounded-3xl bg-white p-6" }, /* @__PURE__ */ React.createElement(IButton, { action: handleOpenModal, variant: "primary" }, /* @__PURE__ */ React.createElement(PlusIcon, { className: "w-6 h-6 text-iapm-black" }), "Add History Data"), /* @__PURE__ */ React.createElement(
+    ITable,
+    {
+      columns: historyColumns,
+      datas,
+      action: ({ row, closeMenu }) => [
+        /* @__PURE__ */ React.createElement(
+          MenuItem,
+          {
+            key: "detail",
+            sx: { fontSize: "10pt" },
+            onClick: () => {
+              handleUpdateAction(row.original);
+              closeMenu();
+            }
+          },
+          "Update"
+        ),
+        /* @__PURE__ */ React.createElement(
+          MenuItem,
+          {
+            key: "edit",
+            sx: { fontSize: "10pt" },
+            onClick: () => {
+              hanldeDeleteAction(row.original.id);
+              closeMenu();
+            }
+          },
+          "Delete"
+        )
+      ]
+    }
+  )));
 };
-const __vite_glob_1_5 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_1_6 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  default: HistoryDevelopement
+}, Symbol.toStringTag, { value: "Module" }));
+const CompanyProfile = (props) => {
+  const { datas } = props;
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [initialValues, setInitialValues] = useState({});
+  const [validationSchema, setValidationSchema] = useState();
+  const handleSubmit = () => {
+    router$1.put("/company", formik.values);
+    handelModalOpen();
+  };
+  const formik = useFormik({
+    enableReinitialize: true,
+    initialValues,
+    onSubmit: handleSubmit,
+    validationSchema
+  });
+  const handelModalOpen = (initialValue = {}) => {
+    isModalOpen ? setInitialValues({}) : setInitialValues(initialValue);
+    setModalOpen((currentCondition) => !currentCondition);
+  };
+  const handleForm = (target2) => {
+    const { name, value } = target2;
+    formik.setFieldValue(name, value);
+  };
+  useEffect(() => {
+    switch (String(Object.keys(initialValues)[0])) {
+      case "description":
+        setValidationSchema(companyDescriptionSchema);
+        break;
+      case "vision":
+        setValidationSchema(companyVisionSchema);
+        break;
+      case "mission":
+        setValidationSchema(companyMissionSchema);
+        break;
+    }
+  }, [Object.keys(initialValues)]);
+  return /* @__PURE__ */ React.createElement(React.Fragment, null, !!isModalOpen && /* @__PURE__ */ React.createElement(
+    Modal,
+    {
+      title: `Update ${Object.keys(formik.values)[0]}`,
+      handleModal: handelModalOpen
+    },
+    /* @__PURE__ */ React.createElement("form", { onSubmit: formik.handleSubmit }, /* @__PURE__ */ React.createElement(
+      ITextarea,
+      {
+        textareaName: Object.keys(initialValues)[0],
+        textareaLabel: Object.keys(initialValues)[0],
+        defaultValue: formik.values[Object.keys(formik.values)[0]],
+        onChange: handleForm,
+        errorMessage: formik.errors[Object.keys(initialValues)[0]]
+      }
+    ), /* @__PURE__ */ React.createElement("div", { className: "flex justify-end" }, /* @__PURE__ */ React.createElement(IButton, { variant: "primary", type: "submit" }, "Save")))
+  ), /* @__PURE__ */ React.createElement("section", { className: "grid grid-cols-2 gap-6 max-md:grid-cols-1" }, /* @__PURE__ */ React.createElement("div", { className: "p-6 bg-white rounded-3xl space-y-6 shadow" }, /* @__PURE__ */ React.createElement("div", { className: "flex justify-between items-center" }, /* @__PURE__ */ React.createElement("div", { className: "flex gap-4 items-center" }, /* @__PURE__ */ React.createElement("span", { className: "p-2 bg-iapm-yellow rounded-full" }, /* @__PURE__ */ React.createElement(DocumentTextIcon, { className: "w-6 h-6" })), /* @__PURE__ */ React.createElement(H4, null, "Company Description")), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      className: "p-2",
+      onClick: () => handelModalOpen({
+        description: datas == null ? void 0 : datas.description
+      })
+    },
+    /* @__PURE__ */ React.createElement(PencilIcon, { className: "w-6 h-6" })
+  )), /* @__PURE__ */ React.createElement("div", { className: "p-4 bg-gray-100 rounded-2xl" }, /* @__PURE__ */ React.createElement(Paragraph, null, (datas == null ? void 0 : datas.description) || "No data to display"))), /* @__PURE__ */ React.createElement("div", { className: "p-6 bg-white rounded-3xl space-y-6 shadow" }, /* @__PURE__ */ React.createElement("div", { className: "flex justify-between items-center" }, /* @__PURE__ */ React.createElement("div", { className: "flex gap-4 items-center" }, /* @__PURE__ */ React.createElement("span", { className: "p-2 bg-iapm-yellow rounded-full" }, /* @__PURE__ */ React.createElement(EyeIcon, { className: "w-6 h-6" })), /* @__PURE__ */ React.createElement(H4, null, "Vision")), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      className: "p-2",
+      onClick: () => handelModalOpen({
+        vision: datas == null ? void 0 : datas.vision
+      })
+    },
+    /* @__PURE__ */ React.createElement(PencilIcon, { className: "w-6 h-6" })
+  )), /* @__PURE__ */ React.createElement("div", { className: "p-4 bg-gray-100 rounded-2xl" }, /* @__PURE__ */ React.createElement(Paragraph, null, (datas == null ? void 0 : datas.vision) || "No data to display"))), /* @__PURE__ */ React.createElement("div", { className: "p-6 bg-white rounded-3xl space-y-6 shadow" }, /* @__PURE__ */ React.createElement("div", { className: "flex justify-between items-center" }, /* @__PURE__ */ React.createElement("div", { className: "flex gap-4 items-center" }, /* @__PURE__ */ React.createElement("span", { className: "p-2 bg-iapm-yellow rounded-full" }, /* @__PURE__ */ React.createElement(RocketLaunchIcon, { className: "w-6 h-6" })), /* @__PURE__ */ React.createElement(H4, null, "Mission")), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      className: "p-2",
+      onClick: () => handelModalOpen({
+        mission: datas == null ? void 0 : datas.mission
+      })
+    },
+    /* @__PURE__ */ React.createElement(PencilIcon, { className: "w-6 h-6" })
+  )), /* @__PURE__ */ React.createElement("div", { className: "p-4 bg-gray-100 rounded-2xl" }, /* @__PURE__ */ React.createElement(Paragraph, null, (datas == null ? void 0 : datas.mission) || "No data to display")))));
+};
+const __vite_glob_1_7 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  default: CompanyProfile
+}, Symbol.toStringTag, { value: "Module" }));
+const Company = (props) => {
+  const { companyData, histories, flash, errors } = props;
+  const tabBarMenus = [
+    {
+      label: "Profile"
+    },
+    {
+      label: "History Development"
+    }
+  ];
+  const [activeMenu, setActiveMenu] = useState(tabBarMenus[0].label);
+  const hanldeActionMenu = (menu) => {
+    setActiveMenu(menu);
+  };
+  useEffect(() => {
+    if (flash == null ? void 0 : flash.success) {
+      Swal.fire({
+        ...toastSettings,
+        icon: "success",
+        title: flash.success
+      });
+      flash.success = null;
+    } else if (Object.keys(errors).length > 0) {
+      Swal.fire({
+        ...toastSettings,
+        icon: "error",
+        title: getErrorMessage(errors)
+      });
+    }
+  }, [errors, flash]);
+  return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(Head, null, /* @__PURE__ */ React.createElement("title", null, "Company")), /* @__PURE__ */ React.createElement(AdminLayout, null, /* @__PURE__ */ React.createElement("section", { className: "space-y-6 bg-white shadow rounded-3xl p-6 my-6 " }, /* @__PURE__ */ React.createElement(H3, null, "Company"), /* @__PURE__ */ React.createElement(
+    HorizontalTabBar,
+    {
+      menus: tabBarMenus,
+      menuAction: hanldeActionMenu
+    }
+  )), /* @__PURE__ */ React.createElement("section", { className: "mb-16" }, activeMenu === "Profile" ? /* @__PURE__ */ React.createElement(CompanyProfile, { datas: companyData }) : activeMenu === "History Development" && /* @__PURE__ */ React.createElement(HistoryDevelopement, { datas: histories }))));
+};
+const __vite_glob_1_8 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  default: Company
+}, Symbol.toStringTag, { value: "Module" }));
+const MessageList = (props) => {
+  const { messages } = props;
+  const [lastedMessage, setLastedMessage] = useState([]);
+  const formatingDate = (date) => {
+    const newDate = new Date(date);
+    const day = newDate.getDay();
+    const month = newDate.getMonth();
+    const year = newDate.getFullYear();
+    const time = `${newDate.getHours()}:${newDate.getMinutes()}:${newDate.getSeconds()}`;
+    return `${day}/${month}/${year} - ${time}`;
+  };
+  useEffect(() => {
+    const newMessageFormat = messages.map((message) => {
+      return {
+        name: message == null ? void 0 : message.name,
+        email: message == null ? void 0 : message.email,
+        message: message == null ? void 0 : message.message,
+        created_at: formatingDate(message == null ? void 0 : message.created_at)
+      };
+    });
+    setLastedMessage(newMessageFormat);
+  }, []);
+  console.log(lastedMessage);
+  return /* @__PURE__ */ React.createElement("section", { className: "p-6 bg-white shadow rounded-3xl" }, /* @__PURE__ */ React.createElement("div", { className: "mb-6" }, /* @__PURE__ */ React.createElement(H5, null, "Lasted Message"), /* @__PURE__ */ React.createElement(Paragraph, null, "Recent messages sent via email form on the contact page")), /* @__PURE__ */ React.createElement(ListContainer, null, lastedMessage == null ? void 0 : lastedMessage.map((message, i) => {
+    return /* @__PURE__ */ React.createElement(ListItem, { key: i }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement(
+      "a",
+      {
+        href: `mailto:${message == null ? void 0 : message.email}`,
+        target: "_blank",
+        className: "block space-x-2"
+      },
+      /* @__PURE__ */ React.createElement("span", { className: " capitalize" }, message == null ? void 0 : message.name),
+      /* @__PURE__ */ React.createElement("span", null, "-"),
+      /* @__PURE__ */ React.createElement("span", null, message == null ? void 0 : message.email)
+    ), /* @__PURE__ */ React.createElement("span", { className: "block text-sm text-iapm-dark-gray" }, message == null ? void 0 : message.created_at), /* @__PURE__ */ React.createElement("div", { className: "mt-4 " }, /* @__PURE__ */ React.createElement(Paragraph, null, message == null ? void 0 : message.message))));
+  })));
+};
+const __vite_glob_1_10 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  default: MessageList
+}, Symbol.toStringTag, { value: "Module" }));
+const Dashboard = (props) => {
+  const { lastedMessages } = props;
+  return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(Head, null, /* @__PURE__ */ React.createElement("title", null, "Dashboard")), /* @__PURE__ */ React.createElement(AdminLayout, null, /* @__PURE__ */ React.createElement("div", { className: "grid grid-cols-2 my-8" }, /* @__PURE__ */ React.createElement(MessageList, { messages: lastedMessages }))));
+};
+const __vite_glob_1_9 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Dashboard
 }, Symbol.toStringTag, { value: "Module" }));
 const MediaPreview = (props) => {
   const { media, type } = props;
-  const baseUrl = "http://localhost:8000/asset";
+  const baseUrl = "http://iapm.domaintesting.site/asset";
   return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(Head, null, /* @__PURE__ */ React.createElement("title", null, "Media Previw")), /* @__PURE__ */ React.createElement("main", { className: " max-w-screen-xl px-6 md:px-8 mx-auto" }, /* @__PURE__ */ React.createElement("section", { className: "flex h-screen justify-center items-center " }, type === "Image" && /* @__PURE__ */ React.createElement(
     "img",
     {
@@ -1309,7 +1829,7 @@ const MediaPreview = (props) => {
     }
   ), "Your browser does not support the video tag"))));
 };
-const __vite_glob_1_6 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_1_11 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: MediaPreview
 }, Symbol.toStringTag, { value: "Module" }));
@@ -1333,7 +1853,7 @@ const Navbar = () => {
   return /* @__PURE__ */ React.createElement("nav", { className: "w-full font-poppins bg-white px-6 md:px-8 z-50 " }, /* @__PURE__ */ React.createElement("div", { className: "py-4 flex max-w-screen-xl justify-between mx-auto items-center" }, /* @__PURE__ */ React.createElement(Link, { href: "/" }, /* @__PURE__ */ React.createElement("img", { src: Logo$1, alt: "IAPM Logo" })), /* @__PURE__ */ React.createElement(
     "ul",
     {
-      className: `flex gap-10 max-md:absolute max-md:flex-col max-md:bg-white max-md:top-[72px] max-md:w-full max-md:left-0 max-md:justify-center max-md:py-6 ${isNavbar ? "" : "max-md:hidden"}`,
+      className: `flex gap-10 max-md:absolute max-md:z-40 max-md:flex-col max-md:bg-white max-md:top-[72px] max-md:w-full max-md:left-0 max-md:justify-center max-md:py-6 ${isNavbar ? "" : "max-md:hidden"}`,
       ref: menusRef
     },
     /* @__PURE__ */ React.createElement(
@@ -1349,6 +1869,13 @@ const Navbar = () => {
         className: currentUrl.includes("/services") ? menusStyle.active : menusStyle.normal
       },
       /* @__PURE__ */ React.createElement(Link, { href: "/services" }, "Services")
+    ),
+    /* @__PURE__ */ React.createElement(
+      "li",
+      {
+        className: currentUrl.includes("/contacts") ? menusStyle.active : menusStyle.normal
+      },
+      /* @__PURE__ */ React.createElement(Link, { href: "/contacts" }, "Contacts")
     ),
     /* @__PURE__ */ React.createElement(
       "li",
@@ -1433,6 +1960,13 @@ const Footer = (props) => {
   ), /* @__PURE__ */ React.createElement(
     Link,
     {
+      href: "/contacts",
+      className: "block text-iapm-gray text-base"
+    },
+    "Contact"
+  ), /* @__PURE__ */ React.createElement(
+    Link,
+    {
       href: "/about-us",
       className: "block text-iapm-gray text-base"
     },
@@ -1452,14 +1986,7 @@ const Footer = (props) => {
         key: i
       },
       /* @__PURE__ */ React.createElement("div", { className: "w-6 h-6" }, /* @__PURE__ */ React.createElement(MapPinIcon, { className: "w-6 h-6 block text-iapm-gray" })),
-      /* @__PURE__ */ React.createElement(
-        Link,
-        {
-          href: "/",
-          className: "block text-iapm-gray text-base"
-        },
-        address.address
-      )
+      /* @__PURE__ */ React.createElement("span", { className: "block text-iapm-gray text-base" }, address.address)
     );
   }))), /* @__PURE__ */ React.createElement("li", { className: "space-y-4" }, /* @__PURE__ */ React.createElement(H6, { isDark: true }, "Contact"), /* @__PURE__ */ React.createElement("div", { className: "space-y-2 " }, attributes == null ? void 0 : attributes.contacts.map((contact, i) => {
     return /* @__PURE__ */ React.createElement(
@@ -1469,14 +1996,7 @@ const Footer = (props) => {
         key: i
       },
       /* @__PURE__ */ React.createElement("div", { className: "w-6 h-6" }, (contact == null ? void 0 : contact.contact_type) === "Mail" ? /* @__PURE__ */ React.createElement(EnvelopeIcon, { className: "w-6 h-6 block text-iapm-gray" }) : /* @__PURE__ */ React.createElement(PhoneIcon, { className: "w-6 h-6 block text-iapm-gray" })),
-      /* @__PURE__ */ React.createElement(
-        Link,
-        {
-          href: "/",
-          className: "block text-iapm-gray text-base"
-        },
-        contact.contact
-      )
+      /* @__PURE__ */ React.createElement("span", { className: "block text-iapm-gray text-base" }, contact.contact)
     );
   })))))), /* @__PURE__ */ React.createElement(
     "div",
@@ -1490,8 +2010,11 @@ const Footer = (props) => {
   ));
 };
 const ClientLayout = (props) => {
-  const { children: children2, attributes } = props;
-  return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(Navbar, null), /* @__PURE__ */ React.createElement("main", { className: "bg-grid bg-white min-h-screen bg-no-repeat bg-right-top font-poppins" }, children2), /* @__PURE__ */ React.createElement(Footer, { attributes }));
+  const { children, attributes } = props;
+  useEffect(() => {
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  }, []);
+  return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(Navbar, null), /* @__PURE__ */ React.createElement("main", { className: "bg-grid bg-white min-h-screen bg-no-repeat bg-right-top font-poppins" }, children), /* @__PURE__ */ React.createElement(Footer, { attributes }));
 };
 const CompanyDesc = (props) => {
   const { aboutTitle, visionTitle, missionTitle, image, datas } = props;
@@ -1504,7 +2027,7 @@ const CompanyDesc = (props) => {
     }
   ))))));
 };
-const __vite_glob_1_18 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_1_23 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: CompanyDesc
 }, Symbol.toStringTag, { value: "Module" }));
@@ -1520,7 +2043,7 @@ const CTA = () => {
   ), /* @__PURE__ */ React.createElement("div", { className: "max-md:text-center" }, /* @__PURE__ */ React.createElement(H3, null, "Let's make something extraordinary"), /* @__PURE__ */ React.createElement(Paragraph, null, "You can contact us to get more information or collaborate"))), /* @__PURE__ */ React.createElement("div", { className: "mx-auto" }, /* @__PURE__ */ React.createElement(IButton, { isLink: true, url: "/", variant: "cta-button" }, "Contact Us")))));
 };
 const TabBar = (props) => {
-  const { children: children2, datas, onClickMenu } = props;
+  const { children, datas, onClickMenu } = props;
   const [activeMenu, setActiveMenu] = useState(0);
   const handleClickMenu = (index) => {
     setActiveMenu(index);
@@ -1531,9 +2054,9 @@ const TabBar = (props) => {
   }, []);
   return /* @__PURE__ */ React.createElement("div", { className: "grid md:grid-flow-col lg:auto-cols-fr md:auto-cols-auto gap-6 max-md:grid-cols-1" }, /* @__PURE__ */ React.createElement("ul", { className: "md:space-y-12 max-md:flex max-md:justify-start max-md:gap-6 max-sm:flex-wrap max-md:items-center w-full" }, datas.map((val, i) => {
     return /* @__PURE__ */ React.createElement("li", { key: i }, /* @__PURE__ */ React.createElement("button", { onClick: () => handleClickMenu(i) }, i == activeMenu ? /* @__PURE__ */ React.createElement("h3", { className: "text-3xl max-md:text-2xl text-iapm-black font-semibold" }, val.year) : /* @__PURE__ */ React.createElement("h3", { className: "text-3xl max-md:text-2xl text-iapm-gray font-semibold" }, val.year)));
-  })), /* @__PURE__ */ React.createElement("div", { className: "w-full space-y-8 col-span-3" }, children2));
+  })), /* @__PURE__ */ React.createElement("div", { className: "w-full space-y-8 col-span-3" }, children));
 };
-const HistoryDevelopment = (props) => {
+const HistoryDevelopment$1 = (props) => {
   const { title, description } = props;
   const [displayedData, setDisplayedData] = useState({});
   const dummyData = [
@@ -1576,11 +2099,7 @@ const HistoryDevelopment = (props) => {
     )), /* @__PURE__ */ React.createElement("div", { className: "space-y-6" }, /* @__PURE__ */ React.createElement(H3, null, "What have we completed in", " ", displayedData.year, "?"), /* @__PURE__ */ React.createElement(Paragraph, null, displayedData.description)))
   )))));
 };
-const __vite_glob_1_19 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  default: HistoryDevelopment
-}, Symbol.toStringTag, { value: "Module" }));
-const baseUrlAsset = "http://localhost:8000/asset";
+const baseUrlAsset = "http://iapm.domaintesting.site/asset";
 const GetterAsset = (id, assets) => {
   const asset = findImage(id, assets);
   if (!asset) {
@@ -1596,8 +2115,8 @@ const findImage = (id, assets) => {
 };
 const About = (props) => {
   var _a, _b, _c, _d, _e, _f;
-  const { datas, assets } = props;
-  return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(Head, null, /* @__PURE__ */ React.createElement("title", null, "About Us")), /* @__PURE__ */ React.createElement(ClientLayout, null, /* @__PURE__ */ React.createElement(
+  const { datas, assets, attributes } = props;
+  return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(Head, null, /* @__PURE__ */ React.createElement("title", null, "About Us")), /* @__PURE__ */ React.createElement(ClientLayout, { attributes }, /* @__PURE__ */ React.createElement(
     CompanyDesc,
     {
       aboutTitle: (_a = datas["about"]) == null ? void 0 : _a.title,
@@ -1606,19 +2125,19 @@ const About = (props) => {
       visionTitle: (_d = datas["vision"]) == null ? void 0 : _d.title
     }
   ), /* @__PURE__ */ React.createElement(
-    HistoryDevelopment,
+    HistoryDevelopment$1,
     {
       title: (_e = datas["history-of-development"]) == null ? void 0 : _e.title,
       description: (_f = datas["history-of-development"]) == null ? void 0 : _f.description
     }
   ), /* @__PURE__ */ React.createElement(CTA, null)));
 };
-const __vite_glob_1_20 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_1_25 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: About
 }, Symbol.toStringTag, { value: "Module" }));
 const SidebarEditor = (props) => {
-  const { children: children2, isOpenEditor } = props;
+  const { children, isOpenEditor } = props;
   const editorContainerStyle = {
     open: "w-80 fixed top-16 min-h-screen bg-white z-10 shadow-xl right-0 translate-x-0 trasition duration-100 box-border",
     close: "w-80 fixed top-16 min-h-screen bg-white z-10 shadow-xl right-0 translate-x-80 trasition duration-100 box-border"
@@ -1628,11 +2147,11 @@ const SidebarEditor = (props) => {
     {
       className: isOpenEditor === true ? editorContainerStyle.open : editorContainerStyle.close
     },
-    /* @__PURE__ */ React.createElement("div", { className: "pt-3" }, /* @__PURE__ */ React.createElement("div", { className: "h-screen overflow-y-scroll custom-scrollbar px-4 pb-40" }, children2))
+    /* @__PURE__ */ React.createElement("div", { className: "pt-3" }, /* @__PURE__ */ React.createElement("div", { className: "h-screen overflow-y-scroll custom-scrollbar px-4 pb-40" }, children))
   );
 };
 const FloatingButton = (props) => {
-  const { children: children2, action } = props;
+  const { children, action } = props;
   const hanldeClick = () => {
     action();
   };
@@ -1642,7 +2161,7 @@ const FloatingButton = (props) => {
       className: "p-3 bg-iapm-yellow rounded-full fixed bottom-6 right-12 z-50 shadow-xl",
       onClick: hanldeClick
     },
-    children2
+    children
   );
 };
 const AssetMapping = (assets) => {
@@ -1677,7 +2196,7 @@ const AboutEditor = (props) => {
     setOpenEditor((isOpen) => !isOpen);
   };
   const handleSubmit = () => {
-    Inertia.put("/pages", formik.values);
+    router$1.put("/pages", formik.values);
   };
   const formik = useFormik({
     enableReinitialize: true,
@@ -1706,7 +2225,7 @@ const AboutEditor = (props) => {
       Swal.fire({
         ...toastSettings,
         icon: "error",
-        title: getErrorMessage(errors)
+        title: getErrorMessage$1(errors)
       });
     }
   }, [errors, flash]);
@@ -1770,7 +2289,7 @@ const AboutEditor = (props) => {
     }
   )), /* @__PURE__ */ React.createElement("div", { className: "flex justify-end my-6" }, /* @__PURE__ */ React.createElement(IButton, { type: "submit", variant: "primary" }, "Save"))))));
 };
-const __vite_glob_1_7 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_1_12 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: AboutEditor
 }, Symbol.toStringTag, { value: "Module" }));
@@ -1785,7 +2304,7 @@ const Hero = (props) => {
     }
   )));
 };
-const __vite_glob_1_28 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_1_34 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Hero
 }, Symbol.toStringTag, { value: "Module" }));
@@ -1836,7 +2355,7 @@ const ClientGalery = (props) => {
     }
   )))));
 };
-const __vite_glob_1_27 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_1_33 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: ClientGalery
 }, Symbol.toStringTag, { value: "Module" }));
@@ -1846,12 +2365,12 @@ const VideoSection = (props) => {
   return /* @__PURE__ */ React.createElement(
     "section",
     {
-      className: "w-full my-36 bg-iapm-light-gray relative py-16 after:content-[''] after:bock after:w-48 after:h-56 after:bg-dot-ornament \n        after:bg-no-repeat after:absolute after:right-0 after:-bottom-24 after:md:-bottom-32 after:max-md:w-24 after:max-md:h-36 after:z-0"
+      className: "w-full my-36 bg-iapm-light-gray relative py-16 after:content-[''] after:bock after:w-48 after:h-56 after:bg-dot-ornament \r\n        after:bg-no-repeat after:absolute after:right-0 after:-bottom-24 after:md:-bottom-32 after:max-md:w-24 after:max-md:h-36 after:z-0"
     },
     /* @__PURE__ */ React.createElement("div", { className: " max-w-screen-xl mx-auto px-6 md:px-8 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-12 items-center" }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("video", { className: "rounded-xl", controls: true }, /* @__PURE__ */ React.createElement("source", { src: VideoSource, type: "video/mp4" }), "Your browser does not support the video tag.")), /* @__PURE__ */ React.createElement("div", { className: "space-y-6" }, /* @__PURE__ */ React.createElement(H2, null, title), /* @__PURE__ */ React.createElement(Paragraph, null, description)))
   );
 };
-const __vite_glob_1_26 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_1_32 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: VideoSection
 }, Symbol.toStringTag, { value: "Module" }));
@@ -1860,7 +2379,7 @@ const swiper = "";
 const pagination = "";
 const navigation = "";
 const SwiperContainer = (props) => {
-  const { children: children2 } = props;
+  const { children } = props;
   return /* @__PURE__ */ React.createElement(
     Swiper,
     {
@@ -1890,7 +2409,7 @@ const SwiperContainer = (props) => {
         }
       }
     },
-    /* @__PURE__ */ React.createElement("div", { className: "py-32" }, children2)
+    /* @__PURE__ */ React.createElement("div", { className: "py-32" }, children)
   );
 };
 const ServiceOverview = (props) => {
@@ -1923,12 +2442,12 @@ const ServiceOverview = (props) => {
     ))));
   })))));
 };
-const __vite_glob_1_29 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_1_35 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: ServiceOverview
 }, Symbol.toStringTag, { value: "Module" }));
 const Carousel = (props) => {
-  const { children: children2 } = props;
+  const { children } = props;
   return /* @__PURE__ */ React.createElement(
     Swiper,
     {
@@ -1942,7 +2461,7 @@ const Carousel = (props) => {
       },
       className: "swiper"
     },
-    children2
+    children
   );
 };
 const Testimonial$1 = (props) => {
@@ -1971,7 +2490,7 @@ const Testimonial$1 = (props) => {
     )))), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement(H5, null, "Larry Pageim"), /* @__PURE__ */ React.createElement(Paragraph, null, "Sr. Director, Brand Marketing at PT XYZ"))));
   }))));
 };
-const __vite_glob_1_30 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_1_36 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Testimonial$1
 }, Symbol.toStringTag, { value: "Module" }));
@@ -1981,6 +2500,10 @@ const HomePage = (props) => {
   const [currentUrl, setCurrentUrl] = useState("");
   useEffect(() => {
     setCurrentUrl(window.location.href);
+    ReactGA.send({
+      hitType: "pageView",
+      page: currentUrl
+    });
   }, []);
   return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(Head, null, /* @__PURE__ */ React.createElement("title", null, (_a = datas == null ? void 0 : datas.meta) == null ? void 0 : _a.meta_title), /* @__PURE__ */ React.createElement("meta", { name: "robots", content: "index, follow" }), /* @__PURE__ */ React.createElement(
     "meta",
@@ -2019,7 +2542,7 @@ const HomePage = (props) => {
     }
   ), /* @__PURE__ */ React.createElement(Testimonial$1, { title: (_q = datas["testimonial"]) == null ? void 0 : _q.title }), /* @__PURE__ */ React.createElement(CTA, null)));
 };
-const __vite_glob_1_31 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_1_37 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: HomePage
 }, Symbol.toStringTag, { value: "Module" }));
@@ -2032,7 +2555,7 @@ const HomeEditor = (props) => {
     setOpenEditor((isOpen) => !isOpen);
   };
   const handleSubmit = () => {
-    Inertia.put("/pages", formik.values);
+    router$1.put("/pages", formik.values);
   };
   const formik = useFormik({
     enableReinitialize: true,
@@ -2061,7 +2584,7 @@ const HomeEditor = (props) => {
       Swal.fire({
         ...toastSettings,
         icon: "error",
-        title: getErrorMessage(errors)
+        title: getErrorMessage$1(errors)
       });
     }
   }, [errors, flash]);
@@ -2223,7 +2746,7 @@ const HomeEditor = (props) => {
     }
   )), /* @__PURE__ */ React.createElement("div", { className: "flex justify-end my-6" }, /* @__PURE__ */ React.createElement(IButton, { type: "submit", variant: "primary" }, "Save"))))));
 };
-const __vite_glob_1_8 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_1_13 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: HomeEditor
 }, Symbol.toStringTag, { value: "Module" }));
@@ -2231,7 +2754,7 @@ const ServiceHeader = (props) => {
   const { title, description } = props;
   return /* @__PURE__ */ React.createElement("section", { className: "bg-no-repeat bg-left bg-grid " }, /* @__PURE__ */ React.createElement("div", { className: " h-full py-16 bg-opacity-60" }, /* @__PURE__ */ React.createElement("div", { className: "max-w-screen-xl mx-auto px-6 md:px-8 " }, /* @__PURE__ */ React.createElement("span", { className: "bg-iapm-yellow block w-max h-max p-4 rounded-full mb-6" }, /* @__PURE__ */ React.createElement(CubeIcon, { className: "w-12 h-12" })), /* @__PURE__ */ React.createElement(H2, null, title), /* @__PURE__ */ React.createElement("div", { className: "md:max-w-[70vw]" }, /* @__PURE__ */ React.createElement(Paragraph, null, description)))));
 };
-const __vite_glob_1_33 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_1_39 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: ServiceHeader
 }, Symbol.toStringTag, { value: "Module" }));
@@ -2253,14 +2776,14 @@ const ServiceListing = (props) => {
     }
   ))));
 };
-const __vite_glob_1_34 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_1_40 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: ServiceListing
 }, Symbol.toStringTag, { value: "Module" }));
 const Service$1 = (props) => {
   var _a, _b;
-  const { datas } = props;
-  return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(Head, null, /* @__PURE__ */ React.createElement("title", null, "Services")), /* @__PURE__ */ React.createElement(ClientLayout, null, /* @__PURE__ */ React.createElement(
+  const { datas, attributes } = props;
+  return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(Head, null, /* @__PURE__ */ React.createElement("title", null, "Services")), /* @__PURE__ */ React.createElement(ClientLayout, { attributes }, /* @__PURE__ */ React.createElement(
     ServiceHeader,
     {
       title: (_a = datas["service"]) == null ? void 0 : _a.title,
@@ -2268,7 +2791,7 @@ const Service$1 = (props) => {
     }
   ), /* @__PURE__ */ React.createElement(ServiceListing, null), /* @__PURE__ */ React.createElement(CTA, null)));
 };
-const __vite_glob_1_37 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_1_43 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Service$1
 }, Symbol.toStringTag, { value: "Module" }));
@@ -2280,7 +2803,7 @@ const ServiceEditor = (props) => {
     setOpenEditor((isOpen) => !isOpen);
   };
   const handleSubmit = () => {
-    Inertia.put("/pages", formik.values);
+    router$1.put("/pages", formik.values);
   };
   const formik = useFormik({
     enableReinitialize: true,
@@ -2302,7 +2825,7 @@ const ServiceEditor = (props) => {
       Swal.fire({
         ...toastSettings,
         icon: "error",
-        title: getErrorMessage(errors)
+        title: getErrorMessage$1(errors)
       });
     }
   }, [errors, flash]);
@@ -2346,14 +2869,14 @@ const ServiceEditor = (props) => {
     }
   )), /* @__PURE__ */ React.createElement("div", { className: "flex justify-end my-6" }, /* @__PURE__ */ React.createElement(IButton, { type: "submit", variant: "primary" }, "Save"))))));
 };
-const __vite_glob_1_9 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_1_14 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: ServiceEditor
 }, Symbol.toStringTag, { value: "Module" }));
 const PageEditor = () => {
   return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(Head, null, /* @__PURE__ */ React.createElement("title", null, "Page Editor")), /* @__PURE__ */ React.createElement(AdminLayout, null, /* @__PURE__ */ React.createElement("section", null, /* @__PURE__ */ React.createElement("h1", null, "PageEditor"))));
 };
-const __vite_glob_1_10 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_1_15 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: PageEditor
 }, Symbol.toStringTag, { value: "Module" }));
@@ -2361,9 +2884,9 @@ const ServiceForm = (props) => {
   const { mode, service } = props;
   const handleSubmit = () => {
     if (mode === "update") {
-      Inertia.post(`/service-products/${service.id}/form`, formik.values);
+      router$1.post(`/service-products/${service.id}/form`, formik.values);
     } else if (mode === "create") {
-      Inertia.post("/service-products", formik.values);
+      router$1.post("/service-products", formik.values);
     }
   };
   const formik = useFormik({
@@ -2432,13 +2955,13 @@ const ServiceForm = (props) => {
     "Submit"
   )))))));
 };
-const __vite_glob_1_11 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_1_16 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: ServiceForm
 }, Symbol.toStringTag, { value: "Module" }));
 const Service = (props) => {
   const { services, errors, flash } = props;
-  const baseUrlAsset2 = "http://localhost:8000/asset";
+  const baseUrlAsset2 = "http://iapm.domaintesting.site/asset";
   const serviceColumns = [
     {
       header: "Service Name",
@@ -2474,7 +2997,7 @@ const Service = (props) => {
       text: `Delete this service`
     }).then((result) => {
       if (result.isConfirmed) {
-        Inertia.delete(`/service-products/${id}`);
+        router.delete(`/service-products/${id}`);
       }
     });
   };
@@ -2489,7 +3012,7 @@ const Service = (props) => {
       Swal.fire({
         ...toastSettings,
         icon: "error",
-        title: getErrorMessage(errors)
+        title: getErrorMessage$1(errors)
       });
     }
   }, [errors, flash]);
@@ -2514,7 +3037,7 @@ const Service = (props) => {
             key: "detail",
             sx: { fontSize: "10pt" },
             onClick: () => {
-              Inertia.visit(
+              router.visit(
                 `/service-products/${row.original.id}/form`
               );
               closeMenu();
@@ -2538,7 +3061,7 @@ const Service = (props) => {
     }
   ))));
 };
-const __vite_glob_1_12 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_1_17 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Service
 }, Symbol.toStringTag, { value: "Module" }));
@@ -2573,10 +3096,10 @@ const Testimonial = (props) => {
   };
   const handleSubmit = () => {
     handleOpenModal();
-    updateProps.isUpdate ? Inertia.put(
+    updateProps.isUpdate ? router.put(
       `/testimonials/${updateProps.idUpdate}`,
       formik.values
-    ) : Inertia.post("/testimonials", formik.values);
+    ) : router.post("/testimonials", formik.values);
   };
   const formik = useFormik({
     initialValues: {
@@ -2608,7 +3131,7 @@ const Testimonial = (props) => {
       text: `Delete this testimonial`
     }).then((result) => {
       if (result.isConfirmed) {
-        Inertia.delete(`/testimonials/${id}`);
+        router.delete(`/testimonials/${id}`);
       }
     });
   };
@@ -2624,7 +3147,7 @@ const Testimonial = (props) => {
       Swal.fire({
         ...toastSettings,
         icon: "error",
-        title: getErrorMessage(errors)
+        title: getErrorMessage$1(errors)
       });
       !!isModalOpen && handleOpenModal();
     }
@@ -2715,14 +3238,14 @@ const Testimonial = (props) => {
     }
   ))));
 };
-const __vite_glob_1_13 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_1_18 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Testimonial
 }, Symbol.toStringTag, { value: "Module" }));
 const AddressForm = (props) => {
   const { value, closeModal, isUpdate } = props;
   const handleSubmit = () => {
-    isUpdate ? Inertia.put(`/addresses/${value.id}`, formik.values) : Inertia.post("/addresses", formik.values);
+    isUpdate ? router$1.put(`/addresses/${value.id}`, formik.values) : router$1.post("/addresses", formik.values);
     closeModal();
   };
   const formik = useFormik({
@@ -2757,7 +3280,7 @@ const AddressForm = (props) => {
     "Cancel"
   ), /* @__PURE__ */ React.createElement(IButton, { type: "submit", variant: "primary" }, "Submit"))));
 };
-const __vite_glob_1_14 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_1_19 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: AddressForm
 }, Symbol.toStringTag, { value: "Module" }));
@@ -2770,7 +3293,7 @@ const ContactForm = (props) => {
     { value: "Telegram", label: "Telegram" }
   ];
   const handleSubmit = () => {
-    isUpdate ? Inertia.put(`/contacts/${value.id}`, formik.values) : Inertia.post("/contacts", formik.values);
+    isUpdate ? router$1.put(`/contacts/${value.id}`, formik.values) : router$1.post("/contacts", formik.values);
     closeModal();
   };
   const formik = useFormik({
@@ -2800,7 +3323,7 @@ const ContactForm = (props) => {
   ), formik.values.contact_type && /* @__PURE__ */ React.createElement(
     IInput,
     {
-      inputLabel: "Contact",
+      inputLabel: formik.values.contact_type == "Telegram" ? "Username" : "Contact",
       inputName: "contact",
       inputId: "contact",
       inputType: "text",
@@ -2818,7 +3341,7 @@ const ContactForm = (props) => {
     "Cancel"
   ), /* @__PURE__ */ React.createElement(IButton, { type: "submit", variant: "primary" }, "Submit"))));
 };
-const __vite_glob_1_15 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_1_20 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: ContactForm
 }, Symbol.toStringTag, { value: "Module" }));
@@ -2832,7 +3355,7 @@ const SocialForm = (props) => {
     { value: "Instagram", label: "Instagram" }
   ];
   const handleSubmit = () => {
-    isUpdate ? Inertia.put(`/socials/${value.id}`, formik.values) : Inertia.post("/socials", formik.values);
+    isUpdate ? router$1.put(`/socials/${value.id}`, formik.values) : router$1.post("/socials", formik.values);
     closeModal();
   };
   const formik = useFormik({
@@ -2892,7 +3415,7 @@ const SocialForm = (props) => {
     "Cancel"
   ), /* @__PURE__ */ React.createElement(IButton, { type: "submit", variant: "primary" }, "Submit"))));
 };
-const __vite_glob_1_16 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_1_21 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: SocialForm
 }, Symbol.toStringTag, { value: "Module" }));
@@ -3005,13 +3528,13 @@ const WebAttribute = (props) => {
       if (result.isConfirmed) {
         switch (field) {
           case "contact":
-            Inertia.delete(`/contacts/${id}`);
+            router$1.delete(`/contacts/${id}`);
             break;
           case "address":
-            Inertia.delete(`/addresses/${id}`);
+            router$1.delete(`/addresses/${id}`);
             break;
           case "social-media":
-            Inertia.delete(`/socials/${id}`);
+            router$1.delete(`/socials/${id}`);
             break;
         }
       }
@@ -3029,7 +3552,7 @@ const WebAttribute = (props) => {
       Swal.fire({
         ...toastSettings,
         icon: "error",
-        title: getErrorMessage(errors)
+        title: getErrorMessage$1(errors)
       });
       !!modalProps.isOpen && handleModal();
     }
@@ -3145,13 +3668,60 @@ const WebAttribute = (props) => {
     )));
   }) : /* @__PURE__ */ React.createElement(ListItem, { isEmpty: true }, /* @__PURE__ */ React.createElement("span", null, "No data displayed")))))));
 };
-const __vite_glob_1_17 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_1_22 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: WebAttribute
 }, Symbol.toStringTag, { value: "Module" }));
+const HistoryDevelopment = (props) => {
+  const { title, description } = props;
+  const [displayedData, setDisplayedData] = useState({});
+  const dummyData = [
+    {
+      year: 2014,
+      description: "Online Payment Integrator Cloud Microsoft Azure, Google, Amazon AWS Information Technology System Design Architect"
+    },
+    {
+      year: 2017,
+      description: "Accredited Project Manager and Project Requirement Analyst Certified Informations System Security"
+    },
+    {
+      year: 2020,
+      description: "Certified International Associations of Project Managers, Scrum Master Europe Business Value Oriented Project Manager Enterprise Resource Planning ERP UK ISO/ IEC 27001 2019 Auditor Century Link GDC: Data Center Facility Planning and Management Schneider"
+    },
+    {
+      year: 2022,
+      description: "Financial Analyst and Investing Corporate Cyber Security Capability of Business Analyst - International Institute of Business Analyst (IIBA)"
+    }
+  ];
+  const onClickMenu = (index) => {
+    setDisplayedData(dummyData[index]);
+  };
+  useEffect(() => {
+    setDisplayedData(dummyData[0]);
+  }, []);
+  return /* @__PURE__ */ React.createElement("section", { className: "w-full px-6 md:px-8 my-36 bg-grid bg-no-repeat" }, /* @__PURE__ */ React.createElement("div", { className: "max-w-screen-xl mx-auto bg-gradient-linear-white space-y-16 " }, /* @__PURE__ */ React.createElement("div", { className: "flex items-center gap-6" }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement(H3, null, title), /* @__PURE__ */ React.createElement(Paragraph, null, description))), /* @__PURE__ */ React.createElement("div", { className: "relative items-center max-lg:grid-cols-1" }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement(
+    TabBar,
+    {
+      datas: dummyData,
+      onClickMenu
+    },
+    /* @__PURE__ */ React.createElement("div", { className: "grid gap-6 grid-cols-2 items-center max-md:grid-cols-1" }, /* @__PURE__ */ React.createElement("div", { className: "border border-iapm-red rounded-[32px]  mt-8 ml-8" }, /* @__PURE__ */ React.createElement(
+      "img",
+      {
+        src: defaultImage,
+        alt: "",
+        className: "aspect-[4/3] object-cover w-full mx-auto relative -left-8 -top-8 rounded-t-[32px] rounded-br-[32px] rounded-bl-lg"
+      }
+    )), /* @__PURE__ */ React.createElement("div", { className: "space-y-6" }, /* @__PURE__ */ React.createElement(H3, null, "What have we completed in", " ", displayedData.year, "?"), /* @__PURE__ */ React.createElement(Paragraph, null, displayedData.description)))
+  )))));
+};
+const __vite_glob_1_24 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  default: HistoryDevelopment
+}, Symbol.toStringTag, { value: "Module" }));
 const BlogSuggestion = (props) => {
   const { posts } = props;
-  const BASE_URL_ASSET = "http://localhost:8000/asset";
+  const BASE_URL_ASSET = "http://iapm.domaintesting.site/asset";
   return /* @__PURE__ */ React.createElement("section", { className: "w-full" }, /* @__PURE__ */ React.createElement("div", { className: "space-y-6 " }, /* @__PURE__ */ React.createElement(H4, null, "Recent Posts"), /* @__PURE__ */ React.createElement(
     "div",
     {
@@ -3187,7 +3757,7 @@ const BlogSuggestion = (props) => {
     )
   )));
 };
-const __vite_glob_1_23 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_1_28 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: BlogSuggestion
 }, Symbol.toStringTag, { value: "Module" }));
@@ -3219,7 +3789,7 @@ const ReadingView = (props) => {
   var _a;
   const { post, lastedPosts } = props;
   const [currentUrl, setCurrentUrl] = useState("");
-  const BASE_URL_ASSET = "http://localhost:8000/asset";
+  const BASE_URL_ASSET = "http://iapm.domaintesting.site/asset";
   useEffect(() => {
     setCurrentUrl(window.location.href);
   }, []);
@@ -3258,14 +3828,14 @@ const ReadingView = (props) => {
     }
   )), /* @__PURE__ */ React.createElement("div", { className: "col-span-1 max-lg:col-span-full " }, /* @__PURE__ */ React.createElement("div", { className: "lg:sticky lg:top-16" }, /* @__PURE__ */ React.createElement(BlogSuggestion, { posts: lastedPosts })))));
 };
-const __vite_glob_1_24 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_1_29 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: ReadingView
 }, Symbol.toStringTag, { value: "Module" }));
 const BlogDetail = (props) => {
   const { post, lastedPosts, attributes } = props;
   const [currentUrl, setCurrentUrl] = useState("");
-  const BASE_URL_ASSET = "http://localhost:8000/asset";
+  const BASE_URL_ASSET = "http://iapm.domaintesting.site/asset";
   useEffect(() => {
     setCurrentUrl(window.location.href);
   }, []);
@@ -3289,17 +3859,17 @@ const BlogDetail = (props) => {
     }
   ), /* @__PURE__ */ React.createElement("meta", { property: "og:image:width", content: "1280" }), /* @__PURE__ */ React.createElement("meta", { property: "og:image:height", content: "853" }), /* @__PURE__ */ React.createElement("meta", { property: "og:image:type", content: "image/jpeg" }), /* @__PURE__ */ React.createElement("meta", { name: "twitter:card", content: "summary_large_image" }), /* @__PURE__ */ React.createElement("meta", { name: "twitter:site", content: "@iapmelinksolution" })), /* @__PURE__ */ React.createElement(ClientLayout, { attributes }, /* @__PURE__ */ React.createElement(ReadingView, { post, lastedPosts })));
 };
-const __vite_glob_1_21 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_1_26 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: BlogDetail
 }, Symbol.toStringTag, { value: "Module" }));
 const Badge = (props) => {
-  const { children: children2 } = props;
-  return /* @__PURE__ */ React.createElement("span", { className: "block py-1 px-2 bg-iapm-light-gray rounded-full border border-gray-200" }, /* @__PURE__ */ React.createElement(Caption, null, children2));
+  const { children } = props;
+  return /* @__PURE__ */ React.createElement("span", { className: "block py-1 px-2 bg-iapm-light-gray rounded-full border border-gray-200" }, /* @__PURE__ */ React.createElement(Caption, null, children));
 };
 const BlogCollection = (props) => {
   const { posts, keyword } = props;
-  const BASE_URL_ASSET = "http://localhost:8000/asset";
+  const BASE_URL_ASSET = "http://iapm.domaintesting.site/asset";
   return /* @__PURE__ */ React.createElement("section", { className: "w-full my-16" }, /* @__PURE__ */ React.createElement("div", { className: " max-w-screen-xl px-6 md:px-8 mx-auto grid gap-6 max-sm:grid-cols-1 max-md:grid-cols-2 md:grid-cols-3 lg:grid-cols-3" }, posts == null ? void 0 : posts.filter((result) => {
     if (result === "")
       return result;
@@ -3352,7 +3922,7 @@ const BlogCollection = (props) => {
     );
   })), Object.keys(posts).length === 0 && /* @__PURE__ */ React.createElement("div", { className: "text-center max-w-screen-xl mx-auto p-6" }, /* @__PURE__ */ React.createElement("span", { className: "w-max px-8 py-4 bg-gray-100 rounded-2xl" }, " ", "No blog posts at this time")));
 };
-const __vite_glob_1_22 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_1_27 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: BlogCollection
 }, Symbol.toStringTag, { value: "Module" }));
@@ -3373,9 +3943,169 @@ const Blog = (props) => {
     }
   )))), /* @__PURE__ */ React.createElement(BlogCollection, { posts, keyword })));
 };
-const __vite_glob_1_25 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_1_30 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Blog
+}, Symbol.toStringTag, { value: "Module" }));
+const Contact = (props) => {
+  var _a, _b, _c;
+  const SITE_KEY = "6LexojAoAAAAAKoF9aMLbJSwnPp87pmQMsgOYGsa";
+  const { attributes, flash, errors } = props;
+  const [messageInfo, setMessageInfo] = useState("");
+  const [isToast, setToast] = useState(false);
+  const [isLoading, setLoading] = useState(false);
+  const reCaptchaRef = useRef(null);
+  const contactFormRef = useRef(null);
+  const contactLink = {
+    Mail: {
+      link: "mailto:"
+    },
+    WhatsApp: {
+      link: "https://wa.me/"
+    },
+    Telegram: {
+      link: "https://t.me/"
+    },
+    Telephone: {
+      link: "tel:+"
+    }
+  };
+  const handleSubmit = () => {
+    router$1.post("/contacts/send-email", formik.values);
+    setLoading(true);
+  };
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      email: "",
+      message: "",
+      token: ""
+    },
+    validationSchema: sendMailValidationSchema,
+    onSubmit: handleSubmit
+  });
+  const handleForm = (target2) => {
+    if (typeof target2 === "string") {
+      formik.setFieldValue("token", target2);
+    } else {
+      const { name, value } = target2;
+      formik.setFieldValue(name, value);
+    }
+  };
+  useEffect(() => {
+    if (flash == null ? void 0 : flash.success) {
+      setMessageInfo(flash.success);
+      setToast(true);
+      formik.resetForm();
+      reCaptchaRef.current.reset();
+      flash.success = null;
+    } else if (Object.keys(errors).length > 0) {
+      setMessageInfo(getErrorMessage$1(errors));
+      setToast(true);
+    }
+    setLoading(false);
+  }, [errors, flash]);
+  useEffect(() => {
+    const hideToast = () => {
+      isToast && setTimeout(() => {
+        setToast(false);
+      }, 4e3);
+    };
+    hideToast();
+  }, [isToast]);
+  return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(Head, null, /* @__PURE__ */ React.createElement("title", null, "Contact")), /* @__PURE__ */ React.createElement(ClientLayout, { attributes }, /* @__PURE__ */ React.createElement("section", { className: "max-w-screen-xl mx-auto md:px-8 px-6" }, isToast && /* @__PURE__ */ React.createElement(
+    "div",
+    {
+      className: "fixed p-4 bg-white shadow-md bottom-6 right-6 rounded-lg max-w-[40ch] \r\n                            items-center max-sm:left-6 flex gap-4"
+    },
+    /* @__PURE__ */ React.createElement("span", { className: "p-2 bg-iapm-yellow rounded-full h-max" }, /* @__PURE__ */ React.createElement(BellAlertIcon, { className: "w-6 h-6 text-iapm-black" })),
+    /* @__PURE__ */ React.createElement("span", { className: "text-sm text-iapm-black " }, messageInfo)
+  ), /* @__PURE__ */ React.createElement("div", { className: "my-14" }, /* @__PURE__ */ React.createElement(H2, null, "Contact Us"), /* @__PURE__ */ React.createElement(Paragraph, null, "Have a question related to our company? Ask a question through the contact below")), /* @__PURE__ */ React.createElement("div", { className: "grid grid-cols-2 gap-6 max-sm:grid-cols-1 bg-white p-6 border border-gray-100 rounded-3xl mb-16 " }, /* @__PURE__ */ React.createElement("div", { className: "space-y-6" }, /* @__PURE__ */ React.createElement(H5, null, "Contact information"), attributes == null ? void 0 : attributes.contacts.map((values, i) => {
+    return /* @__PURE__ */ React.createElement(
+      "a",
+      {
+        key: i,
+        className: "flex gap-4 items-center",
+        target: "_blank",
+        href: `${contactLink[values.contact_type].link}${values == null ? void 0 : values.contact}`
+      },
+      /* @__PURE__ */ React.createElement("span", { className: "p-2 bg-iapm-yellow rounded-full h-max" }, values.contact_type === "Mail" ? /* @__PURE__ */ React.createElement(EnvelopeIcon, { className: "w-6 h-6 text-iapm-black" }) : /* @__PURE__ */ React.createElement(PhoneIcon, { className: "w-6 h-6 text-iapm-black" })),
+      /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("span", { className: "text-sm block text-iapm-dark-gray" }, (values == null ? void 0 : values.contact_type) || "-"), /* @__PURE__ */ React.createElement("span", { className: "text-iapm-black" }, (values == null ? void 0 : values.contact) || "-"))
+    );
+  }), /* @__PURE__ */ React.createElement("hr", null), /* @__PURE__ */ React.createElement(H5, null, "Address information"), attributes == null ? void 0 : attributes.addresses.map((values, i) => {
+    return /* @__PURE__ */ React.createElement(
+      "a",
+      {
+        href: `https://www.google.com/maps/search/${values == null ? void 0 : values.address}`,
+        target: "_blank",
+        className: "flex gap-4 items-center",
+        key: i
+      },
+      /* @__PURE__ */ React.createElement("span", { className: "p-2 bg-iapm-yellow rounded-full h-max" }, /* @__PURE__ */ React.createElement(MapPinIcon, { className: "text-iapm-black w-6 h-6" })),
+      /* @__PURE__ */ React.createElement("address", { className: "text-iapm-black not-italic max-w-[40ch]" }, (values == null ? void 0 : values.address) || "-")
+    );
+  })), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement(H5, null, "Send us a message"), /* @__PURE__ */ React.createElement(
+    "form",
+    {
+      onSubmit: formik.handleSubmit,
+      ref: contactFormRef
+    },
+    /* @__PURE__ */ React.createElement(
+      IInput,
+      {
+        inputLabel: "Name",
+        inputType: "text",
+        inputName: "name",
+        inputId: "name",
+        onChange: handleForm,
+        defaultValue: formik.values.name || "",
+        errorMessage: (_a = formik.errors) == null ? void 0 : _a.name
+      }
+    ),
+    /* @__PURE__ */ React.createElement(
+      IInput,
+      {
+        inputLabel: "Email",
+        inputType: "email",
+        inputName: "email",
+        inputId: "email",
+        onChange: handleForm,
+        defaultValue: formik.values.email || "",
+        errorMessage: (_b = formik.errors) == null ? void 0 : _b.email
+      }
+    ),
+    /* @__PURE__ */ React.createElement(
+      ITextarea,
+      {
+        textareaName: "message",
+        textareaLabel: "Message",
+        textareaId: "message",
+        onChange: handleForm,
+        defaultValue: formik.values.message || "",
+        errorMessage: (_c = formik.errors) == null ? void 0 : _c.message
+      }
+    ),
+    /* @__PURE__ */ React.createElement("div", { className: "flex justify-end items-end gap-8 flex-col" }, /* @__PURE__ */ React.createElement(
+      ReCAPTCHA,
+      {
+        sitekey: SITE_KEY,
+        onChange: handleForm,
+        ref: reCaptchaRef
+      }
+    ), /* @__PURE__ */ React.createElement(
+      IButton,
+      {
+        variant: "primary",
+        type: "submit",
+        isLoading
+      },
+      "Send"
+    ))
+  ))))));
+};
+const __vite_glob_1_31 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  default: Contact
 }, Symbol.toStringTag, { value: "Module" }));
 const ServiceDisplay = (props) => {
   const content = `<h3>What is Lorem Ipsum?</h3> <p>
@@ -3407,7 +4137,7 @@ This book is a treatise on the theory of ethics, very popular during the Renaiss
     }
   ))));
 };
-const __vite_glob_1_32 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_1_38 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: ServiceDisplay
 }, Symbol.toStringTag, { value: "Module" }));
@@ -3423,23 +4153,27 @@ const ServiceSuggestion = (props) => {
     ), /* @__PURE__ */ React.createElement(H5, null, "Business Analyst & Portfolio Management"), /* @__PURE__ */ React.createElement(IButton, { isLink: true, variant: "link-border" }, "Learn More"));
   }))));
 };
-const __vite_glob_1_35 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_1_41 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: ServiceSuggestion
 }, Symbol.toStringTag, { value: "Module" }));
 const ServiceDetail = (props) => {
-  return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(Head, null, /* @__PURE__ */ React.createElement("title", null, "Services")), /* @__PURE__ */ React.createElement(ClientLayout, null, /* @__PURE__ */ React.createElement(ServiceDisplay, null), /* @__PURE__ */ React.createElement(ServiceSuggestion, null), /* @__PURE__ */ React.createElement(CTA, null)));
+  const { attributes } = props;
+  return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(Head, null, /* @__PURE__ */ React.createElement("title", null, "Services")), /* @__PURE__ */ React.createElement(ClientLayout, { attributes }, /* @__PURE__ */ React.createElement(ServiceDisplay, null), /* @__PURE__ */ React.createElement(ServiceSuggestion, null), /* @__PURE__ */ React.createElement(CTA, null)));
 };
-const __vite_glob_1_36 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_1_42 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: ServiceDetail
 }, Symbol.toStringTag, { value: "Module" }));
 createServer(
   (page) => createInertiaApp({
+    progress: {
+      color: "#FDC40C"
+    },
     page,
     render: ReactDOMServer.renderToString,
     resolve: (name) => {
-      const pages = /* @__PURE__ */ Object.assign({ "./Pages/Admin/Asset/index.jsx": __vite_glob_1_0, "./Pages/Admin/Blog/BlogCategory.jsx": __vite_glob_1_1, "./Pages/Admin/Blog/BlogForm.jsx": __vite_glob_1_2, "./Pages/Admin/Blog/BlogList.jsx": __vite_glob_1_3, "./Pages/Admin/Blog/index.jsx": __vite_glob_1_4, "./Pages/Admin/Dashboard/index.jsx": __vite_glob_1_5, "./Pages/Admin/MediaPreview/index.jsx": __vite_glob_1_6, "./Pages/Admin/PageEditor/AboutEditor.jsx": __vite_glob_1_7, "./Pages/Admin/PageEditor/HomeEditor.jsx": __vite_glob_1_8, "./Pages/Admin/PageEditor/ServiceEditor.jsx": __vite_glob_1_9, "./Pages/Admin/PageEditor/index.jsx": __vite_glob_1_10, "./Pages/Admin/Service/Form.jsx": __vite_glob_1_11, "./Pages/Admin/Service/index.jsx": __vite_glob_1_12, "./Pages/Admin/Testimonial/index.jsx": __vite_glob_1_13, "./Pages/Admin/WebAttribute/AddressForm.jsx": __vite_glob_1_14, "./Pages/Admin/WebAttribute/ContactForm.jsx": __vite_glob_1_15, "./Pages/Admin/WebAttribute/SocialForm.jsx": __vite_glob_1_16, "./Pages/Admin/WebAttribute/index.jsx": __vite_glob_1_17, "./Pages/Client/About/Section/CompanyDesc.jsx": __vite_glob_1_18, "./Pages/Client/About/Section/HistoryDevelopment.jsx": __vite_glob_1_19, "./Pages/Client/About/index.jsx": __vite_glob_1_20, "./Pages/Client/Blog/BlogDetail.jsx": __vite_glob_1_21, "./Pages/Client/Blog/Section/BlogCollection.jsx": __vite_glob_1_22, "./Pages/Client/Blog/Section/BlogSuggestion.jsx": __vite_glob_1_23, "./Pages/Client/Blog/Section/ReadingView.jsx": __vite_glob_1_24, "./Pages/Client/Blog/index.jsx": __vite_glob_1_25, "./Pages/Client/Home/Section/Capability.jsx": __vite_glob_1_26, "./Pages/Client/Home/Section/ClientGalery.jsx": __vite_glob_1_27, "./Pages/Client/Home/Section/Hero.jsx": __vite_glob_1_28, "./Pages/Client/Home/Section/ServiceOverview.jsx": __vite_glob_1_29, "./Pages/Client/Home/Section/Testimonial.jsx": __vite_glob_1_30, "./Pages/Client/Home/index.jsx": __vite_glob_1_31, "./Pages/Client/Service/Section/ServiceDisplay.jsx": __vite_glob_1_32, "./Pages/Client/Service/Section/ServiceHeader.jsx": __vite_glob_1_33, "./Pages/Client/Service/Section/ServiceListing.jsx": __vite_glob_1_34, "./Pages/Client/Service/Section/ServiceSuggestion.jsx": __vite_glob_1_35, "./Pages/Client/Service/ServiceDetail.jsx": __vite_glob_1_36, "./Pages/Client/Service/index.jsx": __vite_glob_1_37 });
+      const pages = /* @__PURE__ */ Object.assign({ "./Pages/Admin/Asset/index.jsx": __vite_glob_1_0, "./Pages/Admin/Auth/SignIn.jsx": __vite_glob_1_1, "./Pages/Admin/Blog/BlogCategory.jsx": __vite_glob_1_2, "./Pages/Admin/Blog/BlogForm.jsx": __vite_glob_1_3, "./Pages/Admin/Blog/BlogList.jsx": __vite_glob_1_4, "./Pages/Admin/Blog/index.jsx": __vite_glob_1_5, "./Pages/Admin/Company/CompanyHistory.jsx": __vite_glob_1_6, "./Pages/Admin/Company/CompanyProfile.jsx": __vite_glob_1_7, "./Pages/Admin/Company/index.jsx": __vite_glob_1_8, "./Pages/Admin/Dashboard/index.jsx": __vite_glob_1_9, "./Pages/Admin/Dashboard/section/MessageList.jsx": __vite_glob_1_10, "./Pages/Admin/MediaPreview/index.jsx": __vite_glob_1_11, "./Pages/Admin/PageEditor/AboutEditor.jsx": __vite_glob_1_12, "./Pages/Admin/PageEditor/HomeEditor.jsx": __vite_glob_1_13, "./Pages/Admin/PageEditor/ServiceEditor.jsx": __vite_glob_1_14, "./Pages/Admin/PageEditor/index.jsx": __vite_glob_1_15, "./Pages/Admin/Service/Form.jsx": __vite_glob_1_16, "./Pages/Admin/Service/index.jsx": __vite_glob_1_17, "./Pages/Admin/Testimonial/index.jsx": __vite_glob_1_18, "./Pages/Admin/WebAttribute/AddressForm.jsx": __vite_glob_1_19, "./Pages/Admin/WebAttribute/ContactForm.jsx": __vite_glob_1_20, "./Pages/Admin/WebAttribute/SocialForm.jsx": __vite_glob_1_21, "./Pages/Admin/WebAttribute/index.jsx": __vite_glob_1_22, "./Pages/Client/About/Section/CompanyDesc.jsx": __vite_glob_1_23, "./Pages/Client/About/Section/HistoryDevelopment.jsx": __vite_glob_1_24, "./Pages/Client/About/index.jsx": __vite_glob_1_25, "./Pages/Client/Blog/BlogDetail.jsx": __vite_glob_1_26, "./Pages/Client/Blog/Section/BlogCollection.jsx": __vite_glob_1_27, "./Pages/Client/Blog/Section/BlogSuggestion.jsx": __vite_glob_1_28, "./Pages/Client/Blog/Section/ReadingView.jsx": __vite_glob_1_29, "./Pages/Client/Blog/index.jsx": __vite_glob_1_30, "./Pages/Client/Contact/index.jsx": __vite_glob_1_31, "./Pages/Client/Home/Section/Capability.jsx": __vite_glob_1_32, "./Pages/Client/Home/Section/ClientGalery.jsx": __vite_glob_1_33, "./Pages/Client/Home/Section/Hero.jsx": __vite_glob_1_34, "./Pages/Client/Home/Section/ServiceOverview.jsx": __vite_glob_1_35, "./Pages/Client/Home/Section/Testimonial.jsx": __vite_glob_1_36, "./Pages/Client/Home/index.jsx": __vite_glob_1_37, "./Pages/Client/Service/Section/ServiceDisplay.jsx": __vite_glob_1_38, "./Pages/Client/Service/Section/ServiceHeader.jsx": __vite_glob_1_39, "./Pages/Client/Service/Section/ServiceListing.jsx": __vite_glob_1_40, "./Pages/Client/Service/Section/ServiceSuggestion.jsx": __vite_glob_1_41, "./Pages/Client/Service/ServiceDetail.jsx": __vite_glob_1_42, "./Pages/Client/Service/index.jsx": __vite_glob_1_43 });
       return pages[`./Pages/${name}.jsx`];
     },
     setup: ({ App, props }) => /* @__PURE__ */ React.createElement(App, { ...props })

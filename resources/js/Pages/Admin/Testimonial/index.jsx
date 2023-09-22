@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Head } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 import { H3 } from "../../../Components/Text";
 import AdminLayout from "../../../Layouts/admin-layout";
 import { PlusIcon } from "@heroicons/react/24/outline";

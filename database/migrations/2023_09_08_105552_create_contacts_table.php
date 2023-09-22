@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('contacts', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->enum('contact_type', ['WhatsApp', 'Mail', 'Telegram', 'Telephone']);
+            $table->enum('contact_type', ['WhatsApp', 'Email', 'Telegram', 'Telephone']);
+            $table->enum('primary_contact', ['Yes', 'No'])->default('No')->nullable();
             $table->string('contact');
             $table->timestamps();
         });

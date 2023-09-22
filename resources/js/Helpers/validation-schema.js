@@ -74,7 +74,7 @@ const contactValidationSchema = yup.object().shape({
                 });
             }
 
-            if (contact_type === "Mail") {
+            if (contact_type === "Email") {
                 if (
                     !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value)
                 ) {
@@ -192,6 +192,56 @@ const historyDevelopmentValidationSchema = yup.object().shape({
         .min(10, "History description must contain at least 10 character"),
 });
 
+const signInValidationSchema = yup.object().shape({
+    email: yup
+        .string()
+        .email("Invalid email format")
+        .required("Email must be filled in")
+        .test("contact-test", "error message", (value, validationContext) => {
+            const { createError } = validationContext;
+
+            if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value)) {
+                return createError({
+                    message: "Invalid email format",
+                });
+            }
+
+            return true;
+        }),
+    password: yup
+        .string()
+        .required("Password must be filled in")
+        .min(8, "Password must be contain at least 8 character"),
+});
+
+const sendMailValidationSchema = yup.object().shape({
+    name: yup
+        .string()
+        .required("Name must be filled in")
+        .matches(/^[A-Za-z ]*$/, "Please enter valid name"),
+
+    email: yup
+        .string()
+        .email("Invalid email format")
+        .required("Email must be filled in")
+        .test("contact-test", "error message", (value, validationContext) => {
+            const { createError } = validationContext;
+
+            if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value)) {
+                return createError({
+                    message: "Invalid email format",
+                });
+            }
+
+            return true;
+        }),
+    message: yup
+        .string()
+        .required("Message must be filled in")
+        .min(10, "Message must be contain at least 10 character"),
+    token: yup.mixed().required("ReCaptcha must be filled in"),
+});
+
 export {
     serviceValidationSchema,
     assetValidationSchema,
@@ -205,4 +255,6 @@ export {
     companyMissionSchema,
     companyVisionSchema,
     historyDevelopmentValidationSchema,
+    signInValidationSchema,
+    sendMailValidationSchema,
 };

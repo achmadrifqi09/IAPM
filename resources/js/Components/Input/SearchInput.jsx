@@ -9,11 +9,12 @@ const SearchInput = (props) => {
 
     return (
         <div>
-            <div className="relative flex gap-6">
+            <div className="relative flex gap-6 z-0">
                 <div className="absolute inset-x-0 flex items-center h-full px-6 w-min">
                     <MagnifyingGlassIcon className="w-6 h-6 text-iapm-dark-gray" />
                 </div>
                 <input
+                    autoComplete="off"
                     type={inputType}
                     id={inputId}
                     name={inputName}

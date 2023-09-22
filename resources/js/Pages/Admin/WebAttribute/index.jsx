@@ -11,6 +11,7 @@ import {
     PhoneIcon,
     MapPinIcon,
     GlobeAmericasIcon,
+    KeyIcon,
 } from "@heroicons/react/24/outline";
 import Modal from "../../../Components/Modal";
 import ContactForm from "./ContactForm";
@@ -33,6 +34,11 @@ const WebAttribute = (props) => {
         title: "",
         isUpdate: false,
     });
+
+    const buttonPrimaryContactStyle = {
+        active: "w-6 h-6 text-iapm-black",
+        non_active: "w-6 h-6 text-gray-400",
+    };
 
     const dropdownMenus = [
         {
@@ -109,6 +115,17 @@ const WebAttribute = (props) => {
                         router.delete(`/socials/${id}`);
                         break;
                 }
+            }
+        });
+    };
+
+    const handleMainContact = (id) => {
+        Swal.fire({
+            ...confirmSetttings,
+            text: `Make this email your primary contact`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                router.put(`/contacts/${id}/primary`);
             }
         });
     };
@@ -198,7 +215,7 @@ const WebAttribute = (props) => {
                                                     {contact.contact}
                                                 </span>
                                             </div>
-                                            <div className="flex gap-4">
+                                            <div className="flex">
                                                 <button
                                                     className="p-2"
                                                     onClick={() =>
@@ -221,6 +238,26 @@ const WebAttribute = (props) => {
                                                 >
                                                     <TrashIcon className="w-6 h-6 text-iapm-black" />
                                                 </button>
+                                                {contact.contact_type ===
+                                                    "Email" && (
+                                                    <button
+                                                        className="p-2"
+                                                        onClick={() =>
+                                                            handleMainContact(
+                                                                contact.id
+                                                            )
+                                                        }
+                                                    >
+                                                        <KeyIcon
+                                                            className={
+                                                                contact?.primary_contact ===
+                                                                "Yes"
+                                                                    ? buttonPrimaryContactStyle.active
+                                                                    : buttonPrimaryContactStyle.non_active
+                                                            }
+                                                        />
+                                                    </button>
+                                                )}
                                             </div>
                                         </ListItem>
                                     );

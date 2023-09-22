@@ -1,37 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
     <url>
-        <loc>http://localhost:8000</loc>
+        <loc>http://iapm.domaintesting.site</loc>
             <changefreq>daily</changefreq>
         <priority>0.8</priority>
             </url>
     <url>
-        <loc>http://localhost:8000/about-us</loc>
+        <loc>http://iapm.domaintesting.site/about-us</loc>
             <changefreq>daily</changefreq>
         <priority>0.8</priority>
             </url>
     <url>
-        <loc>http://localhost:8000/services</loc>
+        <loc>http://iapm.domaintesting.site/services</loc>
             <changefreq>daily</changefreq>
         <priority>0.8</priority>
             </url>
     <url>
-        <loc>http://localhost:8000/blogs/Sustainable-TestDriven-Development</loc>
+        <loc>http://iapm.domaintesting.site/blogs/TRANSFORMASI-PT-IAPM-ELINKSOLUTION-INDONESIA</loc>
             <changefreq>daily</changefreq>
         <priority>0.8</priority>
             </url>
     <url>
-        <loc>http://localhost:8000/blogs/Basic-AI-Components-Used-in-Project-Management</loc>
-            <changefreq>daily</changefreq>
-        <priority>0.8</priority>
-            </url>
-    <url>
-        <loc>http://localhost:8000/blogs/Dive-Into-Agile-Adoption-How-to-Prepare-Your-Team-for-Change</loc>
-            <changefreq>daily</changefreq>
-        <priority>0.8</priority>
-            </url>
-    <url>
-        <loc>http://localhost:8000/blogs/Helping-Project-Managers-to-Help-Themselves</loc>
+        <loc>http://iapm.domaintesting.site/blogs/Meet-Studio-Our-beautiful-new-agency-site-template</loc>
             <changefreq>daily</changefreq>
         <priority>0.8</priority>
             </url>

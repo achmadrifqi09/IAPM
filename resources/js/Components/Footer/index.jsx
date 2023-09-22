@@ -11,7 +11,7 @@ import SocialIcon from "../Icon";
 
 const Footer = (props) => {
     const { attributes } = props;
-  
+
     return (
         <footer className="bg-iapm-baltic-sea text-iapm-gray">
             <div className=" grid grid-cols-4 max-lg:grid-cols-1 max-w-screen-xl mx-auto py-16 font-poppins px-6 md:px-6 gap-8 box-border">
@@ -35,6 +35,12 @@ const Footer = (props) => {
                                     className="block text-iapm-gray text-base"
                                 >
                                     Service
+                                </Link>
+                                <Link
+                                    href="/contacts"
+                                    className="block text-iapm-gray text-base"
+                                >
+                                    Contact
                                 </Link>
                                 <Link
                                     href="/about-us"
@@ -63,12 +69,9 @@ const Footer = (props) => {
                                                 <MapPinIcon className="w-6 h-6 block text-iapm-gray" />
                                             </div>
 
-                                            <Link
-                                                href="/"
-                                                className="block text-iapm-gray text-base"
-                                            >
+                                            <span className="block text-iapm-gray text-base">
                                                 {address.address}
-                                            </Link>
+                                            </span>
                                         </div>
                                     );
                                 })}
@@ -85,18 +88,15 @@ const Footer = (props) => {
                                         >
                                             <div className="w-6 h-6">
                                                 {contact?.contact_type ===
-                                                "Mail" ? (
+                                                "Email" ? (
                                                     <EnvelopeIcon className="w-6 h-6 block text-iapm-gray" />
                                                 ) : (
                                                     <PhoneIcon className="w-6 h-6 block text-iapm-gray" />
                                                 )}
                                             </div>
-                                            <Link
-                                                href="/"
-                                                className="block text-iapm-gray text-base"
-                                            >
+                                            <span className="block text-iapm-gray text-base">
                                                 {contact.contact}
-                                            </Link>
+                                            </span>
                                         </div>
                                     );
                                 })}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Head } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 import ClientLayout from "../../../Layouts/client-layout";
 import GetterAsset from "../../../Helpers/getter-asset";
 import Hero from "./Section/Hero";
@@ -11,7 +11,7 @@ import CTA from "../../../Components/CTA";
 import defaultImage from "../../../../../public/assets/images/default-images/3dLogo.svg";
 
 const HomePage = (props) => {
-    const { datas, assets, attributes } = props;
+    const { datas, assets, attributes, services, testimonials } = props;
     const [currentUrl, setCurrentUrl] = useState("");
 
     useEffect(() => {
@@ -62,8 +62,12 @@ const HomePage = (props) => {
                     description={datas["service-overview"]?.description}
                     buttonLabel={datas["service-overview"]?.button_label}
                     buttonUrl={datas["service-overview"]?.button_url}
+                    services={services}
                 />
-                <Testimonial title={datas["testimonial"]?.title} />
+                <Testimonial
+                    title={datas["testimonial"]?.title}
+                    testimonials={testimonials}
+                />
                 <CTA />
             </ClientLayout>
         </>

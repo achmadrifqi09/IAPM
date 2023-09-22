@@ -11,7 +11,7 @@ const confirmSetttings = {
     showCancelButton: true,
     confirmButtonColor: "#FDC204",
     cancelButtonColor: "#E12838",
-    confirmButtonText: "Yes, delete it!",
+    confirmButtonText: "Yes, sure!",
 };
 
 export { toastSettings, confirmSetttings };

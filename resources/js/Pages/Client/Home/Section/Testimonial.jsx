@@ -10,7 +10,7 @@ const Testimonial = (props) => {
             <div className="max-w-screen-xl mx-auto px-6 md:px-8 text-center space-y-12 bg-gradient-linear-white">
                 <H2>{title}</H2>
                 <Carousel>
-                    {[...new Array(3)].map((_, i) => {
+                    {testimonials.map((testimonial, i) => {
                         return (
                             <SwiperSlide key={i}>
                                 <div className="text-center relative max-w-screen-sm mx-auto space-y-6 mb-16 ">
@@ -28,15 +28,7 @@ const Testimonial = (props) => {
                                                 </svg>
                                             </div>
                                             <Paragraph>
-                                                Lorem ipsum dolor sit amet
-                                                consectetur adipisicing elit.
-                                                Voluptas quibusdam debitis
-                                                repellat, qui eos impedit? Nam
-                                                doloremque saepe ratione!
-                                                Officia! Lorem ipsum dolor sit
-                                                amet consectetur adipisicing
-                                                elit. Voluptas quibusdam debitis
-                                                repellat, qui eos impedit?
+                                                {testimonial?.quote}
                                             </Paragraph>
                                             <div className="flex justify-end">
                                                 <svg
@@ -52,10 +44,9 @@ const Testimonial = (props) => {
                                         </blockquote>
                                     </div>
                                     <div>
-                                        <H5>Larry Pageim</H5>
+                                        <H5> {testimonial?.name}</H5>
                                         <Paragraph>
-                                            Sr. Director, Brand Marketing at PT
-                                            XYZ
+                                            {testimonial?.position}
                                         </Paragraph>
                                     </div>
                                 </div>

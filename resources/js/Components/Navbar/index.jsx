@@ -31,7 +31,7 @@ const Navbar = () => {
                     <img src={Logo} alt="IAPM Logo" />
                 </Link>
                 <ul
-                    className={`flex gap-10 max-md:absolute max-md:flex-col max-md:bg-white max-md:top-[72px] max-md:w-full max-md:left-0 max-md:justify-center max-md:py-6 ${
+                    className={`flex gap-10 max-md:absolute max-md:z-40 max-md:flex-col max-md:bg-white max-md:top-[72px] max-md:w-full max-md:left-0 max-md:justify-center max-md:py-6 ${
                         isNavbar ? "" : "max-md:hidden"
                     }`}
                     ref={menusRef}
@@ -53,6 +53,15 @@ const Navbar = () => {
                         }
                     >
                         <Link href="/services">Services</Link>
+                    </li>
+                    <li
+                        className={
+                            currentUrl.includes("/contacts")
+                                ? menusStyle.active
+                                : menusStyle.normal
+                        }
+                    >
+                        <Link href="/contacts">Contacts</Link>
                     </li>
                     <li
                         className={

@@ -54,7 +54,7 @@ const BlogAuthor = (props) => {
                         <H3>Manage Blog</H3>
                     </div>
                 </section>
-                <section className="my-6 bg-white p-6 shadow space-y-6  rounded-3xl  overflow-x-scroll">
+                <section className="my-6 bg-white p-6 shadow space-y-6 rounded-3xl">
                     <div className="mb-16">
                         <HorizontalTabBar
                             menus={tabBarMenus}

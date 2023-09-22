@@ -1,14 +1,21 @@
 import React from "react";
-import SidebarMenu from "../../../Components/Sidebar/SidebarMenu";
+import AdminLayout from "../../../Layouts/admin-layout";
+import { Head } from "@inertiajs/react";
+import MessageList from "./section/MessageList";
 
-const Dashboard = () => {
- 
+const Dashboard = (props) => {
+    const { lastedMessages } = props;
+
     return (
         <>
-            <SidebarMenu />
-            <main className="bg-grid bg-white min-h-screen bg-no-repeat bg-right-top font-poppins">
-                {children}
-            </main>
+            <Head>
+                <title>Dashboard</title>
+            </Head>
+            <AdminLayout>
+                <div className="grid grid-cols-2 my-8">
+                    <MessageList messages={lastedMessages} />
+                </div>
+            </AdminLayout>
         </>
     );
 };

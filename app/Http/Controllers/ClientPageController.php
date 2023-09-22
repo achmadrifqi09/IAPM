@@ -4,10 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Asset;
 use App\Models\Category;
+use App\Models\Company;
+use App\Models\DevelopmentHistory;
 use App\Models\Page;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Models\Meta;
+use App\Models\Service;
+use App\Models\Testimonial;
 use Inertia\Inertia;
 
 class ClientPageController extends Controller
@@ -16,10 +20,15 @@ class ClientPageController extends Controller
     {
         $pageDatas = $this->getPageDataFromDB('home-page');
         $assets = $this->getAssetData();
+        $services = Service::select(['id', 'image', 'service_name'])->get();
+        $testimonials = Testimonial::select(['name', 'position', 'quote'])->get();
+        // $clients => 
 
         return Inertia::render('Client/Home/index', [
             'datas' => $pageDatas,
-            'assets' => $assets
+            'assets' => $assets,
+            'services' => $services,
+            'testimonials' => $testimonials
         ]);
     }
 
@@ -27,9 +36,14 @@ class ClientPageController extends Controller
     {
         $pageDatas = $this->resourceMapping($this->getPageDataFromDB('about-page'));
         $assets = $this->getAssetData();
+        $companyDesc = Company::select(['vision', 'mission', 'description'])->first();
+        $histories = DevelopmentHistory::select(['id', 'year', 'history_description', 'image'])->get();
+
         return Inertia::render('Client/About/index', [
             'datas' => $pageDatas,
-            'assets' => $assets
+            'assets' => $assets,
+            'company' => $companyDesc,
+            'histories' => $histories
         ]);
     }
 
@@ -44,7 +58,22 @@ class ClientPageController extends Controller
 
     public function serviceDetail($id)
     {
-        return Inertia::render('Client/Service/ServiceDetail');
+
+        $service = Service::find($id);
+        $services = Service::where('id', '!=', $id)->select(['id', 'service_name', 'image'])->get();
+        if (!$service) {
+            return Inertia::render('Error/index');
+        }
+
+        return Inertia::render('Client/Service/ServiceDetail', [
+            'service' => $service,
+            'services' => $services
+        ]);
+    }
+
+    public function contact()
+    {
+        return Inertia::render('Client/Contact/index');
     }
 
     public function blog()
@@ -66,6 +95,9 @@ class ClientPageController extends Controller
         $post = Post::where('slug', '=', $slug)
             ->where('status', '=', 'Published')
             ->with(['post_categories', 'visits'])->get()->first();
+        if (!$post) {
+            return Inertia::render('Error/index');
+        }
         $post->visitsCounter()->increment();
         $lastedPosts = Post::where('status', '=', 'Published')
             ->orderBy('published_at', 'DESC')

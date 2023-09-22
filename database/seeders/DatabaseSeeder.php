@@ -3,8 +3,6 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-
-use App\Models\DevelopmentHistory;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -20,7 +18,8 @@ class DatabaseSeeder extends Seeder
             PageSeeder::class,
             SectionSeeder::class,
             ResourceSeeder::class,
-            MetaSeeder::class
+            MetaSeeder::class,
+            UserSeeder::class
         ]);
     }
 }
