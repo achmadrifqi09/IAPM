@@ -15,10 +15,10 @@ import AssetMapping from "../../../Helpers/asset-mapping";
 import Swal from "sweetalert2";
 import { toastSettings } from "../../../Helpers/sweetalert-config";
 import getErrorMessage from "../../../Helpers/error-message";
-import {router} from '@inertiajs/react'
+import { router } from "@inertiajs/react";
 
 const HomeEditor = (props) => {
-    const { datas, assets, flash, errors } = props;
+    const { datas, assets, flash, errors, services, testimonials } = props;
     const [isOpenEditor, setOpenEditor] = useState(false);
     const [options, setOptions] = useState({});
 
@@ -76,7 +76,12 @@ const HomeEditor = (props) => {
                     <H4>Editing Home Page</H4>
                 </div>
                 <div className="border">
-                    <Home datas={formik.values} assets={assets} />
+                    <Home
+                        datas={formik.values}
+                        assets={assets}
+                        services={services}
+                        testimonials={testimonials}
+                    />
                 </div>
                 <FloatingButton action={handleOpenEditor}>
                     {isOpenEditor ? (

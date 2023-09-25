@@ -6,8 +6,7 @@ import ServiceHeader from "./Section/ServiceHeader";
 import ServiceListing from "./Section/ServiceListing";
 
 const Service = (props) => {
-    const { datas, attributes } = props;
-
+    const { datas, attributes, services } = props;
     return (
         <>
             <Head>
@@ -17,8 +16,9 @@ const Service = (props) => {
                 <ServiceHeader
                     title={datas["service"]?.title}
                     description={datas["service"]?.description}
+                   
                 />
-                <ServiceListing />
+                <ServiceListing services={services}/>
                 <CTA />
             </ClientLayout>
         </>

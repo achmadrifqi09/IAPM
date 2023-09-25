@@ -9,6 +9,10 @@ use Inertia\Inertia;
 use App\Models\Page;
 use App\Models\Resource;
 use Illuminate\Database\QueryException;
+use App\Models\Testimonial;
+use App\Models\Service;
+use App\Models\Company;
+use App\Models\DevelopmentHistory;
 
 class PageController extends Controller
 {
@@ -16,9 +20,13 @@ class PageController extends Controller
     {
         $pageDatas = $this->getPageDataFromDB('home-page');
         $assets = $this->getAssetData();
+        $services = Service::select(['id', 'image', 'service_name'])->get();
+        $testimonials = Testimonial::select(['name', 'position', 'quote'])->get();
         return Inertia::render('Admin/PageEditor/HomeEditor', [
             'datas' => $pageDatas,
-            'assets' => $assets
+            'assets' => $assets,
+            'services' => $services,
+            'testimonials' => $testimonials
         ]);
     }
 
@@ -26,9 +34,13 @@ class PageController extends Controller
     {
         $pageDatas = $this->getPageDataFromDB('about-page');
         $assets = $this->getAssetData();
+        $companyDesc = Company::select(['vision', 'mission', 'description'])->first();
+        $histories = DevelopmentHistory::select(['id', 'year', 'history_description', 'image'])->sortBy('year', 'DESC')->get();
         return Inertia::render('Admin/PageEditor/AboutEditor', [
             'datas' => $pageDatas,
-            'assets' => $assets
+            'assets' => $assets,
+            'company' => $companyDesc,
+            'histories' => $histories
         ]);
     }
 

@@ -37,7 +37,7 @@ class ClientPageController extends Controller
         $pageDatas = $this->resourceMapping($this->getPageDataFromDB('about-page'));
         $assets = $this->getAssetData();
         $companyDesc = Company::select(['vision', 'mission', 'description'])->first();
-        $histories = DevelopmentHistory::select(['id', 'year', 'history_description', 'image'])->get();
+        $histories = DevelopmentHistory::select(['id', 'year', 'history_description', 'image'])->orderBy('year', 'DESC')->get();
 
         return Inertia::render('Client/About/index', [
             'datas' => $pageDatas,
@@ -50,9 +50,10 @@ class ClientPageController extends Controller
     public function service()
     {
         $pageDatas = $this->resourceMapping($this->getPageDataFromDB('service-page'));
+        $services = Service::select(['id', 'image', 'service_name', 'short_description'])->get();
         return Inertia::render('Client/Service/index', [
             'datas' => $pageDatas,
-
+            'services' =>  $services
         ]);
     }
 

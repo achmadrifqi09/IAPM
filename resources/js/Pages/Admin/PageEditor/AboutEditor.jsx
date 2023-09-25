@@ -17,7 +17,7 @@ import getErrorMessage from "../../../Helpers/error-message";
 import { toastSettings } from "../../../Helpers/sweetalert-config";
 
 const AboutEditor = (props) => {
-    const { datas, assets, flash, errors } = props;
+    const { datas, assets, flash, errors, company, histories } = props;
     const [isOpenEditor, setOpenEditor] = useState(false);
     const [options, setOptions] = useState({});
 
@@ -75,7 +75,12 @@ const AboutEditor = (props) => {
                     <H4>Editing About Page</H4>
                 </div>
                 <div className="border">
-                    <About datas={formik.values} assets={assets} />
+                    <About
+                        datas={formik.values}
+                        assets={assets}
+                        company={company}
+                        histories={histories}
+                    />
                 </div>
                 <FloatingButton action={handleOpenEditor}>
                     {isOpenEditor ? (

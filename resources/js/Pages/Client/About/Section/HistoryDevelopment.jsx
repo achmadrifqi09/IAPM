@@ -49,7 +49,7 @@ const HistoryDevelopment = (props) => {
                                         {displayedData.year}?
                                     </H3>
                                     <Paragraph>
-                                        {displayedData.description}
+                                        {displayedData.history_description}
                                     </Paragraph>
                                 </div>
                             </div>
