@@ -28,7 +28,7 @@ const Navbar = () => {
         <nav className="w-full font-poppins bg-white px-6 md:px-8 z-50 ">
             <div className="py-4 flex max-w-screen-xl justify-between mx-auto items-center">
                 <Link href="/">
-                    <img src={Logo} alt="IAPM Logo" />
+                    <img src={Logo} alt="IAPM Logo" width={112} height={64} />
                 </Link>
                 <ul
                     className={`flex gap-10 max-md:absolute max-md:z-40 max-md:flex-col max-md:bg-white max-md:top-[72px] max-md:w-full max-md:left-0 max-md:justify-center max-md:py-6 ${

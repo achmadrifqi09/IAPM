@@ -11,7 +11,7 @@ import { confirmSetttings } from "../../../Helpers/sweetalert-config";
 import { router } from "@inertiajs/react";
 
 const BlogCategory = (props) => {
-    const { categories, errors } = props;
+    const { categories } = props;
     const [isOpenModal, setOpenModal] = useState(false);
     const [updateProps, setUpdateProps] = useState({
         isUpdate: false,

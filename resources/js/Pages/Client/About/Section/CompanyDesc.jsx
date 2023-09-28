@@ -1,6 +1,6 @@
 import React from "react";
 import { H3, Paragraph } from "../../../../Components/Text";
-import DefaultImage from "../../../../../../public/assets/images/default-images/3dLogo.svg";
+import DefaultImage from "../../../../../../public/assets/images/default-images/iapm-logo.jpg";
 import {
     EyeIcon,
     RocketLaunchIcon,
@@ -45,13 +45,11 @@ const CompanyDesc = (props) => {
                         </div>
                     </div>
                     <div className="max-md:hidden sticky top-20">
-                        <div className="after:content-logo after:bg-white after:px-4 after:py-2 after:rounded-full after:shadow-md after:-bottom-8 after:absolute after:left-6">
-                            <img
-                                src={image ? image : DefaultImage}
-                                alt="Image of About IAPM Elinksolution"
-                                className="aspect-square object-cover w-full mx-auto rounded-t-[64px] rounded-br-[64px]"
-                            />
-                        </div>
+                        <img
+                            src={image ? image : DefaultImage}
+                            alt="Image of About IAPM Elinksolution"
+                            className="aspect-square object-cover w-full mx-auto rounded-t-[64px] rounded-br-[64px]"
+                        />
                     </div>
                 </div>
             </div>

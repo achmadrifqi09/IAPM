@@ -29,8 +29,6 @@ const MessageList = (props) => {
         setLastedMessage(newMessageFormat);
     }, []);
 
-    console.log(lastedMessage);
-
     return (
         <section className="p-6 bg-white shadow rounded-3xl">
             <div className="mb-6">

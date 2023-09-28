@@ -1,7 +1,7 @@
 import React from "react";
 import { H1, Paragraph } from "../../../../Components/Text";
 import IButton from "../../../../Components/Button/Button";
-import DefaultImage from "../../../../../../public/assets/images/default-images/home-hero-img.svg";
+import DefaultImage from "../../../../../../public/assets/images/default-images/home-hero-img.jpg";
 
 const Hero = (props) => {
     const { title, description, image, buttonLabel, buttonUrl } = props;

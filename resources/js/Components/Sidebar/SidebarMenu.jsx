@@ -14,6 +14,7 @@ import {
     BuildingStorefrontIcon,
     WindowIcon,
     BuildingOfficeIcon,
+    UserGroupIcon,
 } from "@heroicons/react/24/outline";
 
 const SidebarMenu = () => {
@@ -180,9 +181,16 @@ const SidebarMenu = () => {
                                         Service Page
                                     </Link>
                                 </li>
+                                <li>
+                                    <Link
+                                        href="/pages/contact-page"
+                                        className="py-2 pr-2 pl-10 hover:bg-gray-100 rounded-lg flex gap-4 justify-between"
+                                    >
+                                        Contact Page
+                                    </Link>
+                                </li>
                             </ul>
                         </li>
-
                         <li>
                             <Link
                                 href="/testimonials"
@@ -195,6 +203,21 @@ const SidebarMenu = () => {
                                 <div className="flex gap-4">
                                     <ChatBubbleBottomCenterTextIcon className="w-6 h-6" />
                                     Testimonial
+                                </div>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                href="/clients"
+                                className={
+                                    currentUrl.includes("/clients")
+                                        ? menusStyle.active
+                                        : menusStyle.normal
+                                }
+                            >
+                                <div className="flex gap-4">
+                                    <UserGroupIcon className="w-6 h-6" />
+                                    Client
                                 </div>
                             </Link>
                         </li>
@@ -258,7 +281,7 @@ const SidebarMenu = () => {
                             )}
                         </button>
                         <div className="max-sm:hidden">
-                            <img src={Logo} alt="IAMP Logo" />
+                            <img src={Logo} alt="IAPM Logo" />
                         </div>
                         <div className="relative">
                             <button
@@ -276,7 +299,7 @@ const SidebarMenu = () => {
                             >
                                 <ul className="space-y-4">
                                     <li>
-                                        <Link href="">Account</Link>
+                                        <Link href="/account">Account</Link>
                                     </li>
                                     <li>
                                         <button

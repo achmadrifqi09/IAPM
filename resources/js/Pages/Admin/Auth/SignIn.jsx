@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Head, router } from "@inertiajs/react";
-import { H2, H3, Paragraph } from "../../../Components/Text";
+import { H2, Paragraph } from "../../../Components/Text";
 import {
     EyeIcon,
     EyeSlashIcon,
@@ -19,17 +19,14 @@ const SignIn = (props) => {
     const [invalid, setInvalid] = useState(false);
     const [message, setMessage] = useState(null);
     const [isLoading, setLoading] = useState(false);
-    const [submitLimiter, setSubmitLimiter] = useState({
-        time: 60,
-        isActive: false,
-    });
-
+    const [isDisable, setDisable] = useState(false);
     const handleShowPassword = () => {
         setShowPassword((currentCondition) => !currentCondition);
     };
 
     const handleSubmit = () => {
         setLoading(true);
+        setDisable(true);
         router.post("/login", formik.values);
     };
 
@@ -37,6 +34,7 @@ const SignIn = (props) => {
         initialValues: {
             email: "",
             password: "",
+            remember: false,
         },
         validationSchema: signInValidationSchema,
         onSubmit: handleSubmit,
@@ -56,43 +54,12 @@ const SignIn = (props) => {
             setLoading(false);
             const errorMessage = getErrorMessage(errors);
             setMessage(errorMessage);
+            errorMessage.includes("exceeds limit")
+                ? setDisable(true)
+                : setDisable(false);
             setInvalid(true);
-            errorMessage.includes("exceeds limit") &&
-                setSubmitLimiter({ ...submitLimiter, isActive: true });
         }
     }, [errors]);
-
-    const activatedLimiter = (value) =>
-        setSubmitLimiter({ isActive: true, time: value });
-
-    useEffect(() => {
-        if (submitLimiter.isActive) {
-            if (submitLimiter.time === 0) {
-                localStorage.removeItem("time_limiter");
-                setMessage(null);
-                setInvalid(false);
-                setSubmitLimiter({ isActive: false, time: 60 });
-                return;
-            }
-            const interval = setInterval(() => {
-                setSubmitLimiter({
-                    ...submitLimiter,
-                    time: submitLimiter.time - 1,
-                });
-                localStorage.setItem("time_limiter", submitLimiter.time);
-            }, 1000);
-            return () => clearInterval(interval);
-        }
-    }, [submitLimiter]);
-
-    useEffect(() => {
-        const localLimiter = localStorage.getItem("time_limiter");
-        if (localLimiter !== null) {
-            activatedLimiter(localLimiter);
-            setMessage("Request exceeds limit, try again in");
-            setInvalid(true);
-        }
-    }, []);
 
     return (
         <>
@@ -107,6 +74,7 @@ const SignIn = (props) => {
                                 src={Terrain}
                                 alt="login pettern image"
                                 className="h-1/2"
+                                loading="lazy"
                             />
                         </div>
                         <div className="w-full mx-auto p-6 max-md:p-0 ">
@@ -136,13 +104,14 @@ const SignIn = (props) => {
                                         value={formik.values.email || ""}
                                         className="bg-gray-100 rounded-lg w-full px-4 py-3 font-poppins focus:border focus:border-iapm-yellow disabled:text-gray-400"
                                     />
+
                                     {formik.errors.email && (
                                         <span className="text-sm text-iapm-red">
                                             {formik.errors.email}
                                         </span>
                                     )}
                                 </div>
-                                <div className="py-4 ">
+                                <div className="pt-4 ">
                                     <label
                                         htmlFor="password"
                                         className="mb-2 text-iapm-dark-gray"
@@ -181,11 +150,21 @@ const SignIn = (props) => {
                                         </span>
                                     )}
                                 </div>
+                                <div className="py-4 flex items-center gap-2">
+                                    <input
+                                        type="checkbox"
+                                        id="remember"
+                                        name="remember"
+                                        className="h-4 w-4"
+                                        onChange={handleForm}
+                                    />
+                                    <label htmlFor="remember">
+                                        Remember Me
+                                    </label>
+                                </div>
                                 {invalid && (
                                     <span className="text-sm text-iapm-red">
-                                        {message}{" "}
-                                        {submitLimiter.isActive &&
-                                            submitLimiter.time}
+                                        {message}
                                     </span>
                                 )}
 
@@ -194,7 +173,7 @@ const SignIn = (props) => {
                                         variant="primary"
                                         type="submit"
                                         isLoading={isLoading}
-                                        isDisable={submitLimiter.isActive}
+                                        isDisable={isDisable}
                                     >
                                         Login
                                         <ChevronRightIcon className="w-6 h-6" />

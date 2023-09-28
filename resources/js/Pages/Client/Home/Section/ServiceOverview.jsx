@@ -2,7 +2,7 @@ import React from "react";
 import { H2, Paragraph, Subtitle } from "../../../../Components/Text";
 import IButton from "../../../../Components/Button/Button";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
-import DefaultImage from "../../../../../../public/assets/images/default-images/3dLogo.svg";
+import DefaultImage from "../../../../../../public/assets/images/default-images/iapm-logo.jpg";
 import SwiperContainer from "../../../../Components/Swiper";
 
 import { SwiperSlide } from "swiper/react";
@@ -41,6 +41,7 @@ const ServiceOverview = (props) => {
                                                 }
                                                 alt={`Image from ${service?.service_name} service`}
                                                 className="w-full h-auto rounded-xl hover:scale-110 transition duration-200 aspect-[4/3] object-cover object-center"
+                                                loading="lazy"
                                             />
                                         </div>
                                         <div className="my-4 space-y-6 ">
@@ -59,6 +60,13 @@ const ServiceOverview = (props) => {
                                 </SwiperSlide>
                             );
                         })}
+                        {Object.keys(services).length === 0 && (
+                            <div className="flex justify-center">
+                                <span className="bg-gray-100 py-4 px-6 rounded-xl block w-max text-center">
+                                    Data not available
+                                </span>
+                            </div>
+                        )}
                     </SwiperContainer>
                 </div>
             </div>

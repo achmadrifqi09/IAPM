@@ -242,6 +242,123 @@ const sendMailValidationSchema = yup.object().shape({
     token: yup.mixed().required("ReCaptcha must be filled in"),
 });
 
+const clientValidationSchema = yup.object().shape({
+    client_name: yup
+        .string()
+        .required("Client name must be filled in")
+        .min(3, "Client name must be contain at least 3 character"),
+    image: yup.mixed().required("Logo must be filled in"),
+});
+
+const updateAccountValidationSchema = yup.object().shape(
+    {
+        name: yup
+            .string()
+            .nullable()
+            .notRequired()
+            .min(3, "Name must be contain at least 3 character"),
+        email: yup.string().when("email", {
+            is: (value) => value?.length,
+            then: () =>
+                yup
+                    .string()
+                    .required()
+                    .test(
+                        "email-test",
+                        "error message",
+                        (value, validationContext) => {
+                            const { createError } = validationContext;
+
+                            if (
+                                !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
+                                    value
+                                )
+                            ) {
+                                return createError({
+                                    message: "Invalid email format",
+                                });
+                            }
+
+                            return true;
+                        }
+                    ),
+            otherwise: () => yup.string().nullable().notRequired(),
+        }),
+        old_password: yup.string().when("old_password", {
+            is: (value) => value?.length,
+            then: () =>
+                yup
+                    .string()
+                    .required("Old Password must be filled in")
+                    .min(
+                        8,
+                        "Old Password must be contain at least 8 character"
+                    ),
+
+            otherwise: () => yup.string().nullable().notRequired(),
+        }),
+        password: yup.string().when("password", {
+            is: (value) => value?.length,
+            then: () =>
+                yup
+                    .string()
+                    .required("Password must be filled in")
+                    .min(8, "Password must be contain at least 8 character"),
+
+            otherwise: () => yup.string().nullable().notRequired(),
+        }),
+        password_confirmation: yup.string().when("password_confirmation", {
+            is: (value) => value?.length,
+            then: () =>
+                yup
+                    .string()
+                    .required("Password confirmation must be filled in")
+                    .min(8, "Old Password must be contain at least 8 character")
+                    .oneOf([yup.ref("password"), null], "Passwords must match"),
+
+            otherwise: () => yup.string().nullable().notRequired(),
+        }),
+        on_time_password: yup.string().when(["password", "old_password"], {
+            is: (password, old_password) =>
+                password?.length || old_password?.length,
+            then: () =>
+                yup
+                    .string()
+                    .required("On time password must be filled in")
+                    .test(
+                        "on_time_password-test",
+                        "error message",
+                        (value, validationContext) => {
+                            const { createError } = validationContext;
+                            console.log(value);
+                            if (value?.length !== 6) {
+                                return createError({
+                                    message:
+                                        "On time password consists of 6 numbers",
+                                });
+                            }
+
+                            if (isNaN(value)) {
+                                return createError({
+                                    message: "On time password must a numbers",
+                                });
+                            }
+
+                            return true;
+                        }
+                    ),
+            otherwise: () => yup.string().nullable().notRequired(),
+        }),
+    },
+    [
+        ["email", "email"],
+        ["old_password", "old_password"],
+        ["password", "password"],
+        ["password_confirmation", "password_confirmation"],
+        ["old_password", "password"],
+    ]
+);
+
 export {
     serviceValidationSchema,
     assetValidationSchema,
@@ -257,4 +374,6 @@ export {
     historyDevelopmentValidationSchema,
     signInValidationSchema,
     sendMailValidationSchema,
+    clientValidationSchema,
+    updateAccountValidationSchema,
 };

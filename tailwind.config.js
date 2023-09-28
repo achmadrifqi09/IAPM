@@ -1,5 +1,4 @@
 /** @type {import('tailwindcss').Config} */
-const colors = require("tailwindcss/colors");
 export default {
     content: [
         "./resources/**/*.jsx",
@@ -7,17 +6,18 @@ export default {
         "./resources/**/*.js",
     ],
     theme: {
-        extend: {},
-        colors: {
-            ...colors,
-            "iapm-black": "#1A1C29",
-            "iapm-yellow": "#FDC40C",
-            "iapm-dark-gray": "#636363",
-            "iapm-gray": "#B5B5B5",
-            "iapm-light-gray": "#FAFAFA",
-            "iapm-baltic-sea": "#2F2E30",
-            "iapm-red": "#E12838",
+        extend: {
+            colors: {
+                "iapm-black": "#1A1C29",
+                "iapm-yellow": "#FDC40C",
+                "iapm-dark-gray": "#636363",
+                "iapm-gray": "#B5B5B5",
+                "iapm-light-gray": "#FAFAFA",
+                "iapm-baltic-sea": "#2F2E30",
+                "iapm-red": "#E12838",
+            },
         },
+
         fontFamily: {
             poppins: ["Poppins", "sans-serif"],
         },
@@ -39,7 +39,6 @@ export default {
             time: "url(/public/assets/images/time.svg)",
             "rounded-shape": "url(/public/assets/images/rounded-shape.svg)",
         },
-      
     },
     plugins: [],
 };

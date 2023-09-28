@@ -53,7 +53,7 @@ class WebAssetController extends Controller
                 return back()->withErrors(['error' => "Can't find the old asset that will be updated"]);
             }
         } else {
-            $validatedAsset['file'] = $request->asset_file;
+            $validatedAsset['file'] = $request->file;
         }
 
         $updatedAsset->update($validatedAsset);

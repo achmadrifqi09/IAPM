@@ -14,7 +14,8 @@ import ITable from "../../../Components/Table";
 import { MenuItem } from "@mui/material";
 
 const Service = (props) => {
-    const { services, errors, flash } = props;
+    const { services } = props;
+
     const baseUrlAsset = import.meta.env.VITE_BASE_URL_ASSET;
     const serviceColumns = [
         {
@@ -52,22 +53,6 @@ const Service = (props) => {
             }
         });
     };
-
-    useEffect(() => {
-        if (flash.success) {
-            Swal.fire({
-                ...toastSettings,
-                icon: "success",
-                title: `${flash.success}`,
-            });
-        } else if (Object.keys(errors).length > 0) {
-            Swal.fire({
-                ...toastSettings,
-                icon: "error",
-                title: getErrorMessage(errors),
-            });
-        }
-    }, [errors, flash]);
 
     return (
         <>

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->uuid('id_page');
             $table->string('meta_title');
+            $table->string('keywords');
             $table->text('meta_description');
             $table->timestamps();
         });

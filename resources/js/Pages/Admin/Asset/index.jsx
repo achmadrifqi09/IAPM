@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Modal from "../../../Components/Modal";
 import AdminLayout from "../../../Layouts/admin-layout";
-import { Head, router } from "@inertiajs/react";
+import { Head, router, usePage } from "@inertiajs/react";
 import IButton from "../../../Components/Button/Button";
 import ITable from "../../../Components/Table";
 import { H3 } from "../../../Components/Text";
@@ -20,7 +20,8 @@ import { assetValidationSchema } from "../../../Helpers/validation-schema";
 import ISelect from "../../../Components/Input/Select";
 
 const Asset = (props) => {
-    const { assets, errors, flash } = props;
+    const { assets } = props;
+    const { errors, flash } = usePage().props;
     const [isModalOpen, setModalOpen] = useState(false);
 
     const [updateProps, setUpdateProps] = useState({
@@ -121,19 +122,7 @@ const Asset = (props) => {
     }, [formik.values.asset_type]);
 
     useEffect(() => {
-        if (flash?.success) {
-            Swal.fire({
-                ...toastSettings,
-                icon: "success",
-                title: flash.success,
-            });
-            !!isModalOpen && handleOpenModal();
-        } else if (Object.keys(errors).length > 0) {
-            Swal.fire({
-                ...toastSettings,
-                icon: "error",
-                title: getErrorMessage(errors),
-            });
+        if (flash?.success || Object.keys(errors).length > 0) {
             !!isModalOpen && handleOpenModal();
         }
         setUpdateProps({
@@ -141,12 +130,13 @@ const Asset = (props) => {
             idUpdate: "",
         });
     }, [errors, flash]);
+
     return (
         <>
             <Head>
                 <title>Web Asset</title>
             </Head>
-            <AdminLayout>
+            <AdminLayout errors={errors} flash={flash}>
                 {!!isModalOpen && (
                     <Modal
                         title={

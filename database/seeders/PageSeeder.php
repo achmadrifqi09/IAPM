@@ -17,6 +17,8 @@ class PageSeeder extends Seeder
             ['page_name' => 'Home', 'tag' => 'home-page'],
             ['page_name' => 'About Us', 'tag' => 'about-page'],
             ['page_name' => 'Service Product', 'tag' => 'service-page'],
+            ['page_name' => 'Contact', 'tag' => 'contact-page'],
+            ['page_name' =>  'Blog', 'tag' => 'blog-page']
         ];
         foreach ($pages as $page) {
             Page::create($page);

@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 import { toastSettings } from "../../../Helpers/sweetalert-config";
 
 const BlogAuthor = (props) => {
-    const { posts, categories, errors, flash } = props;
+    const { posts, categories } = props;
 
     const tabBarMenus = [
         {
@@ -25,23 +25,6 @@ const BlogAuthor = (props) => {
     const hanldeActionMenu = (menu) => {
         setActiveMenu(menu);
     };
-
-    useEffect(() => {
-        if (flash?.success) {
-            Swal.fire({
-                ...toastSettings,
-                icon: "success",
-                title: flash.success,
-            });
-            flash.success = null;
-        } else if (Object.keys(errors).length > 0) {
-            Swal.fire({
-                ...toastSettings,
-                icon: "error",
-                title: getErrorMessage(errors),
-            });
-        }
-    }, [errors, flash]);
 
     return (
         <>
@@ -65,10 +48,7 @@ const BlogAuthor = (props) => {
                         <BlogList posts={posts} />
                     ) : (
                         activeMenu === "Blog Category" && (
-                            <BlogCategory
-                                errors={errors}
-                                categories={categories}
-                            />
+                            <BlogCategory categories={categories} />
                         )
                     )}
                 </section>

@@ -12,13 +12,10 @@ import ISelect from "../../../Components/Input/Select";
 import { useFormik } from "formik";
 import IButton from "../../../Components/Button/Button";
 import AssetMapping from "../../../Helpers/asset-mapping";
-import Swal from "sweetalert2";
-import { toastSettings } from "../../../Helpers/sweetalert-config";
-import getErrorMessage from "../../../Helpers/error-message";
 import { router } from "@inertiajs/react";
 
 const HomeEditor = (props) => {
-    const { datas, assets, flash, errors, services, testimonials } = props;
+    const { datas, assets, services, testimonials, clients } = props;
     const [isOpenEditor, setOpenEditor] = useState(false);
     const [options, setOptions] = useState({});
 
@@ -49,22 +46,6 @@ const HomeEditor = (props) => {
         mapAsset();
     }, [assets]);
 
-    useEffect(() => {
-        if (flash?.success) {
-            Swal.fire({
-                ...toastSettings,
-                icon: "success",
-                title: flash.success,
-            });
-        } else if (Object.keys(errors).length > 0) {
-            Swal.fire({
-                ...toastSettings,
-                icon: "error",
-                title: getErrorMessage(errors),
-            });
-        }
-    }, [errors, flash]);
-
     return (
         <>
             <Head>
@@ -81,6 +62,7 @@ const HomeEditor = (props) => {
                         assets={assets}
                         services={services}
                         testimonials={testimonials}
+                        clients={clients}
                     />
                 </div>
                 <FloatingButton action={handleOpenEditor}>
@@ -105,6 +87,16 @@ const HomeEditor = (props) => {
                                     onChange={handleForm}
                                     defaultValue={
                                         formik.values?.meta?.meta_title || ""
+                                    }
+                                />
+                                <IInput
+                                    inputLabel="Meta Keywords"
+                                    inputName="meta.keywords"
+                                    inputId="meta.keywords"
+                                    inputType="text"
+                                    onChange={handleForm}
+                                    defaultValue={
+                                        formik.values?.meta?.keywords || ""
                                     }
                                 />
                                 <ITextarea

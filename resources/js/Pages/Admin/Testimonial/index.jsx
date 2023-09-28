@@ -55,10 +55,7 @@ const Testimonial = (props) => {
         handleOpenModal();
 
         updateProps.isUpdate
-            ? router.put(
-                  `/testimonials/${updateProps.idUpdate}`,
-                  formik.values
-              )
+            ? router.put(`/testimonials/${updateProps.idUpdate}`, formik.values)
             : router.post("/testimonials", formik.values);
     };
 
@@ -103,20 +100,9 @@ const Testimonial = (props) => {
         });
     };
 
+
     useEffect(() => {
-        if (flash?.success) {
-            Swal.fire({
-                ...toastSettings,
-                icon: "success",
-                title: flash.success,
-            });
-            !!isModalOpen && handleOpenModal();
-        } else if (Object.keys(errors).length > 0) {
-            Swal.fire({
-                ...toastSettings,
-                icon: "error",
-                title: getErrorMessage(errors),
-            });
+        if (flash?.success || Object.keys(errors).length > 0) {
             !!isModalOpen && handleOpenModal();
         }
         setUpdateProps({

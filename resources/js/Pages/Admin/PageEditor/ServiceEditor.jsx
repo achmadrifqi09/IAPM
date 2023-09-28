@@ -8,15 +8,11 @@ import SidebarEditor from "../../../Components/Sidebar/SidebarEditor";
 import FloatingButton from "../../../Components/Button/FloatingButton";
 import IInput from "../../../Components/Input/Input";
 import ITextarea from "../../../Components/Input/Textarea";
-import ISelect from "../../../Components/Input/Select";
 import { useFormik } from "formik";
 import IButton from "../../../Components/Button/Button";
-import Swal from "sweetalert2";
-import getErrorMessage from "../../../Helpers/error-message";
-import { toastSettings } from "../../../Helpers/sweetalert-config";
 
 const ServiceEditor = (props) => {
-    const { datas, flash, errors } = props;
+    const { datas, services } = props;
     const [isOpenEditor, setOpenEditor] = useState(false);
 
     const handleOpenEditor = () => {
@@ -38,22 +34,6 @@ const ServiceEditor = (props) => {
         formik.setFieldValue(name, type === "file" ? target.files[0] : value);
     };
 
-    useEffect(() => {
-        if (flash?.success) {
-            Swal.fire({
-                ...toastSettings,
-                icon: "success",
-                title: flash.success,
-            });
-        } else if (Object.keys(errors).length > 0) {
-            Swal.fire({
-                ...toastSettings,
-                icon: "error",
-                title: getErrorMessage(errors),
-            });
-        }
-    }, [errors, flash]);
-
     return (
         <>
             <Head>
@@ -65,7 +45,7 @@ const ServiceEditor = (props) => {
                     <H4>Editing Service Page</H4>
                 </div>
                 <div className="border">
-                    <Service datas={formik.values} />
+                    <Service datas={formik.values} services={services} />
                 </div>
                 <FloatingButton action={handleOpenEditor}>
                     {isOpenEditor ? (
@@ -88,6 +68,16 @@ const ServiceEditor = (props) => {
                                 onChange={handleForm}
                                 defaultValue={
                                     formik.values?.meta?.meta_title || ""
+                                }
+                            />
+                            <IInput
+                                inputLabel="Meta Keywords"
+                                inputName="meta.keywords"
+                                inputId="meta.keywords"
+                                inputType="text"
+                                onChange={handleForm}
+                                defaultValue={
+                                    formik.values?.meta?.keywords || ""
                                 }
                             />
                             <ITextarea

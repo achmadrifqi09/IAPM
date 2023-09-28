@@ -1,8 +1,7 @@
 import React from "react";
 import { H3, H5 } from "../../../../Components/Text";
-import DummyImage from "../../../../../../public/assets/images/dummy/bg-service.jpg";
 import IButton from "../../../../Components/Button/Button";
-import DefaultImage from "../../../../../../public/assets/images/default-images/3dLogo.svg";
+import DefaultImage from "../../../../../../public/assets/images/default-images/iapm-logo.jpg";
 
 const ServiceSuggestion = (props) => {
     const { services } = props;

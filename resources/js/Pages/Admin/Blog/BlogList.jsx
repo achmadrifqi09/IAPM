@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ListContainer from "../../../Components/List/ListContainer";
 import ListItem from "../../../Components/List/ListItem";
-import defaultImage from "../../../../../public/assets/images/default-images/3dLogo.svg";
+import defaultImage from "../../../../../public/assets/images/default-images/iapm-logo.jpg";
 import SearchInput from "../../../Components/Input/SearchInput";
 import { H6 } from "../../../Components/Text";
 import {
@@ -75,8 +75,9 @@ const BlogList = (props) => {
                                                     ? `${VITE_ASSET_URL}/${post.thumbnail}`
                                                     : defaultImage
                                             }
-                                            alt=""
+                                            alt={`image for post ${post?.title}`}
                                             className="aspect-square object-cover sm:max-w-[80px] rounded-xl"
+                                            loading="lazy"
                                         />
 
                                         <div className="space-y-2">

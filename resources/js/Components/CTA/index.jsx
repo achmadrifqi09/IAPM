@@ -13,6 +13,7 @@ const CTA = () => {
                             src={ICCollaborate}
                             alt="icon of collaborate"
                             className="w-28 h-28 "
+                            loading="lazy"
                         />
                         <div className="max-md:text-center">
                             <H3>Let's make something extraordinary</H3>

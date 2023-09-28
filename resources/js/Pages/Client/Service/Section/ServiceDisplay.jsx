@@ -1,5 +1,5 @@
 import React from "react";
-import DefaultImage from "../../../../../../public/assets/images/default-images/3dLogo.svg";
+import DefaultImage from "../../../../../../public/assets/images/default-images/iapm-logo.jpg";
 import { H2 } from "../../../../Components/Text";
 
 const ServiceDisplay = (props) => {

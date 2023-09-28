@@ -12,12 +12,9 @@ import ISelect from "../../../Components/Input/Select";
 import { useFormik } from "formik";
 import IButton from "../../../Components/Button/Button";
 import AssetMapping from "../../../Helpers/asset-mapping";
-import Swal from "sweetalert2";
-import getErrorMessage from "../../../Helpers/error-message";
-import { toastSettings } from "../../../Helpers/sweetalert-config";
 
 const AboutEditor = (props) => {
-    const { datas, assets, flash, errors, company, histories } = props;
+    const { datas, assets, company, histories } = props;
     const [isOpenEditor, setOpenEditor] = useState(false);
     const [options, setOptions] = useState({});
 
@@ -47,22 +44,6 @@ const AboutEditor = (props) => {
         };
         mapAsset();
     }, [assets]);
-
-    useEffect(() => {
-        if (flash?.success) {
-            Swal.fire({
-                ...toastSettings,
-                icon: "success",
-                title: flash.success,
-            });
-        } else if (Object.keys(errors).length > 0) {
-            Swal.fire({
-                ...toastSettings,
-                icon: "error",
-                title: getErrorMessage(errors),
-            });
-        }
-    }, [errors, flash]);
 
     return (
         <>
@@ -103,6 +84,16 @@ const AboutEditor = (props) => {
                                 onChange={handleForm}
                                 defaultValue={
                                     formik.values?.meta?.meta_title || ""
+                                }
+                            />
+                            <IInput
+                                inputLabel="Meta Keywords"
+                                inputName="meta.keywords"
+                                inputId="meta.keywords"
+                                inputType="text"
+                                onChange={handleForm}
+                                defaultValue={
+                                    formik.values?.meta?.keywords || ""
                                 }
                             />
                             <ITextarea

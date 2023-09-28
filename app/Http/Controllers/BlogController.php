@@ -43,7 +43,7 @@ class BlogController extends Controller
         try {
             $post = Post::create($postField);
             if ($request['categories']) $this->createPostCategory($request['categories'], $post['id']);
-            return redirect('/manage-blogs')->with('success', 'Blog post has been added');
+            return back()->with('success', 'Blog post has been added');
         } catch (QueryException $e) {
             return back()->withErrors(['error' => $e->errorInfo]);
         }
@@ -88,7 +88,7 @@ class BlogController extends Controller
             $this->deletePostCategory($id);
             $this->createPostCategory($request['categories'], $id);
 
-            return redirect('/manage-blogs')->with('success', 'Blog post has been updated');
+            return back()->with('success', 'Blog post has been updated');
         } catch (QueryException $e) {
             return back()->withErrors(['error' => $e->errorInfo]);
         }
@@ -125,13 +125,11 @@ class BlogController extends Controller
 
 
         $validatePost['meta_title'] = $request['meta_title'] ?? $request['title'];
-        $validatePost['meta_description'] = $request['meta_description'] ?? $request['title'];
+        $validatePost['meta_description'] = strip_tags(Str::limit($request['content'], 100));
         $validatePost['excerpt'] = strip_tags(Str::limit($request['content'], 100));
 
         return $validatePost;
     }
-
-
 
 
     public function postHasCategories($idPost)

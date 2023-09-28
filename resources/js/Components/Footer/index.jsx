@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import Logo from "../../../../public/assets/images/dark-logo.svg";
 import { H6 } from "../Text";
 import {
@@ -9,14 +9,14 @@ import {
 } from "@heroicons/react/24/outline";
 import SocialIcon from "../Icon";
 
-const Footer = (props) => {
-    const { attributes } = props;
+const Footer = () => {
+    const { attributes } = usePage().props;
 
     return (
         <footer className="bg-iapm-baltic-sea text-iapm-gray">
             <div className=" grid grid-cols-4 max-lg:grid-cols-1 max-w-screen-xl mx-auto py-16 font-poppins px-6 md:px-6 gap-8 box-border">
                 <div className="w-max">
-                    <img src={Logo} alt="logo" />
+                    <img src={Logo} alt="IAPM logo" loading="lazy" />
                 </div>
 
                 <div className="col-span-3">

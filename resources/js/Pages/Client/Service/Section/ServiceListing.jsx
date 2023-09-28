@@ -1,5 +1,5 @@
 import React from "react";
-import DefaultImage from "../../../../../../public/assets/images/default-images/3dLogo.svg";
+import DefaultImage from "../../../../../../public/assets/images/default-images/iapm-logo.jpg";
 import { H3, Paragraph } from "../../../../Components/Text";
 import IButton from "../../../../Components/Button/Button";
 const ServiceListing = (props) => {
@@ -7,10 +7,10 @@ const ServiceListing = (props) => {
     const { services } = props;
     const gridChildStyle = {
         orderFirst: "md:pr-16 order-first",
-        orderLast: "md:pr-16 order-last",
+        orderLast: "md:pr-16 order-last max-md:order-first",
     };
     return (
-        <section className="max-w-screen-xl mx-auto px-6 md:px-8 mb-16">
+        <section className="max-w-screen-xl mx-auto px-6 md:px-8 mb-16 space-y-12">
             {services.map((service, i) => {
                 return (
                     <div
@@ -24,15 +24,17 @@ const ServiceListing = (props) => {
                                     : gridChildStyle.orderLast
                             }
                         >
-                            <img
-                                src={
-                                    service?.image
-                                        ? `${baseUrlAsset}/${service?.image}`
-                                        : DefaultImage
-                                }
-                                alt="image product 1"
-                                className="rounded-3xl w-full"
-                            />
+                            <div className=" overflow-hidden rounded-3xl">
+                                <img
+                                    src={
+                                        service?.image
+                                            ? `${baseUrlAsset}/${service?.image}`
+                                            : DefaultImage
+                                    }
+                                    alt="image product 1"
+                                    className="rounded-3xl w-full hover:scale-110 transform duration-200"
+                                />
+                            </div>
                         </div>
                         <div className="space-y-6">
                             <H3>{service?.service_name}</H3>
@@ -48,6 +50,13 @@ const ServiceListing = (props) => {
                     </div>
                 );
             })}
+            {Object.keys(services).length === 0 && (
+                <div className="flex justify-center min-h-screen">
+                    <span className="bg-gray-100 py-4 px-6 rounded-xl block w-max text-center h-min">
+                        Data not available
+                    </span>
+                </div>
+            )}
         </section>
     );
 };

@@ -17,7 +17,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/home';
+    public const HOME = '/dashboard';
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
@@ -29,11 +29,16 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         RateLimiter::for('login', function (Request $request) {
-            return Limit::perMinute(5)->by($request->ip())->response(function () {
-                return back()->withErrors('Request exceeds limit, try again in');
+            return Limit::perMinute(3)->by($request->ip())->response(function () {
+                return back()->withErrors('Request exceeds limit, please try again later');
             });
         });
 
+        RateLimiter::for('resend_otp', function (Request $request) {
+            return Limit::perMinute(1)->by($request->ip())->response(function () {
+                return back()->withErrors('Try again later to send on time password');
+            });
+        });
 
         $this->routes(function () {
             Route::middleware('api')

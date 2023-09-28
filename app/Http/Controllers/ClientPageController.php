@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Asset;
 use App\Models\Category;
+use App\Models\Client;
 use App\Models\Company;
 use App\Models\DevelopmentHistory;
 use App\Models\Page;
@@ -18,23 +19,24 @@ class ClientPageController extends Controller
 {
     public function home()
     {
-        $pageDatas = $this->getPageDataFromDB('home-page');
+        $pageDatas = $this->getPageDataFromDB('home-page', url()->current());
         $assets = $this->getAssetData();
         $services = Service::select(['id', 'image', 'service_name'])->get();
         $testimonials = Testimonial::select(['name', 'position', 'quote'])->get();
-        // $clients => 
+        $clients = Client::select(['id', 'client_name', 'image'])->get();
 
         return Inertia::render('Client/Home/index', [
             'datas' => $pageDatas,
             'assets' => $assets,
             'services' => $services,
-            'testimonials' => $testimonials
+            'testimonials' => $testimonials,
+            'clients' => $clients
         ]);
     }
 
     public function about()
     {
-        $pageDatas = $this->resourceMapping($this->getPageDataFromDB('about-page'));
+        $pageDatas = $this->getPageDataFromDB('about-page', url()->current());
         $assets = $this->getAssetData();
         $companyDesc = Company::select(['vision', 'mission', 'description'])->first();
         $histories = DevelopmentHistory::select(['id', 'year', 'history_description', 'image'])->orderBy('year', 'DESC')->get();
@@ -49,8 +51,9 @@ class ClientPageController extends Controller
 
     public function service()
     {
-        $pageDatas = $this->resourceMapping($this->getPageDataFromDB('service-page'));
+        $pageDatas = $this->getPageDataFromDB('service-page', url()->current());
         $services = Service::select(['id', 'image', 'service_name', 'short_description'])->get();
+
         return Inertia::render('Client/Service/index', [
             'datas' => $pageDatas,
             'services' =>  $services
@@ -61,20 +64,31 @@ class ClientPageController extends Controller
     {
 
         $service = Service::find($id);
-        $services = Service::where('id', '!=', $id)->select(['id', 'service_name', 'image'])->get();
+        $services = Service::where('id', '!=', $id)->select(['id', 'service_name', 'image', 'short_description'])->get();
         if (!$service) {
             return Inertia::render('Error/index');
         }
 
+        $meta = [
+            'meta_title' => $service['service_name'],
+            'meta_description' => $service['short_description'],
+            'keywords' => $service['service_name'],
+            'url' => url()->current()
+        ];
+
         return Inertia::render('Client/Service/ServiceDetail', [
             'service' => $service,
-            'services' => $services
+            'services' => $services,
+            'meta' => $meta
         ]);
     }
 
     public function contact()
     {
-        return Inertia::render('Client/Contact/index');
+        $pageDatas = $this->getPageDataFromDB('contact-page', url()->current());
+        return Inertia::render('Client/Contact/index', [
+            'datas' => $pageDatas
+        ]);
     }
 
     public function blog()
@@ -86,13 +100,16 @@ class ClientPageController extends Controller
             ->orderBy('published_at', 'DESC')
             ->get();
 
+        $pageDatas = $this->getPageDataFromDB('blog-page', url()->current());
         return Inertia::render('Client/Blog/index', [
             'posts' => $posts,
+            'datas' => $pageDatas
         ]);
     }
 
     public function blogDetail($slug)
     {
+
         $post = Post::where('slug', '=', $slug)
             ->where('status', '=', 'Published')
             ->with(['post_categories', 'visits'])->get()->first();
@@ -106,10 +123,17 @@ class ClientPageController extends Controller
             ->select(['slug', 'thumbnail', 'published_at', 'title'])
             ->take(4)
             ->get();
+        $meta = [
+            'meta_title' => $post['meta_title'],
+            'meta_description' => $post['meta_description'],
+            'keywords' => $post['meta_title'],
+            'url' => url()->current()
+        ];
 
         return Inertia::render('Client/Blog/BlogDetail', [
             'post' => $post,
-            'lastedPosts' => $lastedPosts
+            'lastedPosts' => $lastedPosts,
+            'meta' => $meta
         ]);
     }
 
@@ -119,12 +143,13 @@ class ClientPageController extends Controller
             ->select([
                 'id AS id_meta',
                 'meta_title',
-                'meta_description'
+                'meta_description',
+                'keywords'
             ])->first();
         return $meta;
     }
 
-    public function getPageDataFromDB($pageTag)
+    public function getPageDataFromDB($pageTag, $url)
     {
         $pageDatas = Page::where('pages.tag', '=', $pageTag)
             ->select(
@@ -149,6 +174,7 @@ class ClientPageController extends Controller
             ->get();
 
         $meta = $this->getMetaData($pageDatas[0]['id_page'] ?? "");
+        $meta['url'] = $url;
         $datas = $this->resourceMapping($pageDatas);
         $datas['meta'] = $meta;
         return $datas;
@@ -162,6 +188,7 @@ class ClientPageController extends Controller
 
     public function resourceMapping($data)
     {
+
         $pageDatas = [];
         foreach ($data as $value) {
             $pageDatas = [...$pageDatas, $value['section_tag'] => $value];

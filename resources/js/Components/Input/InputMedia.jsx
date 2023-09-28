@@ -42,7 +42,7 @@ const InputMedia = (props) => {
         } else if (!media && !targetName) {
             if (mediaType === "image") {
                 setPreviewContent(`
-                    <img src="${baseUrlAsset}/${defaultValue}" alt="${targetName}"  class="h-44"/>
+                    <img src="${baseUrlAsset}/${defaultValue}" alt="${mediaName}"  class="h-44"/>
                `);
             } else if (mediaType === "video") {
                 setPreviewContent(`<video class="h-44" controls>

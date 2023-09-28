@@ -1,5 +1,5 @@
 import React from "react";
-import defaultImage from "../../../../../../public/assets/images/default-images/3dLogo.svg";
+import defaultImage from "../../../../../../public/assets/images/default-images/iapm-logo.jpg";
 import { Caption, H4, Paragraph } from "../../../../Components/Text";
 import { Link } from "@inertiajs/react";
 import { CalendarIcon } from "@heroicons/react/24/outline";

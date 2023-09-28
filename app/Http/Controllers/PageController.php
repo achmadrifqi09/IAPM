@@ -13,6 +13,7 @@ use App\Models\Testimonial;
 use App\Models\Service;
 use App\Models\Company;
 use App\Models\DevelopmentHistory;
+use App\Models\Client;
 
 class PageController extends Controller
 {
@@ -22,11 +23,14 @@ class PageController extends Controller
         $assets = $this->getAssetData();
         $services = Service::select(['id', 'image', 'service_name'])->get();
         $testimonials = Testimonial::select(['name', 'position', 'quote'])->get();
+        $clients = Client::select(['id', 'client_name', 'image'])->get();
         return Inertia::render('Admin/PageEditor/HomeEditor', [
             'datas' => $pageDatas,
             'assets' => $assets,
             'services' => $services,
-            'testimonials' => $testimonials
+            'testimonials' => $testimonials,
+            'clients' => $clients
+
         ]);
     }
 
@@ -35,7 +39,7 @@ class PageController extends Controller
         $pageDatas = $this->getPageDataFromDB('about-page');
         $assets = $this->getAssetData();
         $companyDesc = Company::select(['vision', 'mission', 'description'])->first();
-        $histories = DevelopmentHistory::select(['id', 'year', 'history_description', 'image'])->sortBy('year', 'DESC')->get();
+        $histories = DevelopmentHistory::select(['id', 'year', 'history_description', 'image'])->orderBy('year', 'DESC')->get();
         return Inertia::render('Admin/PageEditor/AboutEditor', [
             'datas' => $pageDatas,
             'assets' => $assets,
@@ -47,9 +51,18 @@ class PageController extends Controller
     public function serviceEditor()
     {
         $pageDatas = $this->getPageDataFromDB('service-page');
-
+        $services = Service::select(['id', 'image', 'service_name', 'short_description'])->get();
         return Inertia::render('Admin/PageEditor/ServiceEditor', [
             'datas' => $pageDatas,
+            'services' =>  $services
+        ]);
+    }
+
+    public function contactEditor()
+    {
+        $pageDatas = $this->getPageDataFromDB('contact-page');
+        return Inertia::render('Admin/PageEditor/ContactEditor', [
+            'datas' => $pageDatas
         ]);
     }
 
@@ -89,7 +102,8 @@ class PageController extends Controller
             ->select([
                 'id AS id_meta',
                 'meta_title',
-                'meta_description'
+                'meta_description',
+                'keywords'
             ])->first();
         return $meta;
     }
@@ -168,6 +182,8 @@ class PageController extends Controller
                 return '/pages/about-page';
             case 'service-page':
                 return '/pages/service-page';
+            case 'contact-page':
+                return '/pages/contact-page';
         }
     }
 

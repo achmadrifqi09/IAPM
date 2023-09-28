@@ -17,7 +17,8 @@ class SectionSeeder extends Seeder
         $homeId = Page::where('tag', 'home-page')->first()->id;
         $aboutId  = Page::where('tag', 'about-page')->first()->id;
         $serviceId  = Page::where('tag', 'service-page')->first()->id;
-
+        $contactId  = Page::where('tag', 'contact-page')->first()->id;
+        $blogId  = Page::where('tag', 'blog-page')->first()->id;
 
         $sections = [
             [
@@ -79,6 +80,18 @@ class SectionSeeder extends Seeder
                 'ordinal_number' => 4,
                 'id_page' => $aboutId,
                 'tag' => 'history-of-development'
+            ],
+            [
+                'section_name' => 'Contact Header',
+                'ordinal_number' => 1,
+                'id_page' => $contactId,
+                'tag' => 'contact-header'
+            ],
+            [
+                'section_name' => 'Blog',
+                'ordinal_number' => 1,
+                'id_page' => $blogId,
+                'tag' => 'blog-header'
             ],
         ];
 

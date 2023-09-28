@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\AssetRoutesController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ClientPageController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ContactController;
@@ -38,7 +40,6 @@ Route::middleware(['throttle:login'])->group(function () {
 Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout']);
 
-Route::get('/generate-sitemap', [SitemapController::class, 'index']);
 
 Route::get('/', [ClientPageController::class, 'home']);
 
@@ -56,6 +57,11 @@ Route::get('/blogs/{slug}', [ClientPageController::class, 'blogDetail']);
 Route::get('/asset/{asset}', AssetRoutesController::class);
 
 Route::group(['middleware' => ['auth']], function () {
+  Route::get('/generate-sitemap', [SitemapController::class, 'index']);
+  Route::get('/account', [AccountController::class, 'index']);
+  Route::post('/account/{id}', [AccountController::class, 'update']);
+  Route::post('/otp', [AuthController::class, 'sendOtp'])->middleware('throttle:resend_otp');
+
   Route::get('/dashboard', [DashboardController::class, 'index']);
   Route::post('/contacts', [ContactController::class, 'store']);
   Route::put('/contacts/{id}/primary', [ContactController::class, 'setPrimaryContact']);
@@ -73,6 +79,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/pages/home-page', [PageController::class, 'homeEditor']);
   Route::get('/pages/about-page', [PageController::class, 'aboutEditor']);
   Route::get('/pages/service-page', [PageController::class, 'serviceEditor']);
+  Route::get('/pages/contact-page', [PageController::class, 'contactEditor']);
   Route::put('/pages', [PageController::class, 'update']);
 
   Route::get('/web-attributes', [WebAttributeController::class, 'index']);
@@ -114,4 +121,9 @@ Route::group(['middleware' => ['auth']], function () {
   Route::post('/categories', [CategoryController::class, 'store']);
   Route::put('/categories/{id}', [CategoryController::class, 'update']);
   Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
+
+  Route::get('/clients', [ClientController::class, 'index']);
+  Route::post('/clients', [ClientController::class, 'store']);
+  Route::post('/clients/{id}', [ClientController::class, 'update']);
+  Route::delete('/clients/{id}', [ClientController::class, 'destroy']);
 });

@@ -18,6 +18,8 @@ class ResourceSeeder extends Seeder
         $homeId = Page::where('tag', 'home-page')->first()->id;
         $aboutId  = Page::where('tag', 'about-page')->first()->id;
         $serviceId  = Page::where('tag', 'service-page')->first()->id;
+        $contactId  = Page::where('tag', 'contact-page')->first()->id;
+        $blogId  = Page::where('tag', 'blog-page')->first()->id;
 
         $resources = [
             [
@@ -78,6 +80,17 @@ class ResourceSeeder extends Seeder
                 'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
                 'id_page' => $aboutId,
                 'id_section' => Section::where('tag', 'history-of-development')->first()->id
+            ],
+            [
+                'title' => 'Contact Us',
+                'description' => 'Have a question related to our company? Ask a question through the contact below',
+                'id_page' => $contactId,
+                'id_section' => Section::where('tag', 'contact-header')->first()->id
+            ],
+            [
+                'title' => 'Blog',
+                'id_page' => $blogId,
+                'id_section' => Section::where('tag', 'blog-header')->first()->id
             ],
         ];
 

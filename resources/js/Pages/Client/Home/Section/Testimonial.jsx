@@ -53,6 +53,13 @@ const Testimonial = (props) => {
                             </SwiperSlide>
                         );
                     })}
+                    {Object.keys(testimonials).length === 0 && (
+                        <div className="flex justify-center">
+                            <span className="bg-gray-100 py-4 px-6 rounded-xl block w-max text-center">
+                                Data not available
+                            </span>
+                        </div>
+                    )}
                 </Carousel>
             </div>
         </section>

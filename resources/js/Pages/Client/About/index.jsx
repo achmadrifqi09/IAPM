@@ -1,19 +1,16 @@
 import React from "react";
-import { Head } from "@inertiajs/react";
 import ClientLayout from "../../../Layouts/client-layout";
 import CompanyDesc from "./Section/CompanyDesc";
 import CTA from "../../../Components/CTA";
 import HistoryDevelopment from "./section/HistoryDevelopment";
 import GetterAsset from "../../../Helpers/getter-asset";
-
+import Meta from "../../../Components/Meta";
 const About = (props) => {
     const { datas, assets, attributes, company, histories } = props;
 
     return (
         <>
-            <Head>
-                <title>About Us</title>
-            </Head>
+            <Meta metas={datas?.meta} type="website" />
             <ClientLayout attributes={attributes}>
                 <CompanyDesc
                     aboutTitle={datas["about"]?.title}

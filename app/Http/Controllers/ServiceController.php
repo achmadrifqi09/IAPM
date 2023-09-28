@@ -38,7 +38,7 @@ class ServiceController extends Controller
 
         try {
             Service::create($validatedService);
-            return redirect('/service-products')->with('success', 'Service has been added');
+            return back()->with('success', 'Service has been added');
         } catch (QueryException $e) {
             return back()->withErrors(['error' => $e->errorInfo]);
         }
@@ -46,7 +46,7 @@ class ServiceController extends Controller
 
     public function edit($id)
     {
-        
+
         $updatedService = Service::find($id);
 
         if (!$updatedService) {
@@ -81,7 +81,7 @@ class ServiceController extends Controller
 
         try {
             $updatedService->update($newServiceData);
-            return redirect('/service-products')->with('success', 'Service has been updated');
+            return back()->with('success', 'Service has been updated');
         } catch (QueryException $e) {
             return back()->withErrors(['error' => $e->errorInfo]);
         }

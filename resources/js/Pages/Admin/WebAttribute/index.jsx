@@ -16,11 +16,7 @@ import {
 import Modal from "../../../Components/Modal";
 import ContactForm from "./ContactForm";
 import Swal from "sweetalert2";
-import getErrorMessage from "../../../Helpers/error-message";
-import {
-    toastSettings,
-    confirmSetttings,
-} from "../../../Helpers/sweetalert-config";
+import { confirmSetttings } from "../../../Helpers/sweetalert-config";
 import AddressForm from "./AddressForm";
 import SocialForm from "./SocialForm";
 import { router } from "@inertiajs/react";
@@ -131,19 +127,16 @@ const WebAttribute = (props) => {
     };
 
     useEffect(() => {
-        if (flash?.success) {
-            Swal.fire({
-                ...toastSettings,
-                icon: "success",
-                title: flash.success,
-            });
-            !!modalProps.isOpen && handleModal();
-        } else if (Object.keys(errors).length > 0) {
-            Swal.fire({
-                ...toastSettings,
-                icon: "error",
-                title: getErrorMessage(errors),
-            });
+        Object.keys(flash).forEach((key) => {
+            delete flash[key];
+        });
+        Object.keys(errors).forEach((key) => {
+            delete errors[key];
+        });
+    }, []);
+
+    useEffect(() => {
+        if (flash?.success || Object.keys(errors).length > 0) {
             !!modalProps.isOpen && handleModal();
         }
         setModalProps({

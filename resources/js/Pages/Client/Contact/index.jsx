@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import ClientLayout from "../../../Layouts/client-layout";
-import { Head, router } from "@inertiajs/react";
+import { router } from "@inertiajs/react";
 import { H5, H2, Paragraph } from "../../../Components/Text";
 import IInput from "../../../Components/Input/Input";
 import ITextarea from "../../../Components/Input/Textarea";
@@ -15,10 +15,11 @@ import {
 } from "@heroicons/react/24/outline";
 import { sendMailValidationSchema } from "../../../Helpers/validation-schema";
 import { useFormik } from "formik";
+import Meta from "../../../Components/Meta";
 
 const Contact = (props) => {
     const SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
-    const { attributes, flash, errors } = props;
+    const { attributes, flash, errors, meta, datas } = props;
     const [messageInfo, setMessageInfo] = useState("");
     const [isToast, setToast] = useState(false);
     const [isLoading, setLoading] = useState(false);
@@ -68,6 +69,15 @@ const Contact = (props) => {
     };
 
     useEffect(() => {
+        Object.keys(flash).forEach((key) => {
+            delete flash[key];
+        });
+        Object.keys(errors).forEach((key) => {
+            delete errors[key];
+        });
+    }, []);
+
+    useEffect(() => {
         if (flash?.success) {
             setMessageInfo(flash.success);
             setToast(true);
@@ -86,16 +96,14 @@ const Contact = (props) => {
             isToast &&
                 setTimeout(() => {
                     setToast(false);
-                }, 4000);
+                }, 3000);
         };
         hideToast();
     }, [isToast]);
 
     return (
         <>
-            <Head>
-                <title>Contact</title>
-            </Head>
+            <Meta type="website" metas={datas?.meta} />
             <ClientLayout attributes={attributes}>
                 <section className="max-w-screen-xl mx-auto md:px-8 px-6">
                     {isToast && (
@@ -112,10 +120,9 @@ const Contact = (props) => {
                         </div>
                     )}
                     <div className="my-14">
-                        <H2>Contact Us</H2>
+                        <H2>{datas["contact-header"]?.title}</H2>
                         <Paragraph>
-                            Have a question related to our company? Ask a
-                            question through the contact below
+                            {datas["contact-header"]?.description}
                         </Paragraph>
                     </div>
                     <div className="grid grid-cols-2 gap-6 max-sm:grid-cols-1 bg-white p-6 border border-gray-100 rounded-3xl mb-16 ">
@@ -151,6 +158,13 @@ const Contact = (props) => {
                                     </a>
                                 );
                             })}
+                            {Object.keys(attributes?.contacts).length == 0 && (
+                                <div className="flex justify-start">
+                                    <span className="bg-gray-100 py-4 px-6 rounded-xl block w-max text-center">
+                                        No contact yet
+                                    </span>
+                                </div>
+                            )}
                             <hr />
                             <H5>Address information</H5>
                             {attributes?.addresses.map((values, i) => {
@@ -170,6 +184,13 @@ const Contact = (props) => {
                                     </a>
                                 );
                             })}
+                            {Object.keys(attributes?.addresses).length == 0 && (
+                                <div className="flex justify-start">
+                                    <span className="bg-gray-100 py-4 px-6 rounded-xl block w-max text-center">
+                                        No address yet
+                                    </span>
+                                </div>
+                            )}
                         </div>
 
                         <div>

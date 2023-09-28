@@ -15,6 +15,7 @@ const MediaPreview = (props) => {
                         <img
                             src={`${baseUrl}/${media.url}`}
                             alt="image media preview"
+                            loading="lazy"
                         />
                     )}
                     {type === "Video" && (

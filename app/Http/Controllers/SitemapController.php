@@ -14,7 +14,8 @@ class SitemapController extends Controller
         $sitemap = Sitemap::create()
             ->add(Url::create('/'))
             ->add(Url::create('/about-us'))
-            ->add(Url::create('/services'));
+            ->add(Url::create('/services'))
+            ->add(Url::create('/contacts'));
 
         $posts = Post::where('status', '=', 'Published')->get();
         foreach ($posts as $post) {
@@ -22,5 +23,6 @@ class SitemapController extends Controller
         }
 
         $sitemap->writeToFile(public_path('sitemap.xml'));
+        return back();
     }
 }

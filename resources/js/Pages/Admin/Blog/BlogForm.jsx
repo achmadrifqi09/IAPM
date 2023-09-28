@@ -10,12 +10,9 @@ import { H3, H4 } from "../../../Components/Text";
 import { useFormik } from "formik";
 import { postValidationSchema } from "../../../Helpers/validation-schema";
 import IButton from "../../../Components/Button/Button";
-import getErrorMessage from "../../../Helpers/error-message";
-import Swal from "sweetalert2";
-import { toastSettings } from "../../../Helpers/sweetalert-config";
 
 const BlogForm = (props) => {
-    const { post, isUpdate, categories, errors, flash } = props;
+    const { post, isUpdate, categories, flash } = props;
     const [categoriesOption, setCategoriesOption] = useState([]);
 
     const blogStatusOptions = [
@@ -34,6 +31,13 @@ const BlogForm = (props) => {
             ? router.post(`/manage-blogs/${post.id}/form`, formik.values)
             : router.post(`/manage-blogs`, formik.values);
     };
+
+    useEffect(() => {
+        flash?.success &&
+            setTimeout(() => {
+                router.visit("/manage-blogs");
+            }, 2000);
+    }, [flash]);
 
     const getDefaultValueCategories = () => {
         let result = [];
@@ -104,29 +108,19 @@ const BlogForm = (props) => {
         setCategoriesOption(result);
     }, [categories]);
 
-    useEffect(() => {
-        if (flash?.success) {
-            Swal.fire({
-                ...toastSettings,
-                icon: "success",
-                title: flash.success,
-            });
-            router.visit("/manage-blogs");
-        } else if (Object.keys(errors).length > 0) {
-            Swal.fire({
-                ...toastSettings,
-                icon: "error",
-                title: getErrorMessage(errors),
-            });
-        }
-    }, [errors, flash]);
-
     return (
         <>
             <Head>
                 <title>Blog Form</title>
             </Head>
             <AdminLayout>
+                {flash?.success && (
+                    <div className="p-6 bg-white fixed right-6 bottom-6 shadow-xl rounded-xl border border-gray-100 z-30">
+                        <span className="text-iapm-black ">
+                            Please wait, redirect the page
+                        </span>
+                    </div>
+                )}
                 <section className="my-6">
                     <div className="bg-white p-6 rounded-3xl shadow space-y-8">
                         <H3>Blog From</H3>

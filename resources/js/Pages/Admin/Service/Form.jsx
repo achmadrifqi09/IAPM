@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import AdminLayout from "../../../Layouts/admin-layout";
 import { Head, router } from "@inertiajs/react";
 import IButton from "../../../Components/Button/Button";
@@ -11,15 +11,22 @@ import { useFormik } from "formik";
 import { serviceValidationSchema } from "../../../Helpers/validation-schema";
 
 const ServiceForm = (props) => {
-    const { mode, service } = props;
+    const { mode, service, flash } = props;
 
-    const handleSubmit = () => {
+    const handleSubmit = useCallback(() => {
         if (mode === "update") {
             router.post(`/service-products/${service.id}/form`, formik.values);
         } else if (mode === "create") {
             router.post("/service-products", formik.values);
         }
-    };
+    });
+
+    useEffect(() => {
+        flash?.success &&
+            setTimeout(() => {
+                router.visit("/service-products");
+            }, 2000);
+    }, [flash]);
 
     const formik = useFormik({
         initialValues: {
@@ -43,6 +50,13 @@ const ServiceForm = (props) => {
                 <title>Service Form</title>
             </Head>
             <AdminLayout>
+                {flash?.success && (
+                    <div className="p-6 bg-white fixed right-6 bottom-6 shadow-xl rounded-xl border border-gray-100 z-30">
+                        <span className="text-iapm-black ">
+                            Please wait, redirect the page
+                        </span>
+                    </div>
+                )}
                 <section className="space-y-6 mt-8">
                     <div className="bg-white shadow rounded-3xl p-6 border border-gray-100 my-6">
                         {mode === "update" ? (

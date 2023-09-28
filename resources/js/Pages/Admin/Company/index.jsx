@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Head } from "@inertiajs/react";
 import AdminLayout from "../../../Layouts/admin-layout";
-import { H3, H4, Paragraph } from "../../../Components/Text";
+import { H3 } from "../../../Components/Text";
 import HorizontalTabBar from "../../../Components/TabBar/HorizontalTabBar";
 import Swal from "sweetalert2";
 import { toastSettings } from "../../../Helpers/sweetalert-config";
 import CompanyProfile from "./CompanyProfile";
 import HistoryDevelopement from "./CompanyHistory";
 const Company = (props) => {
-    const { companyData, histories, flash, errors } = props;
+    const { companyData, histories } = props;
+
     const tabBarMenus = [
         {
             label: "Profile",
@@ -23,22 +24,6 @@ const Company = (props) => {
         setActiveMenu(menu);
     };
 
-    useEffect(() => {
-        if (flash?.success) {
-            Swal.fire({
-                ...toastSettings,
-                icon: "success",
-                title: flash.success,
-            });
-            flash.success = null;
-        } else if (Object.keys(errors).length > 0) {
-            Swal.fire({
-                ...toastSettings,
-                icon: "error",
-                title: getErrorMessage(errors),
-            });
-        }
-    }, [errors, flash]);
     return (
         <>
             <Head>

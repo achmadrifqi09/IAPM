@@ -69,7 +69,6 @@ const HistoryDevelopement = (props) => {
 
     const handleUpdateAction = async (data) => {
         const { id, year, history_description, image } = data;
-        console.log(data);
         setUpdateProps({
             isUpdates: true,
             idUpdate: id,

@@ -8,10 +8,12 @@ import VideoSection from "./Section/Capability";
 import ServiceOverview from "./Section/ServiceOverview";
 import Testimonial from "./Section/Testimonial";
 import CTA from "../../../Components/CTA";
-import defaultImage from "../../../../../public/assets/images/default-images/3dLogo.svg";
+import defaultImage from "../../../../../public/assets/images/default-images/iapm-logo.jpg";
+import Meta from "../../../Components/Meta";
 
 const HomePage = (props) => {
-    const { datas, assets, attributes, services, testimonials } = props;
+    const { datas, assets, attributes, services, testimonials, clients } =
+        props;
     const [currentUrl, setCurrentUrl] = useState("");
 
     useEffect(() => {
@@ -20,30 +22,7 @@ const HomePage = (props) => {
 
     return (
         <>
-            <Head>
-                <title>{datas?.meta?.meta_title}</title>
-                <meta name="robots" content="index, follow" />
-                <meta
-                    name="description"
-                    content={datas?.meta?.meta_description}
-                />
-                <meta property="og:locale" content="en_US" />
-                <meta property="og:type" content="article" />
-                <meta property="og:title" content={datas?.meta?.meta_title} />
-                <meta
-                    property="og:description"
-                    content={datas?.meta?.meta_description}
-                />
-                <meta property="og:url" content={currentUrl} />
-                <meta property="og:site_name" content="PT IAPM Elinksolution" />
-
-                <meta property="og:image" content={defaultImage} />
-                <meta property="og:image:width" content="1280" />
-                <meta property="og:image:height" content="853" />
-                <meta property="og:image:type" content="image/jpeg" />
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:site" content="@iapmelinksolution" />
-            </Head>
+            <Meta metas={datas?.meta} type="website" />
             <ClientLayout attributes={attributes}>
                 <Hero
                     title={datas["home-hero"]?.title}
@@ -52,7 +31,10 @@ const HomePage = (props) => {
                     buttonUrl={datas["home-hero"]?.button_url}
                     image={GetterAsset(datas["home-hero"]?.id_asset, assets)}
                 />
-                <ClientGalery title={datas["successful-project"]?.title} />
+                <ClientGalery
+                    title={datas["successful-project"]?.title}
+                    clients={clients}
+                />
                 <VideoSection
                     title={datas["capability"]?.title}
                     description={datas["capability"]?.description}
